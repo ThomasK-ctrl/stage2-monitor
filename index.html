@@ -291,6 +291,13 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .td-country { font-size:11px; color:var(--text3); margin-top:1px; }
 .mono { font-family:'JetBrains Mono',monospace; }
 
+/* ── NUMERIC RENDERING FIX ── */
+.num {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+  
 /* ── SPARKLINE ── */
 .spark { display:inline-flex; align-items:flex-end; gap:2px; height:24px; vertical-align:middle; }
 .spark-b { width:7px; border-radius:2px 2px 0 0; background:var(--surface3); min-height:2px; }
@@ -743,7 +750,7 @@ function renderOverview() {
     { label: PAGE==='s2'?'Total Stage 2':'Total Stage 3 (NPL)', val:'€'+f0(totalVal)+'bn', sub:'All tracked banks', delta:`<span class="${delta>0?'up':'dn'}">${delta>0?'+':''}${f1(delta)}bn (${delta>0?'+':''}${pct}%) vs ${pl[0]}</span>` },
     { label: PAGE==='s2'?'Avg Stage 2 Ratio':'Avg NPL Ratio', val:f1(avgRatio)+'%', sub:'Weighted across panel', delta:`<span class="${rDelta>0?'up':'dn'}">${rDelta>0?'+':''}${f1(rDelta)}pp vs ${pl[0]}</span>` },
     { label: PAGE==='s2'?'Banks ≥ 12%':'Banks NPL ≥ 4%', val:highRisk, sub:`${((highRisk/banks.length)*100).toFixed(0)}% of panel`, delta:'' }
-  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
+  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val num">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
 
   // Signals
   const rising = banks.filter(b=>ratioChange(b)>1.0);
@@ -826,8 +833,8 @@ function buildTable(banks) {
       <td><div class="td-bank">${bank.name}</div></td>
       <td><div style="font-size:12px">${flag(bank.country)} ${bank.country_name}</div></td>
       <td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td>
-      <td class="mono"><strong>${fbn(v)}</strong></td>
-      <td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td>
+      <td class="mono num"><strong>${fbn(v)}</strong></td>
+      <td class="mono num"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td>
       <td class="mono ${chClass}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td>
       <td>${spark}</td>
       <td>${riskBadge(r)}</td>`;
@@ -884,8 +891,8 @@ function buildWatchlist() {
       <div class="wl-bank">${bank.name}</div>
       <div class="wl-country">${flag(bank.country)} ${bank.country_name}</div>
       <div class="wl-ratios">
-        <div class="wl-ratio"><div class="wl-r-label">Stage 2</div><div class="wl-r-val" style="color:${s2r>=12?'#fbbf24':'var(--text2)'}">${f1(s2r)}%</div></div>
-        <div class="wl-ratio"><div class="wl-r-label">NPL Ratio</div><div class="wl-r-val" style="color:${s3r>=4?'var(--s3-color)':'var(--text2)'}">${f1(s3r)}%</div></div>
+        <div class="wl-ratio"><div class="wl-r-label">Stage 2</div><div class="wl-r-val num" style="color:${s2r>=12?'#fbbf24':'var(--text2)'}">${f1(s2r)}%</div></div>
+        <div class="wl-ratio"><div class="wl-r-label">NPL Ratio</div><div class="wl-r-val num" style="color:${s3r>=4?'var(--s3-color)':'var(--text2)'}">${f1(s3r)}%</div></div>
       </div>
       <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
         <span class="mono" style="font-size:10px;color:${mainC>0?'var(--s3-color)':'var(--green)'}">${mainC>0?'+':''}${f1(mainC)}pp vs ${DATA.meta.period_labels[0]}</span>
@@ -935,7 +942,7 @@ function showCountry(cc, btn) {
   banks.forEach(bank=>{
     const l=lat(bank); const r=ratio(bank); const v=absval(bank); const ch=ratioChange(bank);
     const tr=document.createElement('tr'); tr.onclick=()=>openBank(bank);
-    tr.innerHTML=`<td><div class="td-bank">${bank.name}</div></td><td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td><td class="mono"><strong>${fbn(v)}</strong></td><td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td><td class="mono ${ch>0.3?'up':ch<-0.3?'dn':'fl'}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td><td>${buildSpark(bank)}</td><td>${riskBadge(r)}</td>`;
+    tr.innerHTML=`<td><div class="td-bank">${bank.name}</div></td><td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td><td class="mono num"><strong>${fbn(v)}</strong></td><td class="mono num"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td><td class="mono ${ch>0.3?'up':ch<-0.3?'dn':'fl'}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td><td>${buildSpark(bank)}</td><td>${riskBadge(r)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -957,7 +964,7 @@ function openBank(bank) {
     {label:'Stage 2 (latest)',val:f1(l.stage2_ratio)+'%',sub:fbn(l.stage2_bn),color:l.stage2_ratio>=12?'var(--s2-color)':'var(--text)'},
     {label:'Stage 3 NPL (latest)',val:f1(l.npl_ratio)+'%',sub:fbn(l.stage3_bn),color:l.npl_ratio>=4?'var(--s3-color)':'var(--text)'},
     {label:'Total Loans',val:fbn(l.total_loans_bn),sub:'Latest period',color:'var(--text)'}
-  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val" style="font-size:22px;color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
+  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val num" style="font-size:22px;color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
 
   // Dual-line chart — both Stage 2 and Stage 3 ratios
   if (modalChart) { modalChart.destroy(); modalChart=null; }
