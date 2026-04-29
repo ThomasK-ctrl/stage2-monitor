@@ -10,26 +10,26 @@
 <style>
 /* ── TOKENS ── */
 :root {
-  --bg:         #08090c;
-  --surface:    #0e1017;
-  --surface2:   #141620;
-  --surface3:   #1a1d2a;
-  --line:       rgba(255,255,255,0.06);
-  --line2:      rgba(255,255,255,0.03);
-  --text:       #edeef2;
-  --text2:      #8b8fa8;
-  --text3:      #4f526b;
-  --s2-color:   #f59e0b;
-  --s2-dim:     rgba(245,158,11,0.12);
-  --s2-border:  rgba(245,158,11,0.25);
-  --s3-color:   #ef4444;
-  --s3-dim:     rgba(239,68,68,0.1);
-  --s3-border:  rgba(239,68,68,0.22);
-  --green:      #22c55e;
-  --green-dim:  rgba(34,197,94,0.1);
-  --blue:       #3b82f6;
-  --blue-dim:   rgba(59,130,246,0.1);
-  --purple:     #a855f7;
+  --bg:         #141820;
+  --surface:    #1c2130;
+  --surface2:   #232a3a;
+  --surface3:   #2a3248;
+  --line:       rgba(255,255,255,0.10);
+  --line2:      rgba(255,255,255,0.05);
+  --text:       #f0f2f8;
+  --text2:      #adb5cc;
+  --text3:      #6b7590;
+  --s2-color:   #fbbf24;
+  --s2-dim:     rgba(251,191,36,0.14);
+  --s2-border:  rgba(251,191,36,0.32);
+  --s3-color:   #f87171;
+  --s3-dim:     rgba(248,113,113,0.12);
+  --s3-border:  rgba(248,113,113,0.28);
+  --green:      #4ade80;
+  --green-dim:  rgba(74,222,128,0.12);
+  --blue:       #60a5fa;
+  --blue-dim:   rgba(96,165,250,0.12);
+  --purple:     #c084fc;
   --active-s2:  var(--s2-color);
   --active-s3:  var(--s3-color);
   --r: 8px;
@@ -63,16 +63,10 @@ a { color:inherit; text-decoration:none; }
   display: flex; align-items: center; gap: 10px;
   flex-shrink: 0;
 }
-.logo-gem {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: linear-gradient(135deg, #f59e0b, #ef4444);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-size: 12px; font-weight: 800; color: #08090c;
-}
+.logo-gem { display: none; }
 .logo-name {
   font-family: 'Syne', sans-serif;
-  font-size: 14px; font-weight: 700; color: var(--text);
+  font-size: 15px; font-weight: 700; color: var(--text);
   letter-spacing: -0.01em;
 }
 .topbar-divider { width: 1px; height: 20px; background: var(--line); flex-shrink:0; }
@@ -312,10 +306,10 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
   letter-spacing:0.05em; text-transform:uppercase;
   white-space:nowrap;
 }
-.b-ok    { background:rgba(34,197,94,0.1); color:var(--green); border:1px solid rgba(34,197,94,0.2); }
-.b-watch { background:rgba(245,158,11,0.1); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
-.b-high  { background:rgba(249,115,22,0.1); color:#f97316; border:1px solid rgba(249,115,22,0.2); }
-.b-crit  { background:rgba(239,68,68,0.1); color:var(--s3-color); border:1px solid rgba(239,68,68,0.2); }
+.b-ok    { background:rgba(74,222,128,0.12); color:var(--green); border:1px solid rgba(74,222,128,0.25); }
+.b-watch { background:rgba(251,191,36,0.12); color:#fbbf24; border:1px solid rgba(251,191,36,0.28); }
+.b-high  { background:rgba(251,146,60,0.12); color:#fb923c; border:1px solid rgba(251,146,60,0.28); }
+.b-crit  { background:rgba(248,113,113,0.12); color:var(--s3-color); border:1px solid rgba(248,113,113,0.28); }
 
 /* ── COUNTRY VIEW ── */
 .country-header {
@@ -391,7 +385,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .wl-card:hover { background:var(--surface2); }
 .wl-card.s2-alert { border-left-color: var(--s2-color); }
 .wl-card.s3-alert { border-left-color: var(--s3-color); }
-.wl-card.both-alert { border-left-color: var(--s3-color); background: rgba(239,68,68,0.04); }
+.wl-card.both-alert { border-left-color: var(--s3-color); background: rgba(248,113,113,0.05); }
 .wl-bank { font-size:13px; font-weight:600; color:var(--text); }
 .wl-country { font-size:11px; color:var(--text3); margin-bottom:8px; }
 .wl-ratios { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
@@ -617,11 +611,11 @@ let modalChart = null;
 const CDEFAULTS = {
   plugins: {
     legend: { display:false },
-    tooltip: { backgroundColor:'#141620', borderColor:'rgba(255,255,255,0.08)', borderWidth:1, titleColor:'#edeef2', bodyColor:'#8b8fa8', padding:10 }
+    tooltip: { backgroundColor:'#1c2130', borderColor:'rgba(255,255,255,0.14)', borderWidth:1, titleColor:'#f0f2f8', bodyColor:'#adb5cc', padding:10 }
   },
   scales: {
-    x: { grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#4f526b', font:{ family:'JetBrains Mono',size:9 } } },
-    y: { grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#4f526b', font:{ family:'JetBrains Mono',size:9 } } }
+    x: { grid:{ color:'rgba(255,255,255,0.07)' }, ticks:{ color:'#6b7590', font:{ family:'JetBrains Mono',size:9 } } },
+    y: { grid:{ color:'rgba(255,255,255,0.07)' }, ticks:{ color:'#6b7590', font:{ family:'JetBrains Mono',size:9 } } }
   }
 };
 
@@ -638,8 +632,8 @@ const flag = cc => ({AT:'🇦🇹',BE:'🇧🇪',CY:'🇨🇾',DE:'🇩🇪',DK:
 function ratio(b) { return PAGE==='s2' ? lat(b).stage2_ratio : lat(b).npl_ratio; }
 function absval(b) { return PAGE==='s2' ? lat(b).stage2_bn : lat(b).stage3_bn; }
 function ratioChange(b) { return PAGE==='s2' ? lat(b).stage2_ratio - fst(b).stage2_ratio : lat(b).npl_ratio - fst(b).npl_ratio; }
-function color() { return PAGE==='s2' ? '#f59e0b' : '#ef4444'; }
-function colorDim() { return PAGE==='s2' ? 'rgba(245,158,11,0.15)' : 'rgba(239,68,68,0.12)'; }
+function color() { return PAGE==='s2' ? '#fbbf24' : '#f87171'; }
+function colorDim() { return PAGE==='s2' ? 'rgba(251,191,36,0.16)' : 'rgba(248,113,113,0.13)'; }
 
 function riskBadge(r) {
   if (PAGE==='s2') {
@@ -781,7 +775,7 @@ function buildOverviewCharts(banks, p, pl) {
 
   // Top 15
   const top15=[...banks].sort((a,b)=>ratio(b)-ratio(a)).slice(0,15);
-  const t15cols=top15.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(239,68,68,0.75)';if(r>=(PAGE==='s2'?12:4))return'rgba(249,115,22,0.75)';if(r>=(PAGE==='s2'?10:2))return'rgba(245,158,11,0.75)';return'rgba(59,130,246,0.65)';});
+  const t15cols=top15.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(248,113,113,0.78)';if(r>=(PAGE==='s2'?12:4))return'rgba(251,146,60,0.74)';if(r>=(PAGE==='s2'?10:2))return'rgba(251,191,36,0.72)';return'rgba(96,165,250,0.68)';});
   charts['top15']=new Chart(document.getElementById('c-top15'),{type:'bar',data:{labels:top15.map(b=>b.name.length>18?b.name.slice(0,16)+'…':b.name),datasets:[{data:top15.map(b=>ratio(b)),backgroundColor:t15cols,borderRadius:3}]},options:{...CDEFAULTS,indexAxis:'y',scales:{x:{...CDEFAULTS.scales.x,ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:CDEFAULTS.scales.y}}});
   document.getElementById('top15-title').textContent = PAGE==='s2'?'Top 15 Banks by Stage 2 Ratio':'Top 15 Banks by NPL Ratio';
 
@@ -789,14 +783,14 @@ function buildOverviewCharts(banks, p, pl) {
   const bins = PAGE==='s2' ? [['<7%',0,7],['7–9%',7,9],['9–11%',9,11],['11–13%',11,13],['13–15%',13,15],['>15%',15,999]] : [['<1%',0,1],['1–2%',1,2],['2–3%',2,3],['3–4%',3,4],['4–6%',4,6],['>6%',6,999]];
   const bc=[0,0,0,0,0,0];
   banks.forEach(b=>{const r=ratio(b);bins.forEach((bin,i)=>{if(r>=bin[1]&&r<bin[2])bc[i]++;});});
-  const distCols=['rgba(34,197,94,0.6)','rgba(34,197,94,0.4)','rgba(245,158,11,0.55)','rgba(249,115,22,0.6)','rgba(239,68,68,0.5)','rgba(239,68,68,0.8)'];
+  const distCols=['rgba(74,222,128,0.65)','rgba(74,222,128,0.45)','rgba(251,191,36,0.60)','rgba(251,146,60,0.65)','rgba(248,113,113,0.58)','rgba(248,113,113,0.82)'];
   charts['dist']=new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:bins.map(b=>b[0]),datasets:[{data:bc,backgroundColor:distCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+' banks'}}}}});
 
   // Scatter (S2 only)
   if (PAGE==='s2') {
     const scData = banks.map(b=>({x:lat(b).stage2_ratio,y:lat(b).npl_ratio,r:Math.max(4,Math.min(18,b.total_assets_bn/80)),label:b.name,cc:b.country}));
-    const scColors = scData.map(d=>{const sum=d.x+d.y*2;if(sum>18)return'rgba(239,68,68,0.75)';if(sum>13)return'rgba(249,115,22,0.65)';if(sum>9)return'rgba(245,158,11,0.6)';return'rgba(59,130,246,0.55)';});
-    charts['scatter']=new Chart(document.getElementById('c-scatter'),{type:'bubble',data:{datasets:[{data:scData,backgroundColor:scColors,borderColor:'transparent'}]},options:{...CDEFAULTS,plugins:{...CDEFAULTS.plugins,tooltip:{...CDEFAULTS.plugins.tooltip,callbacks:{label:ctx=>`${ctx.raw.label} (${flag(ctx.raw.cc)})  S2: ${f1(ctx.raw.x)}%  NPL: ${f1(ctx.raw.y)}%`}}},scales:{x:{...CDEFAULTS.scales.x,title:{display:true,text:'Stage 2 Ratio (%)',color:'#4f526b',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:{...CDEFAULTS.scales.y,title:{display:true,text:'NPL Ratio (%)',color:'#4f526b',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
+    const scColors = scData.map(d=>{const sum=d.x+d.y*2;if(sum>18)return'rgba(248,113,113,0.78)';if(sum>13)return'rgba(251,146,60,0.70)';if(sum>9)return'rgba(251,191,36,0.65)';return'rgba(96,165,250,0.60)';});
+    charts['scatter']=new Chart(document.getElementById('c-scatter'),{type:'bubble',data:{datasets:[{data:scData,backgroundColor:scColors,borderColor:'transparent'}]},options:{...CDEFAULTS,plugins:{...CDEFAULTS.plugins,tooltip:{...CDEFAULTS.plugins.tooltip,callbacks:{label:ctx=>`${ctx.raw.label} (${flag(ctx.raw.cc)})  S2: ${f1(ctx.raw.x)}%  NPL: ${f1(ctx.raw.y)}%`}}},scales:{x:{...CDEFAULTS.scales.x,title:{display:true,text:'Stage 2 Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:{...CDEFAULTS.scales.y,title:{display:true,text:'NPL Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
   }
 }
 
@@ -883,14 +877,14 @@ function buildWatchlist() {
     const s2r=l.stage2_ratio; const s3r=l.npl_ratio;
     const cls=s2r>=12&&s3r>=4?'both-alert':PAGE==='s2'&&s2r>=10?'s2-alert':'s3-alert';
     const mainR=ratio(bank); const mainC=ratioChange(bank);
-    const rColor=mainR>=(PAGE==='s2'?15:6)?'var(--s3-color)':mainR>=(PAGE==='s2'?12:4)?'#f97316':'#f59e0b';
+    const rColor=mainR>=(PAGE==='s2'?15:6)?'var(--s3-color)':mainR>=(PAGE==='s2'?12:4)?'#fb923c':'#fbbf24';
     const card=document.createElement('div');
     card.className=`wl-card ${cls}`; card.onclick=()=>openBank(bank);
     card.innerHTML=`
       <div class="wl-bank">${bank.name}</div>
       <div class="wl-country">${flag(bank.country)} ${bank.country_name}</div>
       <div class="wl-ratios">
-        <div class="wl-ratio"><div class="wl-r-label">Stage 2</div><div class="wl-r-val" style="color:${s2r>=12?'#f59e0b':'var(--text2)'}">${f1(s2r)}%</div></div>
+        <div class="wl-ratio"><div class="wl-r-label">Stage 2</div><div class="wl-r-val" style="color:${s2r>=12?'#fbbf24':'var(--text2)'}">${f1(s2r)}%</div></div>
         <div class="wl-ratio"><div class="wl-r-label">NPL Ratio</div><div class="wl-r-val" style="color:${s3r>=4?'var(--s3-color)':'var(--text2)'}">${f1(s3r)}%</div></div>
       </div>
       <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
@@ -930,7 +924,7 @@ function showCountry(cc, btn) {
 
   charts['c-trend']=new Chart(document.getElementById('c-trend'),{type:'line',data:{labels:pl,datasets:[{data:aggD,borderColor:color(),backgroundColor:colorDim(),fill:true,tension:0.35,pointBackgroundColor:color(),pointRadius:4}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(1)+'bn'}}}}});
 
-  const bCols=banks.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(239,68,68,0.75)';if(r>=(PAGE==='s2'?12:4))return'rgba(249,115,22,0.7)';if(r>=(PAGE==='s2'?10:2))return'rgba(245,158,11,0.65)';return'rgba(59,130,246,0.6)';});
+  const bCols=banks.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(248,113,113,0.78)';if(r>=(PAGE==='s2'?12:4))return'rgba(251,146,60,0.74)';if(r>=(PAGE==='s2'?10:2))return'rgba(251,191,36,0.70)';return'rgba(96,165,250,0.65)';});
   charts['c-bars']=new Chart(document.getElementById('c-bars'),{type:'bar',data:{labels:banks.map(b=>b.name.length>16?b.name.slice(0,14)+'…':b.name),datasets:[{data:banks.map(b=>ratio(b)),backgroundColor:bCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
 
   // Table
@@ -968,9 +962,9 @@ function openBank(bank) {
   // Dual-line chart — both Stage 2 and Stage 3 ratios
   if (modalChart) { modalChart.destroy(); modalChart=null; }
   modalChart=new Chart(document.getElementById('m-chart'),{type:'line',data:{labels:pl,datasets:[
-    {label:'Stage 2 Ratio (%)',data:bank.history.map(h=>h.stage2_ratio),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',fill:true,tension:0.35,yAxisID:'y'},
-    {label:'NPL Ratio (%)',data:bank.history.map(h=>h.npl_ratio),borderColor:'#ef4444',tension:0.35,yAxisID:'y2'}
-  ]},options:{plugins:{legend:{display:true,labels:{color:'#8b8fa8',font:{family:'JetBrains Mono',size:9},boxWidth:12}},tooltip:{backgroundColor:'#141620',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#edeef2',bodyColor:'#8b8fa8'}},scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}},y2:{position:'right',grid:{display:false},ticks:{color:'#4f526b',font:{family:'JetBrains Mono',size:9},callback:v=>v+'%'}}}}});
+    {label:'Stage 2 Ratio (%)',data:bank.history.map(h=>h.stage2_ratio),borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.08)',fill:true,tension:0.35,yAxisID:'y'},
+    {label:'NPL Ratio (%)',data:bank.history.map(h=>h.npl_ratio),borderColor:'#f87171',tension:0.35,yAxisID:'y2'}
+  ]},options:{plugins:{legend:{display:true,labels:{color:'#adb5cc',font:{family:'JetBrains Mono',size:9},boxWidth:12}},tooltip:{backgroundColor:'#1c2130',borderColor:'rgba(255,255,255,0.14)',borderWidth:1,titleColor:'#f0f2f8',bodyColor:'#adb5cc'}},scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}},y2:{position:'right',grid:{display:false},ticks:{color:'#6b7590',font:{family:'JetBrains Mono',size:9},callback:v=>v+'%'}}}}});
 
   // History table — both columns
   document.getElementById('m-history').innerHTML=`
@@ -979,8 +973,8 @@ function openBank(bank) {
       <tbody>${bank.history.map(h=>`<tr style="border-bottom:1px solid var(--line2)">
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${h.period}</td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px">${fbn(h.stage1_bn)}</td>
-        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#f59e0b':'var(--text)'}"><strong>${fbn(h.stage2_bn)}</strong></td>
-        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#f59e0b':'var(--text)'}"><strong>${f1(h.stage2_ratio)}%</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?''#fbbf24'':'var(--text)'}"><strong>${fbn(h.stage2_bn)}</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?''#fbbf24'':'var(--text)'}"><strong>${f1(h.stage2_ratio)}%</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${fbn(h.stage3_bn)}</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${f1(h.npl_ratio)}%</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${fbn(h.total_loans_bn)}</td>
@@ -994,7 +988,7 @@ function openBank(bank) {
     <div style="background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:12px 14px">
       <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);margin-bottom:6px;font-family:'JetBrains Mono',monospace">📡 Credit Signal</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="font-size:12px;color:var(--text3)">Stage 2: <span style="color:${s2trend==='rising'?'#f59e0b':s2trend==='declining'?'var(--green)':'var(--text2)'}">${s2trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s2ch>0?'+':''}${f1(s2ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
+        <div style="font-size:12px;color:var(--text3)">Stage 2: <span style="color:${s2trend==='rising'?''#fbbf24'':s2trend==='declining'?'var(--green)':'var(--text2)'}">${s2trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s2ch>0?'+':''}${f1(s2ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
         <div style="font-size:12px;color:var(--text3)">NPL: <span style="color:${s3trend==='rising'?'var(--s3-color)':s3trend==='declining'?'var(--green)':'var(--text2)'}">${s3trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s3ch>0?'+':''}${f1(s3ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
       </div>
     </div>`;
