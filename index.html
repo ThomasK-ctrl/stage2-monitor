@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EBA Credit Monitor — Stage 2 & NPL Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:         #08090c;
+  --surface:    #0e1017;
+  --surface2:   #141620;
+  --surface3:   #1a1d2a;
+  --line:       rgba(255,255,255,0.06);
+  --line2:      rgba(255,255,255,0.03);
+  --text:       #edeef2;
+  --text2:      #8b8fa8;
+  --text3:      #4f526b;
+  --s2-color:   #f59e0b;
+  --s2-dim:     rgba(245,158,11,0.12);
+  --s2-border:  rgba(245,158,11,0.25);
+  --s3-color:   #ef4444;
+  --s3-dim:     rgba(239,68,68,0.1);
+  --s3-border:  rgba(239,68,68,0.22);
+  --green:      #22c55e;
+  --green-dim:  rgba(34,197,94,0.1);
+  --blue:       #3b82f6;
+  --blue-dim:   rgba(59,130,246,0.1);
+  --purple:     #a855f7;
+  --active-s2:  var(--s2-color);
+  --active-s3:  var(--s3-color);
+  --r: 8px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+  min-height: 100vh;
+}
+button { cursor:pointer; font-family:inherit; }
+a { color:inherit; text-decoration:none; }
+
+/* ── TOP BAR ── */
+.topbar {
+  height: 52px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  position: sticky; top: 0; z-index: 200;
+}
+.topbar-logo {
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.logo-gem {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 800; color: #08090c;
+}
+.logo-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.01em;
+}
+.topbar-divider { width: 1px; height: 20px; background: var(--line); flex-shrink:0; }
+
+/* Page tabs in topbar */
+.page-tabs { display: flex; gap: 2px; }
+.page-tab {
+  padding: 5px 14px; border-radius: 6px;
+  font-size: 12px; font-weight: 500;
+  border: 1px solid transparent;
+  background: none; color: var(--text2);
+  transition: all 0.2s; letter-spacing: 0.02em;
+}
+.page-tab:hover { color: var(--text); background: var(--surface2); }
+.page-tab.active-s2 { background: var(--s2-dim); border-color: var(--s2-border); color: var(--s2-color); }
+.page-tab.active-s3 { background: var(--s3-dim); border-color: var(--s3-border); color: var(--s3-color); }
+
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.eba-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  padding: 3px 9px; border-radius: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.how-btn {
+  font-size: 11px; font-weight: 500;
+  background: var(--surface2); border: 1px solid var(--line);
+  color: var(--text2); padding: 4px 12px;
+  border-radius: 5px; transition: all 0.2s;
+}
+.how-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.12); }
+
+/* ── LAYOUT ── */
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 52px); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  padding: 16px 0;
+  position: sticky; top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display:none; }
+.sb-search {
+  margin: 0 12px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px; color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  outline: none; width: calc(100% - 24px);
+}
+.sb-search::placeholder { color: var(--text3); }
+.sb-search:focus { border-color: rgba(255,255,255,0.1); }
+.sb-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 10px 16px 5px;
+}
+.sb-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 16px;
+  font-size: 12.5px; color: var(--text2);
+  border: none; background: none;
+  width: 100%; text-align: left;
+  transition: all 0.15s; border-radius: 0;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.sb-item:hover { background: var(--surface2); color: var(--text); }
+.sb-item.active { color: var(--text); background: var(--surface3); }
+.sb-item-l { display:flex; align-items:center; gap:8px; }
+.sb-flag { font-size:14px; }
+.sb-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text3);
+  background: var(--surface3);
+  padding: 1px 6px; border-radius: 10px;
+}
+
+/* ── MAIN ── */
+.main { padding: 28px 32px; min-height: calc(100vh - 52px); }
+.page { display:none; }
+.page.active { display:block; animation: fadein 0.25s ease; }
+@keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 24px; }
+.ph-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.ph-badge {
+  display: inline-flex; align-items:center; gap:6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px; border-radius: 4px;
+  margin-bottom: 8px;
+}
+.ph-badge.s2 { background: var(--s2-dim); border: 1px solid var(--s2-border); color: var(--s2-color); }
+.ph-badge.s3 { background: var(--s3-dim); border: 1px solid var(--s3-border); color: var(--s3-color); }
+.ph-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text); line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.ph-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.ph-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  text-align: right; line-height: 1.8;
+}
+
+/* ── SIGNAL CARD ── */
+.signal-card {
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex; gap:14px; align-items:flex-start;
+}
+.signal-card.s2 { background: var(--s2-dim); border:1px solid var(--s2-border); }
+.signal-card.s3 { background: var(--s3-dim); border:1px solid var(--s3-border); }
+.sc-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+.sc-title { font-size:12px; font-weight:600; margin-bottom:3px; }
+.sc-title.s2 { color: var(--s2-color); }
+.sc-title.s3 { color: var(--s3-color); }
+.sc-body { font-size:12.5px; color: var(--text2); line-height:1.55; }
+
+/* ── KPI STRIP ── */
+.kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 18px;
+}
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 8px;
+}
+.kpi-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px; font-weight: 700; line-height:1;
+  color: var(--text);
+}
+.kpi-sub { font-size:11px; color: var(--text3); margin-top:5px; font-family:'JetBrains Mono',monospace; }
+.kpi-delta { font-family:'JetBrains Mono',monospace; font-size:11px; margin-top:4px; }
+.up { color: var(--s3-color); }
+.dn { color: var(--green); }
+.fl { color: var(--text3); }
+
+/* ── CHART GRID ── */
+.chart-row { display:grid; gap:12px; margin-bottom:12px; }
+.chart-row.two { grid-template-columns:1fr 1fr; }
+.chart-row.three { grid-template-columns:1fr 1fr 1fr; }
+.chart-row.one { grid-template-columns:1fr; }
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 18px 20px;
+}
+.cc-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+.cc-title { font-size:13px; font-weight:600; color:var(--text); }
+.cc-sub { font-size:11px; color:var(--text3); margin-top:2px; }
+.cc-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; background:var(--surface2);
+  border:1px solid var(--line); color:var(--text3);
+  padding:2px 7px; border-radius:3px;
+  flex-shrink:0;
+}
+canvas { max-width:100%; }
+
+/* ── TABLE CARD ── */
+.tbl-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden; margin-bottom:12px;
+}
+.tbl-toolbar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.tbl-title { font-size:13px; font-weight:600; color:var(--text); }
+.tbl-controls { display:flex; gap:6px; }
+.tbl-btn {
+  font-size:10px; font-family:'JetBrains Mono',monospace;
+  background:var(--surface2); border:1px solid var(--line);
+  color:var(--text3); padding:4px 9px; border-radius:4px;
+  transition:all 0.15s;
+}
+.tbl-btn:hover, .tbl-btn.act { color:var(--text); border-color:rgba(255,255,255,0.15); }
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; min-width:680px; }
+thead th {
+  padding:9px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--text3); font-weight:500;
+  border-bottom:1px solid var(--line);
+  text-align:left; white-space:nowrap;
+  cursor:pointer; user-select:none;
+}
+thead th:hover { color:var(--text2); }
+tbody tr { border-bottom:1px solid var(--line2); transition:background 0.1s; cursor:pointer; }
+tbody tr:hover { background:var(--surface2); }
+tbody tr:last-child { border-bottom:none; }
+tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
+.td-bank { font-weight:500; color:var(--text); font-size:13px; }
+.td-country { font-size:11px; color:var(--text3); margin-top:1px; }
+.mono { font-family:'JetBrains Mono',monospace; }
+
+/* ── SPARKLINE ── */
+.spark { display:inline-flex; align-items:flex-end; gap:2px; height:24px; vertical-align:middle; }
+.spark-b { width:7px; border-radius:2px 2px 0 0; background:var(--surface3); min-height:2px; }
+.spark-b.last { background: var(--s2-color); }
+.spark-b.s3last { background: var(--s3-color); }
+
+/* ── BADGES ── */
+.badge {
+  display:inline-flex; align-items:center; gap:3px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; font-weight:600;
+  padding:2px 7px; border-radius:3px;
+  letter-spacing:0.05em; text-transform:uppercase;
+  white-space:nowrap;
+}
+.b-ok    { background:rgba(34,197,94,0.1); color:var(--green); border:1px solid rgba(34,197,94,0.2); }
+.b-watch { background:rgba(245,158,11,0.1); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+.b-high  { background:rgba(249,115,22,0.1); color:#f97316; border:1px solid rgba(249,115,22,0.2); }
+.b-crit  { background:rgba(239,68,68,0.1); color:var(--s3-color); border:1px solid rgba(239,68,68,0.2); }
+
+/* ── COUNTRY VIEW ── */
+.country-header {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:20px;
+}
+.ch-flag { font-size:32px; }
+.ch-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; }
+.ch-meta { font-size:12px; color:var(--text3); }
+
+/* ── MODAL ── */
+.overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.75); z-index:300;
+  align-items:center; justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.overlay.open { display:flex; }
+.modal {
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:12px;
+  width:700px; max-width:95vw;
+  max-height:90vh; overflow-y:auto;
+  padding:28px;
+}
+.modal-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.modal-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:700; }
+.modal-sub { font-size:12px; color:var(--text3); margin-top:4px; }
+.close-btn {
+  background:none; border:none; color:var(--text3);
+  font-size:20px; line-height:1; padding:2px;
+}
+.close-btn:hover { color:var(--text); }
+.modal-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
+
+/* ── HOW TO UPDATE MODAL ── */
+.update-modal { max-width: 560px; }
+.code-block {
+  background:var(--bg); border:1px solid var(--line);
+  border-radius:6px; padding:12px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; color:var(--blue);
+  margin:10px 0;
+}
+.step { display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; }
+.step-n {
+  width:22px; height:22px; border-radius:50%;
+  background:var(--surface2); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  color:var(--text2); flex-shrink:0; margin-top:1px;
+}
+.step-body { font-size:13px; color:var(--text2); line-height:1.6; }
+.step-body strong { color:var(--text); }
+
+/* ── DEFINITION ── */
+.def-box {
+  background:var(--surface2); border:1px solid var(--line);
+  border-left:2px solid var(--blue);
+  border-radius:var(--r); padding:14px 16px; margin-bottom:12px;
+}
+.def-title { font-size:11px; font-weight:600; color:var(--blue); margin-bottom:5px; font-family:'JetBrains Mono',monospace; letter-spacing:0.06em; }
+.def-body { font-size:12.5px; color:var(--text2); line-height:1.65; }
+
+/* ── WATCHLIST ── */
+.wl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+.wl-card {
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); padding:14px 16px;
+  border-left:3px solid transparent; transition:all 0.2s;
+}
+.wl-card:hover { background:var(--surface2); }
+.wl-card.s2-alert { border-left-color: var(--s2-color); }
+.wl-card.s3-alert { border-left-color: var(--s3-color); }
+.wl-card.both-alert { border-left-color: var(--s3-color); background: rgba(239,68,68,0.04); }
+.wl-bank { font-size:13px; font-weight:600; color:var(--text); }
+.wl-country { font-size:11px; color:var(--text3); margin-bottom:8px; }
+.wl-ratios { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.wl-ratio { }
+.wl-r-label { font-size:9px; font-family:'JetBrains Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; color:var(--text3); }
+.wl-r-val { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; line-height:1; }
+
+/* ── SCATTER HINT ── */
+.scatter-hint { font-size:11px; color:var(--text3); text-align:center; margin-top:8px; font-family:'JetBrains Mono',monospace; }
+
+/* ── FOOTER ── */
+.footer-bar {
+  padding:14px 32px;
+  border-top:1px solid var(--line);
+  display:flex; justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--text3);
+}
+
+@media(max-width:1024px) {
+  .layout { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .kpi-strip { grid-template-columns:repeat(2,1fr); }
+  .chart-row.two, .chart-row.three { grid-template-columns:1fr; }
+  .wl-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <div class="logo-gem">EM</div>
+    <span class="logo-name">EBA Credit Monitor</span>
+  </div>
+  <div class="topbar-divider"></div>
+  <div class="page-tabs">
+    <button class="page-tab active-s2" id="tab-s2" onclick="switchPage('s2')">Stage 2 — Credit Deterioration</button>
+    <button class="page-tab" id="tab-s3" onclick="switchPage('s3')">Stage 3 — NPL Tracker</button>
+  </div>
+  <div class="topbar-right">
+    <div class="eba-badge"><div class="live-dot"></div><span id="topbar-date">EBA 2025 Transparency Exercise · Jun 2025</span></div>
+    <button class="how-btn" onclick="openUpdateModal()">⟳ Update Data</button>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <input class="sb-search" type="text" placeholder="Search…" oninput="filterSidebar(this.value)" id="sb-input">
+  <div class="sb-section-label">Views</div>
+  <button class="sb-item active" id="nav-overview" onclick="navTo('overview',this)"><div class="sb-item-l"><span>◈</span> Overview</div></button>
+  <button class="sb-item" id="nav-table" onclick="navTo('table',this)"><div class="sb-item-l"><span>≡</span> All Banks</div><span class="sb-count" id="cnt-all">—</span></button>
+  <button class="sb-item" id="nav-watchlist" onclick="navTo('watchlist',this)"><div class="sb-item-l"><span>⚑</span> Watchlist</div><span class="sb-count" id="cnt-watch">—</span></button>
+  <div class="sb-section-label">Countries</div>
+  <div id="country-nav"></div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ── OVERVIEW ── -->
+  <div class="page active" id="p-overview">
+
+    <!-- S2 page header -->
+    <div class="page-header" id="hdr-s2">
+      <div class="ph-top">
+        <div>
+          <div class="ph-badge s2">⚠ Stage 2 — IFRS 9 Credit Deterioration Monitor</div>
+          <div class="ph-title">Stage 2 Loan Balance Tracker</div>
+          <div class="ph-sub">Loans with significant credit risk increase since origination — the leading NPL indicator</div>
+        </div>
+        <div class="ph-meta" id="ph-meta-s2"></div>
+      </div>
+    </div>
+
+    <!-- S3 page header -->
+    <div class="page-header" id="hdr-s3" style="display:none">
+      <div class="ph-top">
+        <div>
+          <div class="ph-badge s3">✕ Stage 3 — Non-Performing Loans (NPL)</div>
+          <div class="ph-title">NPL Tracker — Stage 3 Exposures</div>
+          <div class="ph-sub">Loans in default or with objective evidence of impairment — current and historical NPL stock</div>
+        </div>
+        <div class="ph-meta" id="ph-meta-s3"></div>
+      </div>
+    </div>
+
+    <!-- Signal -->
+    <div class="signal-card s2" id="signal-s2"><div class="sc-icon">📡</div><div><div class="sc-title s2">NPL Forward Supply Signal</div><div class="sc-body" id="sig-body-s2">Loading…</div></div></div>
+    <div class="signal-card s3" id="signal-s3" style="display:none"><div class="sc-icon">📊</div><div><div class="sc-title s3">Current NPL Landscape</div><div class="sc-body" id="sig-body-s3">Loading…</div></div></div>
+
+    <!-- KPIs -->
+    <div class="kpi-strip" id="kpis"></div>
+
+    <!-- Charts row 1 -->
+    <div class="chart-row two" id="chart-r1">
+      <div class="chart-card"><div class="cc-header"><div><div class="cc-title" id="cr1-title">Aggregate Trend</div><div class="cc-sub" id="cr1-sub">Total balance across all tracked banks (€bn)</div></div><span class="cc-tag">4 periods</span></div><canvas id="c-agg" height="175"></canvas></div>
+      <div class="chart-card"><div class="cc-header"><div><div class="cc-title">By Country — Latest Period</div><div class="cc-sub" id="cr2-sub">Total balance per country (€bn)</div></div><span class="cc-tag" id="cr2-tag">Jun 2025</span></div><canvas id="c-country" height="175"></canvas></div>
+    </div>
+
+    <!-- Charts row 2 -->
+    <div class="chart-row two">
+      <div class="chart-card"><div class="cc-header"><div><div class="cc-title" id="top15-title">Top 15 Banks by Ratio</div><div class="cc-sub" id="top15-sub">Latest period — ranked</div></div><span class="cc-tag">Ranked</span></div><canvas id="c-top15" height="200"></canvas></div>
+      <div class="chart-card"><div class="cc-header"><div><div class="cc-title">Ratio Distribution</div><div class="cc-sub">Banks per bucket — latest period</div></div><span class="cc-tag">Histogram</span></div><canvas id="c-dist" height="200"></canvas></div>
+    </div>
+
+    <!-- S2 vs S3 scatter — only shown on S2 page -->
+    <div class="chart-row one" id="scatter-row">
+      <div class="chart-card">
+        <div class="cc-header"><div><div class="cc-title">Stage 2 vs Stage 3 — Positioning Map</div><div class="cc-sub">Each dot = one bank. Axes show current Stage 2 ratio (x) and NPL ratio (y). Upper-right = highest risk.</div></div><span class="cc-tag">Bubble chart</span></div>
+        <canvas id="c-scatter" height="240"></canvas>
+        <div class="scatter-hint">Hover over dots for bank details · Bubble size = total assets</div>
+      </div>
+    </div>
+
+    <!-- Definition -->
+    <div class="def-box" id="def-s2">
+      <div class="def-title">What is a Stage 2 Loan?</div>
+      <div class="def-body">Under IFRS 9, a <strong style="color:var(--text)">Stage 2</strong> loan has experienced a <em>significant increase in credit risk</em> since origination but is not yet non-performing. The borrower is still paying, but credit quality is deteriorating. Banks must provision for lifetime expected credit losses on Stage 2 loans (vs 12-month ECL for Stage 1). Historically, elevated Stage 2 balances precede NPL increases by <strong style="color:var(--text)">6–18 months</strong>. A ratio above <strong style="color:var(--s2-color)">10%</strong> warrants monitoring; above <strong style="color:var(--s3-color)">12%</strong> signals elevated NPL supply risk.</div>
+    </div>
+    <div class="def-box" id="def-s3" style="display:none;border-left-color:var(--s3-color)">
+      <div class="def-title" style="color:var(--s3-color)">What is a Stage 3 Loan (NPL)?</div>
+      <div class="def-body">A <strong style="color:var(--text)">Stage 3</strong> loan is credit-impaired — the borrower is more than 90 days past due or the bank has objective evidence of impairment. This is the regulatory definition of a <strong style="color:var(--text)">Non-Performing Loan (NPL)</strong> under IFRS 9 and EBA guidelines. Banks provision for lifetime ECL and full provisioning is required under the ECB's <strong style="color:var(--text)">prudential backstop</strong> within 7–9 years (secured) or 3 years (unsecured). NPL ratio = Stage 3 / Total Gross Loans. EU/EEA aggregate: <strong style="color:var(--s3-color)">1.84%</strong> at Jun 2025.</div>
+    </div>
+
+  </div>
+
+  <!-- ── TABLE ── -->
+  <div class="page" id="p-table">
+    <div class="ph-top" style="margin-bottom:20px">
+      <div>
+        <div class="ph-title" id="tbl-title">All Banks</div>
+        <div class="ph-sub" id="tbl-sub">Click any row for full detail</div>
+      </div>
+    </div>
+    <div class="tbl-card">
+      <div class="tbl-toolbar">
+        <span class="tbl-title" id="tbl-count-title">— institutions</span>
+        <div class="tbl-controls" id="tbl-sort-btns">
+          <button class="tbl-btn act" onclick="sortBy('ratio',this)">Ratio ↕</button>
+          <button class="tbl-btn" onclick="sortBy('absval',this)">Value €</button>
+          <button class="tbl-btn" onclick="sortBy('change',this)">Change</button>
+          <button class="tbl-btn" onclick="sortBy('name',this)">A–Z</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table><thead id="tbl-head"><tr></tr></thead><tbody id="tbl-body"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ── WATCHLIST ── -->
+  <div class="page" id="p-watchlist">
+    <div class="ph-title" style="margin-bottom:6px" id="wl-title">Watchlist</div>
+    <div class="ph-sub" style="margin-bottom:20px" id="wl-sub">Banks flagged for elevated ratios or significant upward trend</div>
+    <div id="wl-content"></div>
+  </div>
+
+  <!-- ── COUNTRY ── -->
+  <div class="page" id="p-country">
+    <div class="country-header">
+      <span class="ch-flag" id="c-flag"></span>
+      <div><div class="ch-name" id="c-name"></div><div class="ch-meta" id="c-meta"></div></div>
+    </div>
+    <div class="chart-row two" id="c-charts"></div>
+    <div class="tbl-card">
+      <div class="tbl-toolbar"><span class="tbl-title" id="c-tbl-title">Banks</span></div>
+      <div class="tbl-wrap"><table><thead id="c-tbl-head"><tr></tr></thead><tbody id="c-tbl-body"></tbody></table></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- BANK DETAIL MODAL -->
+<div class="overlay" id="bank-overlay" onclick="closeBank(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div><div class="modal-title" id="m-name"></div><div class="modal-sub" id="m-sub"></div></div>
+      <button class="close-btn" onclick="document.getElementById('bank-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-kpis" id="m-kpis"></div>
+    <div style="margin-bottom:16px"><canvas id="m-chart" height="150"></canvas></div>
+    <div id="m-history"></div>
+    <div id="m-signal" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- HOW TO UPDATE MODAL -->
+<div class="overlay" id="update-overlay" onclick="closeUpdate(event)">
+  <div class="modal update-modal">
+    <div class="modal-head">
+      <div><div class="modal-title">⟳ How to Update Data</div><div class="modal-sub">Fresh data from EBA in one command</div></div>
+      <button class="close-btn" onclick="document.getElementById('update-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="step"><div class="step-n">1</div><div class="step-body">Open your Terminal (Mac: <strong>Cmd+Space → "Terminal"</strong>) or Command Prompt (Windows: <strong>Win+R → "cmd"</strong>)</div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-body">Navigate to your project folder:<div class="code-block">cd ~/Desktop/stage2-monitor</div></div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-body">Run the update script:<div class="code-block">python update_data.py</div>The script downloads the latest EBA data, updates <strong>data/stage2.json</strong>, and prints a summary.</div></div>
+    <div class="step"><div class="step-n">4</div><div class="step-body">Reload this page in your browser — the dashboard refreshes automatically.</div></div>
+    <div class="step"><div class="step-n">5</div><div class="step-body">To publish updates online, push to GitHub:<div class="code-block">git add data/stage2.json<br>git commit -m "Update EBA data"<br>git push</div>Your live URL updates within 2 minutes.</div></div>
+    <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.18);border-radius:6px;padding:11px 14px;font-size:12px;color:rgba(34,197,94,0.8);font-family:'JetBrains Mono',monospace;">✓ EBA publishes new Transparency Exercise data every November. Run update_data.py after each publication.</div>
+  </div>
+</div>
+
+<footer class="footer-bar">
+  <span>Source: EBA EU-Wide Transparency Exercise 2025 · 119 banks · 25 countries</span>
+  <span>Informational only. Not investment advice.</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  GLOBALS
+// ═══════════════════════════════════════════════
+let DATA = null;
+let PAGE = 's2';   // 's2' or 's3'
+let VIEW = 'overview'; // 'overview','table','watchlist','country'
+let COUNTRY = null;
+let SORT = 'ratio'; let SORT_ASC = false;
+let charts = {};
+let modalChart = null;
+
+const CDEFAULTS = {
+  plugins: {
+    legend: { display:false },
+    tooltip: { backgroundColor:'#141620', borderColor:'rgba(255,255,255,0.08)', borderWidth:1, titleColor:'#edeef2', bodyColor:'#8b8fa8', padding:10 }
+  },
+  scales: {
+    x: { grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#4f526b', font:{ family:'JetBrains Mono',size:9 } } },
+    y: { grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#4f526b', font:{ family:'JetBrains Mono',size:9 } } }
+  }
+};
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+const lat = b => b.history[b.history.length-1];
+const fst = b => b.history[0];
+const f1 = n => n.toFixed(1);
+const f0 = n => n.toFixed(0);
+const fbn = n => '€'+f1(n)+'bn';
+const flag = cc => ({AT:'🇦🇹',BE:'🇧🇪',CY:'🇨🇾',DE:'🇩🇪',DK:'🇩🇰',ES:'🇪🇸',FI:'🇫🇮',FR:'🇫🇷',GR:'🇬🇷',HR:'🇭🇷',HU:'🇭🇺',IE:'🇮🇪',IT:'🇮🇹',LU:'🇱🇺',NL:'🇳🇱',NO:'🇳🇴',PL:'🇵🇱',PT:'🇵🇹',RO:'🇷🇴',SE:'🇸🇪',SI:'🇸🇮',SK:'🇸🇰'}[cc]||'🏦');
+
+function ratio(b) { return PAGE==='s2' ? lat(b).stage2_ratio : lat(b).npl_ratio; }
+function absval(b) { return PAGE==='s2' ? lat(b).stage2_bn : lat(b).stage3_bn; }
+function ratioChange(b) { return PAGE==='s2' ? lat(b).stage2_ratio - fst(b).stage2_ratio : lat(b).npl_ratio - fst(b).npl_ratio; }
+function color() { return PAGE==='s2' ? '#f59e0b' : '#ef4444'; }
+function colorDim() { return PAGE==='s2' ? 'rgba(245,158,11,0.15)' : 'rgba(239,68,68,0.12)'; }
+
+function riskBadge(r) {
+  if (PAGE==='s2') {
+    if (r>=15) return '<span class="badge b-crit">Critical</span>';
+    if (r>=12) return '<span class="badge b-high">High</span>';
+    if (r>=10) return '<span class="badge b-watch">Elevated</span>';
+    return '<span class="badge b-ok">Normal</span>';
+  } else {
+    if (r>=6)  return '<span class="badge b-crit">Critical</span>';
+    if (r>=4)  return '<span class="badge b-high">High</span>';
+    if (r>=2)  return '<span class="badge b-watch">Elevated</span>';
+    return '<span class="badge b-ok">Normal</span>';
+  }
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+// ═══════════════════════════════════════════════
+//  LOAD
+// ═══════════════════════════════════════════════
+async function loadData() {
+  try {
+    const r = await fetch('data/stage2.json');
+    DATA = await r.json();
+  } catch(e) {
+    document.querySelector('.main').innerHTML = `<div style="padding:60px;text-align:center;color:var(--text3)"><div style="font-size:32px;margin-bottom:12px">⚠</div><div>Could not load data/stage2.json<br><br>Make sure the file is in the same folder as index.html</div></div>`;
+    return;
+  }
+  init();
+}
+
+function init() {
+  const banks = DATA.banks;
+  const countries = [...new Set(banks.map(b=>b.country))].sort();
+  document.getElementById('topbar-date').textContent = `EBA ${DATA.meta.exercise_year} · ${DATA.meta.last_updated}`;
+  document.getElementById('cnt-all').textContent = banks.length;
+
+  // Country nav
+  const nav = document.getElementById('country-nav');
+  nav.innerHTML = '';
+  countries.forEach(cc => {
+    const cBanks = banks.filter(b=>b.country===cc);
+    const btn = document.createElement('button');
+    btn.className='sb-item'; btn.id='nav-c-'+cc;
+    btn.innerHTML=`<div class="sb-item-l"><span class="sb-flag">${flag(cc)}</span>${cBanks[0].country_name}</div><span class="sb-count">${cBanks.length}</span>`;
+    btn.onclick=()=>showCountry(cc,btn);
+    nav.appendChild(btn);
+  });
+
+  renderOverview();
+}
+
+// ═══════════════════════════════════════════════
+//  PAGE SWITCH
+// ═══════════════════════════════════════════════
+function switchPage(p) {
+  PAGE = p;
+  document.getElementById('tab-s2').className = p==='s2' ? 'page-tab active-s2' : 'page-tab';
+  document.getElementById('tab-s3').className = p==='s3' ? 'page-tab active-s3' : 'page-tab';
+
+  // Show/hide page-specific elements
+  document.getElementById('hdr-s2').style.display = p==='s2' ? '' : 'none';
+  document.getElementById('hdr-s3').style.display = p==='s3' ? '' : 'none';
+  document.getElementById('signal-s2').style.display = p==='s2' ? '' : 'none';
+  document.getElementById('signal-s3').style.display = p==='s3' ? '' : 'none';
+  document.getElementById('def-s2').style.display = p==='s2' ? '' : 'none';
+  document.getElementById('def-s3').style.display = p==='s3' ? '' : 'none';
+  document.getElementById('scatter-row').style.display = p==='s2' ? '' : 'none';
+
+  // Update watchlist count
+  const wl = DATA.banks.filter(b => p==='s2' ? lat(b).stage2_ratio>=10 : lat(b).npl_ratio>=3);
+  document.getElementById('cnt-watch').textContent = wl.length;
+
+  // Re-render current view
+  if (VIEW==='overview') renderOverview();
+  else if (VIEW==='table') buildTable(COUNTRY ? DATA.banks.filter(b=>b.country===COUNTRY) : DATA.banks);
+  else if (VIEW==='watchlist') buildWatchlist();
+  else if (VIEW==='country' && COUNTRY) showCountry(COUNTRY, document.getElementById('nav-c-'+COUNTRY));
+}
+
+// ═══════════════════════════════════════════════
+//  OVERVIEW
+// ═══════════════════════════════════════════════
+function renderOverview() {
+  const banks = DATA.banks;
+  const p = DATA.meta.periods;
+  const pl = DATA.meta.period_labels;
+
+  // KPIs
+  const totalVal  = banks.reduce((s,b)=>s+absval(b),0);
+  const prevVal   = banks.reduce((s,b)=>s+(PAGE==='s2'?fst(b).stage2_bn:fst(b).stage3_bn),0);
+  const avgRatio  = banks.reduce((s,b)=>s+ratio(b),0)/banks.length;
+  const prevRatio = banks.reduce((s,b)=>s+(PAGE==='s2'?fst(b).stage2_ratio:fst(b).npl_ratio),0)/banks.length;
+  const highRisk  = banks.filter(b=>PAGE==='s2'?ratio(b)>=12:ratio(b)>=4).length;
+  const delta     = totalVal-prevVal;
+  const pct       = ((delta/prevVal)*100).toFixed(1);
+  const rDelta    = avgRatio-prevRatio;
+
+  document.getElementById('ph-meta-s2').innerHTML = `${banks.length} banks · ${[...new Set(banks.map(b=>b.country))].length} countries<br>Latest: ${DATA.meta.last_updated}<br><span style="color:var(--s2-color)">EU/EEA Stage 2 avg: 9.1% (Q4 2025 RDB)</span>`;
+  document.getElementById('ph-meta-s3').innerHTML = `${banks.length} banks · ${[...new Set(banks.map(b=>b.country))].length} countries<br>Latest: ${DATA.meta.last_updated}<br><span style="color:var(--s3-color)">EU/EEA NPL ratio: 1.84% at Jun 2025</span>`;
+
+  const kpis = document.getElementById('kpis');
+  kpis.innerHTML = [
+    { label:'Banks Tracked', val:banks.length, sub:`${[...new Set(banks.map(b=>b.country))].length} countries`, delta:'' },
+    { label: PAGE==='s2'?'Total Stage 2':'Total Stage 3 (NPL)', val:'€'+f0(totalVal)+'bn', sub:'All tracked banks', delta:`<span class="${delta>0?'up':'dn'}">${delta>0?'+':''}${f1(delta)}bn (${delta>0?'+':''}${pct}%) vs ${pl[0]}</span>` },
+    { label: PAGE==='s2'?'Avg Stage 2 Ratio':'Avg NPL Ratio', val:f1(avgRatio)+'%', sub:'Weighted across panel', delta:`<span class="${rDelta>0?'up':'dn'}">${rDelta>0?'+':''}${f1(rDelta)}pp vs ${pl[0]}</span>` },
+    { label: PAGE==='s2'?'Banks ≥ 12%':'Banks NPL ≥ 4%', val:highRisk, sub:`${((highRisk/banks.length)*100).toFixed(0)}% of panel`, delta:'' }
+  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
+
+  // Signals
+  const rising = banks.filter(b=>ratioChange(b)>1.0);
+  const topR = [...rising].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
+  if (PAGE==='s2') {
+    document.getElementById('sig-body-s2').textContent = `Stage 2 balances have risen across ${rising.length} of ${banks.length} tracked banks since ${pl[0]}. Total Stage 2 is up €${f1(delta)}bn (+${pct}%). Largest increases: ${topR.map(b=>b.name.split(' ').slice(0,2).join(' ')+' (+'+f1(ratioChange(b))+'pp)').join(', ')}. Rising Stage 2 historically precedes NPL supply increases by 6–18 months.`;
+  } else {
+    const fallingNPL = banks.filter(b=>ratioChange(b)<-0.2);
+    document.getElementById('sig-body-s3').textContent = `EU/EEA aggregate NPL ratio stands at 1.84% at Jun 2025 (EBA). ${fallingNPL.length} of ${banks.length} tracked banks show declining NPL ratios — Southern Europe (IT, ES, GR, PT, CY) continues clean-up. Key divergence: Germany and France reporting NPL increases; Romania +25% YoY per EBA December 2025 RAR. Total Stage 3 across panel: €${f0(totalVal)}bn.`;
+  }
+
+  // Charts
+  buildOverviewCharts(banks, p, pl);
+}
+
+function buildOverviewCharts(banks, p, pl) {
+  // Aggregate trend
+  destroyChart('agg'); destroyChart('country'); destroyChart('top15'); destroyChart('dist'); destroyChart('scatter');
+
+  const aggData = p.map((_,pi)=>banks.reduce((s,b)=>s+(PAGE==='s2'?b.history[pi].stage2_bn:b.history[pi].stage3_bn),0));
+  charts['agg'] = new Chart(document.getElementById('c-agg'),{type:'line',data:{labels:pl,datasets:[{data:aggData,borderColor:color(),backgroundColor:colorDim(),fill:true,tension:0.35,pointBackgroundColor:color(),pointRadius:4,pointHoverRadius:6}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(0)+'bn'}}}}});
+  document.getElementById('cr1-title').textContent = PAGE==='s2'?'Aggregate Stage 2 Trend':'Aggregate Stage 3 (NPL) Trend';
+
+  // Country bar
+  const countries=[...new Set(banks.map(b=>b.country))].sort();
+  const cTotals=countries.map(cc=>banks.filter(b=>b.country===cc).reduce((s,b)=>s+absval(b),0));
+  const cSorted=[...countries.map((cc,i)=>({cc,v:cTotals[i]}))].sort((a,b)=>b.v-a.v);
+  charts['country']=new Chart(document.getElementById('c-country'),{type:'bar',data:{labels:cSorted.map(x=>x.cc),datasets:[{data:cSorted.map(x=>x.v),backgroundColor:color()+'99',borderColor:color(),borderWidth:1,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(0)+'bn'}}}}});
+
+  // Top 15
+  const top15=[...banks].sort((a,b)=>ratio(b)-ratio(a)).slice(0,15);
+  const t15cols=top15.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(239,68,68,0.75)';if(r>=(PAGE==='s2'?12:4))return'rgba(249,115,22,0.75)';if(r>=(PAGE==='s2'?10:2))return'rgba(245,158,11,0.75)';return'rgba(59,130,246,0.65)';});
+  charts['top15']=new Chart(document.getElementById('c-top15'),{type:'bar',data:{labels:top15.map(b=>b.name.length>18?b.name.slice(0,16)+'…':b.name),datasets:[{data:top15.map(b=>ratio(b)),backgroundColor:t15cols,borderRadius:3}]},options:{...CDEFAULTS,indexAxis:'y',scales:{x:{...CDEFAULTS.scales.x,ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:CDEFAULTS.scales.y}}});
+  document.getElementById('top15-title').textContent = PAGE==='s2'?'Top 15 Banks by Stage 2 Ratio':'Top 15 Banks by NPL Ratio';
+
+  // Distribution
+  const bins = PAGE==='s2' ? [['<7%',0,7],['7–9%',7,9],['9–11%',9,11],['11–13%',11,13],['13–15%',13,15],['>15%',15,999]] : [['<1%',0,1],['1–2%',1,2],['2–3%',2,3],['3–4%',3,4],['4–6%',4,6],['>6%',6,999]];
+  const bc=[0,0,0,0,0,0];
+  banks.forEach(b=>{const r=ratio(b);bins.forEach((bin,i)=>{if(r>=bin[1]&&r<bin[2])bc[i]++;});});
+  const distCols=['rgba(34,197,94,0.6)','rgba(34,197,94,0.4)','rgba(245,158,11,0.55)','rgba(249,115,22,0.6)','rgba(239,68,68,0.5)','rgba(239,68,68,0.8)'];
+  charts['dist']=new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:bins.map(b=>b[0]),datasets:[{data:bc,backgroundColor:distCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+' banks'}}}}});
+
+  // Scatter (S2 only)
+  if (PAGE==='s2') {
+    const scData = banks.map(b=>({x:lat(b).stage2_ratio,y:lat(b).npl_ratio,r:Math.max(4,Math.min(18,b.total_assets_bn/80)),label:b.name,cc:b.country}));
+    const scColors = scData.map(d=>{const sum=d.x+d.y*2;if(sum>18)return'rgba(239,68,68,0.75)';if(sum>13)return'rgba(249,115,22,0.65)';if(sum>9)return'rgba(245,158,11,0.6)';return'rgba(59,130,246,0.55)';});
+    charts['scatter']=new Chart(document.getElementById('c-scatter'),{type:'bubble',data:{datasets:[{data:scData,backgroundColor:scColors,borderColor:'transparent'}]},options:{...CDEFAULTS,plugins:{...CDEFAULTS.plugins,tooltip:{...CDEFAULTS.plugins.tooltip,callbacks:{label:ctx=>`${ctx.raw.label} (${flag(ctx.raw.cc)})  S2: ${f1(ctx.raw.x)}%  NPL: ${f1(ctx.raw.y)}%`}}},scales:{x:{...CDEFAULTS.scales.x,title:{display:true,text:'Stage 2 Ratio (%)',color:'#4f526b',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:{...CDEFAULTS.scales.y,title:{display:true,text:'NPL Ratio (%)',color:'#4f526b',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  TABLE
+// ═══════════════════════════════════════════════
+function buildTable(banks) {
+  let sorted=[...banks];
+  if (SORT==='ratio') sorted.sort((a,b)=>SORT_ASC?ratio(a)-ratio(b):ratio(b)-ratio(a));
+  else if (SORT==='absval') sorted.sort((a,b)=>SORT_ASC?absval(a)-absval(b):absval(b)-absval(a));
+  else if (SORT==='change') sorted.sort((a,b)=>SORT_ASC?ratioChange(a)-ratioChange(b):ratioChange(b)-ratioChange(a));
+  else if (SORT==='name') sorted.sort((a,b)=>SORT_ASC?b.name.localeCompare(a.name):a.name.localeCompare(b.name));
+
+  const col = PAGE==='s2' ? 'Stage 2' : 'Stage 3 (NPL)';
+  const rc  = PAGE==='s2' ? 'S2 Ratio' : 'NPL Ratio';
+
+  document.getElementById('tbl-head').innerHTML = `<tr>${['Bank','Country','Total Assets',col+' (€bn)',rc,'Change vs '+DATA.meta.period_labels[0],'Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
+  document.getElementById('tbl-count-title').textContent = `${sorted.length} institutions`;
+  document.getElementById('tbl-title').textContent = PAGE==='s2' ? 'All Banks — Stage 2 View' : 'All Banks — NPL View';
+
+  const tbody = document.getElementById('tbl-body');
+  tbody.innerHTML='';
+  sorted.forEach(bank=>{
+    const l=lat(bank); const f=fst(bank);
+    const r = ratio(bank);
+    const v = absval(bank);
+    const ch = ratioChange(bank);
+    const chClass = ch>0.3?'up':ch<-0.3?'dn':'fl';
+    const spark = buildSpark(bank);
+    const tr=document.createElement('tr');
+    tr.onclick=()=>openBank(bank);
+    tr.innerHTML=`
+      <td><div class="td-bank">${bank.name}</div></td>
+      <td><div style="font-size:12px">${flag(bank.country)} ${bank.country_name}</div></td>
+      <td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td>
+      <td class="mono"><strong>${fbn(v)}</strong></td>
+      <td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td>
+      <td class="mono ${chClass}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td>
+      <td>${spark}</td>
+      <td>${riskBadge(r)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function sortBy(field, btn) {
+  if (SORT===field) SORT_ASC=!SORT_ASC; else {SORT=field;SORT_ASC=false;}
+  document.querySelectorAll('.tbl-btn').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const banks = COUNTRY ? DATA.banks.filter(b=>b.country===COUNTRY) : DATA.banks;
+  buildTable(banks);
+}
+
+function buildSpark(bank) {
+  const vals = bank.history.map(h=>PAGE==='s2'?h.stage2_bn:h.stage3_bn);
+  const min=Math.min(...vals), max=Math.max(...vals);
+  const bars=vals.map((v,i)=>{
+    const h=max===min?12:Math.max(3,Math.round(((v-min)/(max-min))*22));
+    const cls=i===vals.length-1?(PAGE==='s2'?' last':' s3last'):'';
+    return `<div class="spark-b${cls}" style="height:${h}px"></div>`;
+  }).join('');
+  return `<div class="spark">${bars}</div>`;
+}
+
+// ═══════════════════════════════════════════════
+//  WATCHLIST
+// ═══════════════════════════════════════════════
+function buildWatchlist() {
+  const threshold = PAGE==='s2' ? 10 : 3;
+  const watches = DATA.banks.filter(b=>ratio(b)>=threshold||Math.abs(ratioChange(b))>1.5);
+  watches.sort((a,b)=>ratio(b)-ratio(a));
+
+  document.getElementById('wl-title').textContent = PAGE==='s2' ? 'Watchlist — Elevated Stage 2' : 'Watchlist — Elevated NPL';
+  document.getElementById('wl-sub').textContent = PAGE==='s2'
+    ? `${watches.length} banks with Stage 2 ratio ≥ 10% or significant increase — elevated NPL supply risk`
+    : `${watches.length} banks with NPL ratio ≥ 3% or notable change — key NPL investment universe`;
+
+  const container=document.getElementById('wl-content');
+  container.innerHTML='';
+  if (!watches.length) { container.innerHTML='<div style="padding:60px;text-align:center;color:var(--text3)">No banks on watchlist.</div>'; return; }
+
+  const grid=document.createElement('div'); grid.className='wl-grid';
+  watches.forEach(bank=>{
+    const l=lat(bank); const ch=ratioChange(bank);
+    const s2r=l.stage2_ratio; const s3r=l.npl_ratio;
+    const cls=s2r>=12&&s3r>=4?'both-alert':PAGE==='s2'&&s2r>=10?'s2-alert':'s3-alert';
+    const mainR=ratio(bank); const mainC=ratioChange(bank);
+    const rColor=mainR>=(PAGE==='s2'?15:6)?'var(--s3-color)':mainR>=(PAGE==='s2'?12:4)?'#f97316':'#f59e0b';
+    const card=document.createElement('div');
+    card.className=`wl-card ${cls}`; card.onclick=()=>openBank(bank);
+    card.innerHTML=`
+      <div class="wl-bank">${bank.name}</div>
+      <div class="wl-country">${flag(bank.country)} ${bank.country_name}</div>
+      <div class="wl-ratios">
+        <div class="wl-ratio"><div class="wl-r-label">Stage 2</div><div class="wl-r-val" style="color:${s2r>=12?'#f59e0b':'var(--text2)'}">${f1(s2r)}%</div></div>
+        <div class="wl-ratio"><div class="wl-r-label">NPL Ratio</div><div class="wl-r-val" style="color:${s3r>=4?'var(--s3-color)':'var(--text2)'}">${f1(s3r)}%</div></div>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+        <span class="mono" style="font-size:10px;color:${mainC>0?'var(--s3-color)':'var(--green)'}">${mainC>0?'+':''}${f1(mainC)}pp vs ${DATA.meta.period_labels[0]}</span>
+        ${riskBadge(mainR)}
+      </div>`;
+    grid.appendChild(card);
+  });
+  container.appendChild(grid);
+}
+
+// ═══════════════════════════════════════════════
+//  COUNTRY VIEW
+// ═══════════════════════════════════════════════
+function showCountry(cc, btn) {
+  COUNTRY=cc;
+  setAllInactive(); btn.classList.add('active');
+  VIEW='country';
+  ['overview','table','watchlist'].forEach(v=>document.getElementById('p-'+v).classList.remove('active'));
+  document.getElementById('p-country').classList.add('active');
+
+  const banks=DATA.banks.filter(b=>b.country===cc);
+  const cName=banks[0].country_name;
+  document.getElementById('c-flag').textContent=flag(cc);
+  document.getElementById('c-name').textContent=cName;
+  document.getElementById('c-meta').textContent=`${banks.length} bank${banks.length!==1?'s':''} tracked · Latest: ${DATA.meta.last_updated} · Source: EBA ${DATA.meta.exercise_year}`;
+  document.getElementById('c-tbl-title').textContent=`Banks in ${cName}`;
+
+  const pl=DATA.meta.period_labels;
+  const col=PAGE==='s2'?'stage2_bn':'stage3_bn';
+  const aggD=DATA.meta.periods.map((_,pi)=>banks.reduce((s,b)=>s+b.history[pi][col],0));
+
+  ['c-trend','c-bars'].forEach(id=>destroyChart(id));
+  document.getElementById('c-charts').innerHTML=`
+    <div class="chart-card"><div class="cc-header"><div><div class="cc-title">${PAGE==='s2'?'Stage 2':'Stage 3 NPL'} Trend — ${cName}</div><div class="cc-sub">Combined balance (€bn)</div></div></div><canvas id="c-trend" height="155"></canvas></div>
+    <div class="chart-card"><div class="cc-header"><div><div class="cc-title">Ratio by Bank — ${cName}</div><div class="cc-sub">Latest period</div></div></div><canvas id="c-bars" height="155"></canvas></div>`;
+
+  charts['c-trend']=new Chart(document.getElementById('c-trend'),{type:'line',data:{labels:pl,datasets:[{data:aggD,borderColor:color(),backgroundColor:colorDim(),fill:true,tension:0.35,pointBackgroundColor:color(),pointRadius:4}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(1)+'bn'}}}}});
+
+  const bCols=banks.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(239,68,68,0.75)';if(r>=(PAGE==='s2'?12:4))return'rgba(249,115,22,0.7)';if(r>=(PAGE==='s2'?10:2))return'rgba(245,158,11,0.65)';return'rgba(59,130,246,0.6)';});
+  charts['c-bars']=new Chart(document.getElementById('c-bars'),{type:'bar',data:{labels:banks.map(b=>b.name.length>16?b.name.slice(0,14)+'…':b.name),datasets:[{data:banks.map(b=>ratio(b)),backgroundColor:bCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
+
+  // Table
+  const rCol=PAGE==='s2'?'Stage 2 Ratio':'NPL Ratio';
+  const vCol=PAGE==='s2'?'Stage 2 (€bn)':'Stage 3 (€bn)';
+  document.getElementById('c-tbl-head').innerHTML=`<tr>${['Bank','Total Assets',vCol,rCol,'Change','Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
+  const tbody=document.getElementById('c-tbl-body'); tbody.innerHTML='';
+  banks.forEach(bank=>{
+    const l=lat(bank); const r=ratio(bank); const v=absval(bank); const ch=ratioChange(bank);
+    const tr=document.createElement('tr'); tr.onclick=()=>openBank(bank);
+    tr.innerHTML=`<td><div class="td-bank">${bank.name}</div></td><td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td><td class="mono"><strong>${fbn(v)}</strong></td><td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td><td class="mono ${ch>0.3?'up':ch<-0.3?'dn':'fl'}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td><td>${buildSpark(bank)}</td><td>${riskBadge(r)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  BANK MODAL
+// ═══════════════════════════════════════════════
+function openBank(bank) {
+  const l=lat(bank); const f=fst(bank);
+  const s2ch=l.stage2_ratio-f.stage2_ratio;
+  const s3ch=l.npl_ratio-f.npl_ratio;
+  const pl=DATA.meta.period_labels;
+
+  document.getElementById('m-name').textContent=bank.name;
+  document.getElementById('m-sub').textContent=`${flag(bank.country)} ${bank.country_name}  ·  Total Assets: €${f0(bank.total_assets_bn)}bn  ·  EBA ID: ${bank.id}`;
+
+  // KPIs — always show both S2 and S3
+  document.getElementById('m-kpis').innerHTML=[
+    {label:'Stage 2 (latest)',val:f1(l.stage2_ratio)+'%',sub:fbn(l.stage2_bn),color:l.stage2_ratio>=12?'var(--s2-color)':'var(--text)'},
+    {label:'Stage 3 NPL (latest)',val:f1(l.npl_ratio)+'%',sub:fbn(l.stage3_bn),color:l.npl_ratio>=4?'var(--s3-color)':'var(--text)'},
+    {label:'Total Loans',val:fbn(l.total_loans_bn),sub:'Latest period',color:'var(--text)'}
+  ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val" style="font-size:22px;color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
+
+  // Dual-line chart — both Stage 2 and Stage 3 ratios
+  if (modalChart) { modalChart.destroy(); modalChart=null; }
+  modalChart=new Chart(document.getElementById('m-chart'),{type:'line',data:{labels:pl,datasets:[
+    {label:'Stage 2 Ratio (%)',data:bank.history.map(h=>h.stage2_ratio),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',fill:true,tension:0.35,yAxisID:'y'},
+    {label:'NPL Ratio (%)',data:bank.history.map(h=>h.npl_ratio),borderColor:'#ef4444',tension:0.35,yAxisID:'y2'}
+  ]},options:{plugins:{legend:{display:true,labels:{color:'#8b8fa8',font:{family:'JetBrains Mono',size:9},boxWidth:12}},tooltip:{backgroundColor:'#141620',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#edeef2',bodyColor:'#8b8fa8'}},scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}},y2:{position:'right',grid:{display:false},ticks:{color:'#4f526b',font:{family:'JetBrains Mono',size:9},callback:v=>v+'%'}}}}});
+
+  // History table — both columns
+  document.getElementById('m-history').innerHTML=`
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr>${['Period','Stage 1 €bn','Stage 2 €bn','S2 Ratio','Stage 3 €bn','NPL Ratio','Total Loans'].map(h=>`<th style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--line);text-align:left">${h}</th>`).join('')}</tr></thead>
+      <tbody>${bank.history.map(h=>`<tr style="border-bottom:1px solid var(--line2)">
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${h.period}</td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px">${fbn(h.stage1_bn)}</td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#f59e0b':'var(--text)'}"><strong>${fbn(h.stage2_bn)}</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#f59e0b':'var(--text)'}"><strong>${f1(h.stage2_ratio)}%</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${fbn(h.stage3_bn)}</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${f1(h.npl_ratio)}%</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${fbn(h.total_loans_bn)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+
+  // Signal
+  const s2trend=s2ch>1.5?'rising':s2ch<-1.5?'declining':'stable';
+  const s3trend=s3ch>0.5?'rising':s3ch<-0.5?'declining':'stable';
+  document.getElementById('m-signal').innerHTML=`
+    <div style="background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:12px 14px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);margin-bottom:6px;font-family:'JetBrains Mono',monospace">📡 Credit Signal</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="font-size:12px;color:var(--text3)">Stage 2: <span style="color:${s2trend==='rising'?'#f59e0b':s2trend==='declining'?'var(--green)':'var(--text2)'}">${s2trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s2ch>0?'+':''}${f1(s2ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
+        <div style="font-size:12px;color:var(--text3)">NPL: <span style="color:${s3trend==='rising'?'var(--s3-color)':s3trend==='declining'?'var(--green)':'var(--text2)'}">${s3trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s3ch>0?'+':''}${f1(s3ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
+      </div>
+    </div>`;
+
+  document.getElementById('bank-overlay').classList.add('open');
+}
+function closeBank(e) { if(e.target.id==='bank-overlay') document.getElementById('bank-overlay').classList.remove('open'); }
+
+// ═══════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════
+function setAllInactive() {
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+}
+function navTo(view, btn) {
+  COUNTRY=null; VIEW=view;
+  setAllInactive();
+  btn.classList.add('active');
+  document.getElementById('p-'+view).classList.add('active');
+  if (view==='table') buildTable(DATA.banks);
+  else if (view==='watchlist') buildWatchlist();
+  else if (view==='overview') renderOverview();
+}
+function filterSidebar(q) {
+  document.querySelectorAll('#country-nav .sb-item').forEach(b=>{
+    b.style.display=b.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+function openUpdateModal() { document.getElementById('update-overlay').classList.add('open'); }
+function closeUpdate(e) { if(e.target.id==='update-overlay') document.getElementById('update-overlay').classList.remove('open'); }
+
+loadData();
+</script>
+</body>
+</html>

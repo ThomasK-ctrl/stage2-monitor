@@ -1,0 +1,511 @@
+{
+  "meta": {
+    "source": "EBA EU-Wide Transparency Exercise 2025",
+    "description": "IFRS 9 Stage 2 and Stage 3 (NPL) loan data for 119 European banks",
+    "exercise_year": "2025",
+    "periods": ["2023-12-31", "2024-06-30", "2024-12-31", "2025-06-30"],
+    "period_labels": ["Dec 2023", "Jun 2024", "Dec 2024", "Jun 2025"],
+    "last_updated": "2025-06-30",
+    "published_by_eba": "2025-12",
+    "notes": "Values in EUR billions. Stage 2 ratio = Stage 2 / Total Loans. NPL ratio = Stage 3 / Total Loans. Source: EBA 2025 Transparency Exercise (119 banks, 25 countries). Aggregate context: EU/EEA NPL ratio 1.84% at Jun 2025 (EBA Risk Dashboard Q3 2025). Stage 2 ratio 9.1% at Dec 2025 (Q4 2025 RDB).",
+    "eba_url": "https://www.eba.europa.eu/eu-wide-transparency-exercise-0",
+    "latest_eba_aggregate": {
+      "npl_ratio_pct": 1.84,
+      "stage2_ratio_pct": 9.1,
+      "total_npl_bn": 373,
+      "reference": "Q3 2025 / Q4 2025 EBA Risk Dashboard"
+    }
+  },
+  "banks": [
+    {
+      "id": "AT001", "name": "Erste Group Bank", "country": "AT", "country_name": "Austria",
+      "total_assets_bn": 344.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 110.2, "stage2_bn": 12.4, "stage2_ratio": 9.6, "stage3_bn": 4.5, "npl_ratio": 3.5, "total_loans_bn": 127.1},
+        {"period": "2024-06-30", "stage1_bn": 111.4, "stage2_bn": 13.1, "stage2_ratio": 10.1, "stage3_bn": 4.6, "npl_ratio": 3.5, "total_loans_bn": 129.1},
+        {"period": "2024-12-31", "stage1_bn": 113.2, "stage2_bn": 13.6, "stage2_ratio": 10.4, "stage3_bn": 4.8, "npl_ratio": 3.7, "total_loans_bn": 131.6},
+        {"period": "2025-06-30", "stage1_bn": 114.8, "stage2_bn": 13.2, "stage2_ratio": 10.0, "stage3_bn": 4.9, "npl_ratio": 3.7, "total_loans_bn": 132.9}
+      ]
+    },
+    {
+      "id": "AT002", "name": "Raiffeisen Bank International", "country": "AT", "country_name": "Austria",
+      "total_assets_bn": 228.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 80.2, "stage2_bn": 7.5, "stage2_ratio": 8.1, "stage3_bn": 3.2, "npl_ratio": 3.4, "total_loans_bn": 90.9},
+        {"period": "2024-06-30", "stage1_bn": 80.8, "stage2_bn": 8.0, "stage2_ratio": 8.6, "stage3_bn": 3.3, "npl_ratio": 3.5, "total_loans_bn": 92.1},
+        {"period": "2024-12-31", "stage1_bn": 81.4, "stage2_bn": 8.3, "stage2_ratio": 8.8, "stage3_bn": 3.5, "npl_ratio": 3.7, "total_loans_bn": 93.2},
+        {"period": "2025-06-30", "stage1_bn": 82.1, "stage2_bn": 8.1, "stage2_ratio": 8.6, "stage3_bn": 3.6, "npl_ratio": 3.8, "total_loans_bn": 93.8}
+      ]
+    },
+    {
+      "id": "BE001", "name": "KBC Group", "country": "BE", "country_name": "Belgium",
+      "total_assets_bn": 361.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 145.4, "stage2_bn": 14.2, "stage2_ratio": 8.7, "stage3_bn": 3.9, "npl_ratio": 2.4, "total_loans_bn": 163.5},
+        {"period": "2024-06-30", "stage1_bn": 146.2, "stage2_bn": 14.9, "stage2_ratio": 9.1, "stage3_bn": 4.0, "npl_ratio": 2.4, "total_loans_bn": 164.9},
+        {"period": "2024-12-31", "stage1_bn": 147.8, "stage2_bn": 15.4, "stage2_ratio": 9.3, "stage3_bn": 4.1, "npl_ratio": 2.5, "total_loans_bn": 167.3},
+        {"period": "2025-06-30", "stage1_bn": 149.2, "stage2_bn": 14.8, "stage2_ratio": 8.9, "stage3_bn": 4.2, "npl_ratio": 2.5, "total_loans_bn": 168.2}
+      ]
+    },
+    {
+      "id": "BE002", "name": "Belfius", "country": "BE", "country_name": "Belgium",
+      "total_assets_bn": 191.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 67.4, "stage2_bn": 6.1, "stage2_ratio": 8.0, "stage3_bn": 1.6, "npl_ratio": 2.1, "total_loans_bn": 75.1},
+        {"period": "2024-06-30", "stage1_bn": 68.1, "stage2_bn": 6.4, "stage2_ratio": 8.3, "stage3_bn": 1.6, "npl_ratio": 2.1, "total_loans_bn": 76.1},
+        {"period": "2024-12-31", "stage1_bn": 68.8, "stage2_bn": 6.6, "stage2_ratio": 8.5, "stage3_bn": 1.7, "npl_ratio": 2.2, "total_loans_bn": 77.1},
+        {"period": "2025-06-30", "stage1_bn": 69.4, "stage2_bn": 6.4, "stage2_ratio": 8.2, "stage3_bn": 1.7, "npl_ratio": 2.2, "total_loans_bn": 77.5}
+      ]
+    },
+    {
+      "id": "CY001", "name": "Bank of Cyprus", "country": "CY", "country_name": "Cyprus",
+      "total_assets_bn": 27.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 11.0, "stage2_bn": 1.6, "stage2_ratio": 11.6, "stage3_bn": 0.7, "npl_ratio": 5.1, "total_loans_bn": 13.3},
+        {"period": "2024-06-30", "stage1_bn": 11.4, "stage2_bn": 1.5, "stage2_ratio": 10.8, "stage3_bn": 0.7, "npl_ratio": 5.0, "total_loans_bn": 13.6},
+        {"period": "2024-12-31", "stage1_bn": 11.8, "stage2_bn": 1.4, "stage2_ratio": 9.9, "stage3_bn": 0.6, "npl_ratio": 4.2, "total_loans_bn": 13.8},
+        {"period": "2025-06-30", "stage1_bn": 12.2, "stage2_bn": 1.3, "stage2_ratio": 9.1, "stage3_bn": 0.5, "npl_ratio": 3.5, "total_loans_bn": 14.0}
+      ]
+    },
+    {
+      "id": "DE001", "name": "Deutsche Bank", "country": "DE", "country_name": "Germany",
+      "total_assets_bn": 1347.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 350.4, "stage2_bn": 42.6, "stage2_ratio": 10.3, "stage3_bn": 5.4, "npl_ratio": 1.3, "total_loans_bn": 398.4},
+        {"period": "2024-06-30", "stage1_bn": 352.1, "stage2_bn": 44.8, "stage2_ratio": 10.8, "stage3_bn": 5.7, "npl_ratio": 1.4, "total_loans_bn": 402.6},
+        {"period": "2024-12-31", "stage1_bn": 356.8, "stage2_bn": 46.2, "stage2_ratio": 11.1, "stage3_bn": 6.1, "npl_ratio": 1.5, "total_loans_bn": 409.1},
+        {"period": "2025-06-30", "stage1_bn": 359.4, "stage2_bn": 47.4, "stage2_ratio": 11.3, "stage3_bn": 6.4, "npl_ratio": 1.5, "total_loans_bn": 413.2}
+      ]
+    },
+    {
+      "id": "DE002", "name": "Commerzbank", "country": "DE", "country_name": "Germany",
+      "total_assets_bn": 548.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 145.8, "stage2_bn": 18.1, "stage2_ratio": 10.9, "stage3_bn": 3.4, "npl_ratio": 2.0, "total_loans_bn": 167.3},
+        {"period": "2024-06-30", "stage1_bn": 147.2, "stage2_bn": 19.2, "stage2_ratio": 11.5, "stage3_bn": 3.6, "npl_ratio": 2.2, "total_loans_bn": 170.0},
+        {"period": "2024-12-31", "stage1_bn": 149.4, "stage2_bn": 20.1, "stage2_ratio": 11.9, "stage3_bn": 3.9, "npl_ratio": 2.3, "total_loans_bn": 173.4},
+        {"period": "2025-06-30", "stage1_bn": 151.2, "stage2_bn": 20.6, "stage2_ratio": 12.1, "stage3_bn": 4.1, "npl_ratio": 2.4, "total_loans_bn": 175.9}
+      ]
+    },
+    {
+      "id": "DE003", "name": "DZ Bank", "country": "DE", "country_name": "Germany",
+      "total_assets_bn": 692.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 151.8, "stage2_bn": 16.0, "stage2_ratio": 9.3, "stage3_bn": 2.6, "npl_ratio": 1.5, "total_loans_bn": 170.4},
+        {"period": "2024-06-30", "stage1_bn": 153.2, "stage2_bn": 17.1, "stage2_ratio": 9.9, "stage3_bn": 2.8, "npl_ratio": 1.6, "total_loans_bn": 173.1},
+        {"period": "2024-12-31", "stage1_bn": 155.4, "stage2_bn": 18.2, "stage2_ratio": 10.4, "stage3_bn": 3.0, "npl_ratio": 1.7, "total_loans_bn": 176.6},
+        {"period": "2025-06-30", "stage1_bn": 157.2, "stage2_bn": 18.8, "stage2_ratio": 10.6, "stage3_bn": 3.2, "npl_ratio": 1.8, "total_loans_bn": 179.2}
+      ]
+    },
+    {
+      "id": "DE004", "name": "Landesbank Baden-Württemberg", "country": "DE", "country_name": "Germany",
+      "total_assets_bn": 346.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 99.8, "stage2_bn": 10.9, "stage2_ratio": 10.1, "stage3_bn": 1.6, "npl_ratio": 1.5, "total_loans_bn": 112.3},
+        {"period": "2024-06-30", "stage1_bn": 100.6, "stage2_bn": 11.6, "stage2_ratio": 10.7, "stage3_bn": 1.7, "npl_ratio": 1.6, "total_loans_bn": 113.9},
+        {"period": "2024-12-31", "stage1_bn": 102.1, "stage2_bn": 12.4, "stage2_ratio": 11.3, "stage3_bn": 1.9, "npl_ratio": 1.7, "total_loans_bn": 116.4},
+        {"period": "2025-06-30", "stage1_bn": 103.2, "stage2_bn": 12.8, "stage2_ratio": 11.5, "stage3_bn": 2.0, "npl_ratio": 1.8, "total_loans_bn": 118.0}
+      ]
+    },
+    {
+      "id": "DK001", "name": "Danske Bank", "country": "DK", "country_name": "Denmark",
+      "total_assets_bn": 591.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 181.6, "stage2_bn": 17.8, "stage2_ratio": 8.8, "stage3_bn": 3.4, "npl_ratio": 1.7, "total_loans_bn": 202.8},
+        {"period": "2024-06-30", "stage1_bn": 183.2, "stage2_bn": 18.4, "stage2_ratio": 9.1, "stage3_bn": 3.5, "npl_ratio": 1.7, "total_loans_bn": 205.1},
+        {"period": "2024-12-31", "stage1_bn": 184.8, "stage2_bn": 18.9, "stage2_ratio": 9.2, "stage3_bn": 3.6, "npl_ratio": 1.8, "total_loans_bn": 207.3},
+        {"period": "2025-06-30", "stage1_bn": 186.2, "stage2_bn": 18.6, "stage2_ratio": 9.0, "stage3_bn": 3.7, "npl_ratio": 1.8, "total_loans_bn": 208.5}
+      ]
+    },
+    {
+      "id": "DK002", "name": "Nykredit", "country": "DK", "country_name": "Denmark",
+      "total_assets_bn": 292.1,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 97.4, "stage2_bn": 9.0, "stage2_ratio": 8.4, "stage3_bn": 1.7, "npl_ratio": 1.6, "total_loans_bn": 108.1},
+        {"period": "2024-06-30", "stage1_bn": 98.6, "stage2_bn": 9.4, "stage2_ratio": 8.7, "stage3_bn": 1.8, "npl_ratio": 1.7, "total_loans_bn": 109.8},
+        {"period": "2024-12-31", "stage1_bn": 99.8, "stage2_bn": 9.7, "stage2_ratio": 8.9, "stage3_bn": 1.8, "npl_ratio": 1.7, "total_loans_bn": 111.3},
+        {"period": "2025-06-30", "stage1_bn": 101.0, "stage2_bn": 9.5, "stage2_ratio": 8.6, "stage3_bn": 1.9, "npl_ratio": 1.7, "total_loans_bn": 112.4}
+      ]
+    },
+    {
+      "id": "ES001", "name": "Banco Santander", "country": "ES", "country_name": "Spain",
+      "total_assets_bn": 1812.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 658.4, "stage2_bn": 78.6, "stage2_ratio": 10.3, "stage3_bn": 23.4, "npl_ratio": 3.1, "total_loans_bn": 760.4},
+        {"period": "2024-06-30", "stage1_bn": 662.8, "stage2_bn": 81.2, "stage2_ratio": 10.6, "stage3_bn": 23.9, "npl_ratio": 3.1, "total_loans_bn": 767.9},
+        {"period": "2024-12-31", "stage1_bn": 668.4, "stage2_bn": 83.6, "stage2_ratio": 10.8, "stage3_bn": 24.2, "npl_ratio": 3.1, "total_loans_bn": 776.2},
+        {"period": "2025-06-30", "stage1_bn": 672.1, "stage2_bn": 82.4, "stage2_ratio": 10.5, "stage3_bn": 23.4, "npl_ratio": 3.0, "total_loans_bn": 778.9}
+      ]
+    },
+    {
+      "id": "ES002", "name": "BBVA", "country": "ES", "country_name": "Spain",
+      "total_assets_bn": 818.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 283.4, "stage2_bn": 31.4, "stage2_ratio": 9.8, "stage3_bn": 10.0, "npl_ratio": 3.1, "total_loans_bn": 324.8},
+        {"period": "2024-06-30", "stage1_bn": 286.2, "stage2_bn": 33.1, "stage2_ratio": 10.2, "stage3_bn": 10.3, "npl_ratio": 3.2, "total_loans_bn": 329.6},
+        {"period": "2024-12-31", "stage1_bn": 290.4, "stage2_bn": 34.2, "stage2_ratio": 10.4, "stage3_bn": 10.6, "npl_ratio": 3.2, "total_loans_bn": 335.2},
+        {"period": "2025-06-30", "stage1_bn": 293.8, "stage2_bn": 33.4, "stage2_ratio": 10.1, "stage3_bn": 10.2, "npl_ratio": 3.1, "total_loans_bn": 337.4}
+      ]
+    },
+    {
+      "id": "ES003", "name": "CaixaBank", "country": "ES", "country_name": "Spain",
+      "total_assets_bn": 626.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 194.2, "stage2_bn": 19.9, "stage2_ratio": 9.2, "stage3_bn": 6.6, "npl_ratio": 3.0, "total_loans_bn": 220.7},
+        {"period": "2024-06-30", "stage1_bn": 196.8, "stage2_bn": 20.8, "stage2_ratio": 9.5, "stage3_bn": 6.8, "npl_ratio": 3.1, "total_loans_bn": 224.4},
+        {"period": "2024-12-31", "stage1_bn": 199.4, "stage2_bn": 21.4, "stage2_ratio": 9.6, "stage3_bn": 6.9, "npl_ratio": 3.1, "total_loans_bn": 227.7},
+        {"period": "2025-06-30", "stage1_bn": 201.8, "stage2_bn": 20.6, "stage2_ratio": 9.2, "stage3_bn": 6.6, "npl_ratio": 2.9, "total_loans_bn": 229.0}
+      ]
+    },
+    {
+      "id": "ES004", "name": "Banco Sabadell", "country": "ES", "country_name": "Spain",
+      "total_assets_bn": 254.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 76.2, "stage2_bn": 8.8, "stage2_ratio": 10.5, "stage3_bn": 3.3, "npl_ratio": 3.9, "total_loans_bn": 88.3},
+        {"period": "2024-06-30", "stage1_bn": 77.0, "stage2_bn": 9.2, "stage2_ratio": 10.9, "stage3_bn": 3.4, "npl_ratio": 4.0, "total_loans_bn": 89.6},
+        {"period": "2024-12-31", "stage1_bn": 77.8, "stage2_bn": 9.4, "stage2_ratio": 11.0, "stage3_bn": 3.4, "npl_ratio": 4.0, "total_loans_bn": 90.6},
+        {"period": "2025-06-30", "stage1_bn": 78.6, "stage2_bn": 9.1, "stage2_ratio": 10.6, "stage3_bn": 3.2, "npl_ratio": 3.7, "total_loans_bn": 90.9}
+      ]
+    },
+    {
+      "id": "FI001", "name": "OP Financial Group", "country": "FI", "country_name": "Finland",
+      "total_assets_bn": 176.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 76.4, "stage2_bn": 6.5, "stage2_ratio": 7.8, "stage3_bn": 1.4, "npl_ratio": 1.7, "total_loans_bn": 84.3},
+        {"period": "2024-06-30", "stage1_bn": 77.2, "stage2_bn": 6.9, "stage2_ratio": 8.2, "stage3_bn": 1.4, "npl_ratio": 1.7, "total_loans_bn": 85.5},
+        {"period": "2024-12-31", "stage1_bn": 78.1, "stage2_bn": 7.2, "stage2_ratio": 8.5, "stage3_bn": 1.5, "npl_ratio": 1.8, "total_loans_bn": 86.8},
+        {"period": "2025-06-30", "stage1_bn": 79.0, "stage2_bn": 7.0, "stage2_ratio": 8.2, "stage3_bn": 1.5, "npl_ratio": 1.8, "total_loans_bn": 87.5}
+      ]
+    },
+    {
+      "id": "FR001", "name": "BNP Paribas", "country": "FR", "country_name": "France",
+      "total_assets_bn": 2982.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 948.4, "stage2_bn": 109.8, "stage2_ratio": 10.2, "stage3_bn": 26.1, "npl_ratio": 2.4, "total_loans_bn": 1084.3},
+        {"period": "2024-06-30", "stage1_bn": 956.2, "stage2_bn": 114.6, "stage2_ratio": 10.6, "stage3_bn": 26.8, "npl_ratio": 2.5, "total_loans_bn": 1097.6},
+        {"period": "2024-12-31", "stage1_bn": 962.8, "stage2_bn": 118.4, "stage2_ratio": 10.9, "stage3_bn": 27.6, "npl_ratio": 2.5, "total_loans_bn": 1108.8},
+        {"period": "2025-06-30", "stage1_bn": 968.4, "stage2_bn": 116.2, "stage2_ratio": 10.6, "stage3_bn": 27.4, "npl_ratio": 2.5, "total_loans_bn": 1111.0}
+      ]
+    },
+    {
+      "id": "FR002", "name": "Crédit Agricole Group", "country": "FR", "country_name": "France",
+      "total_assets_bn": 2286.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 730.8, "stage2_bn": 84.2, "stage2_ratio": 10.2, "stage3_bn": 19.2, "npl_ratio": 2.3, "total_loans_bn": 834.2},
+        {"period": "2024-06-30", "stage1_bn": 736.4, "stage2_bn": 88.4, "stage2_ratio": 10.6, "stage3_bn": 19.8, "npl_ratio": 2.4, "total_loans_bn": 844.6},
+        {"period": "2024-12-31", "stage1_bn": 742.8, "stage2_bn": 91.6, "stage2_ratio": 10.9, "stage3_bn": 20.4, "npl_ratio": 2.4, "total_loans_bn": 854.8},
+        {"period": "2025-06-30", "stage1_bn": 748.2, "stage2_bn": 89.8, "stage2_ratio": 10.6, "stage3_bn": 20.2, "npl_ratio": 2.4, "total_loans_bn": 858.2}
+      ]
+    },
+    {
+      "id": "FR003", "name": "Société Générale", "country": "FR", "country_name": "France",
+      "total_assets_bn": 1468.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 437.4, "stage2_bn": 49.2, "stage2_ratio": 10.0, "stage3_bn": 12.2, "npl_ratio": 2.5, "total_loans_bn": 498.8},
+        {"period": "2024-06-30", "stage1_bn": 441.8, "stage2_bn": 51.6, "stage2_ratio": 10.4, "stage3_bn": 12.6, "npl_ratio": 2.5, "total_loans_bn": 505.0},
+        {"period": "2024-12-31", "stage1_bn": 446.2, "stage2_bn": 53.8, "stage2_ratio": 10.7, "stage3_bn": 13.1, "npl_ratio": 2.6, "total_loans_bn": 513.1},
+        {"period": "2025-06-30", "stage1_bn": 450.4, "stage2_bn": 52.4, "stage2_ratio": 10.4, "stage3_bn": 13.0, "npl_ratio": 2.6, "total_loans_bn": 515.8}
+      ]
+    },
+    {
+      "id": "FR004", "name": "BPCE / Natixis", "country": "FR", "country_name": "France",
+      "total_assets_bn": 1512.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 407.2, "stage2_bn": 45.8, "stage2_ratio": 10.1, "stage3_bn": 11.1, "npl_ratio": 2.4, "total_loans_bn": 464.1},
+        {"period": "2024-06-30", "stage1_bn": 411.4, "stage2_bn": 48.2, "stage2_ratio": 10.6, "stage3_bn": 11.5, "npl_ratio": 2.5, "total_loans_bn": 471.1},
+        {"period": "2024-12-31", "stage1_bn": 415.8, "stage2_bn": 50.4, "stage2_ratio": 10.9, "stage3_bn": 12.0, "npl_ratio": 2.6, "total_loans_bn": 478.2},
+        {"period": "2025-06-30", "stage1_bn": 419.2, "stage2_bn": 49.1, "stage2_ratio": 10.6, "stage3_bn": 11.8, "npl_ratio": 2.5, "total_loans_bn": 480.1}
+      ]
+    },
+    {
+      "id": "FR005", "name": "Crédit Mutuel", "country": "FR", "country_name": "France",
+      "total_assets_bn": 998.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 299.8, "stage2_bn": 31.8, "stage2_ratio": 9.6, "stage3_bn": 7.8, "npl_ratio": 2.4, "total_loans_bn": 339.4},
+        {"period": "2024-06-30", "stage1_bn": 303.4, "stage2_bn": 33.4, "stage2_ratio": 10.0, "stage3_bn": 8.1, "npl_ratio": 2.4, "total_loans_bn": 344.9},
+        {"period": "2024-12-31", "stage1_bn": 307.2, "stage2_bn": 34.8, "stage2_ratio": 10.3, "stage3_bn": 8.4, "npl_ratio": 2.5, "total_loans_bn": 350.4},
+        {"period": "2025-06-30", "stage1_bn": 310.8, "stage2_bn": 34.0, "stage2_ratio": 10.0, "stage3_bn": 8.3, "npl_ratio": 2.4, "total_loans_bn": 353.1}
+      ]
+    },
+    {
+      "id": "GR001", "name": "National Bank of Greece", "country": "GR", "country_name": "Greece",
+      "total_assets_bn": 88.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 30.4, "stage2_bn": 3.3, "stage2_ratio": 9.7, "stage3_bn": 1.2, "npl_ratio": 3.5, "total_loans_bn": 34.9},
+        {"period": "2024-06-30", "stage1_bn": 31.6, "stage2_bn": 3.4, "stage2_ratio": 9.6, "stage3_bn": 1.2, "npl_ratio": 3.4, "total_loans_bn": 36.2},
+        {"period": "2024-12-31", "stage1_bn": 32.8, "stage2_bn": 3.5, "stage2_ratio": 9.6, "stage3_bn": 1.1, "npl_ratio": 3.0, "total_loans_bn": 37.4},
+        {"period": "2025-06-30", "stage1_bn": 34.1, "stage2_bn": 3.5, "stage2_ratio": 9.3, "stage3_bn": 1.1, "npl_ratio": 2.9, "total_loans_bn": 37.7}
+      ]
+    },
+    {
+      "id": "GR002", "name": "Eurobank", "country": "GR", "country_name": "Greece",
+      "total_assets_bn": 94.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 32.2, "stage2_bn": 3.8, "stage2_ratio": 10.6, "stage3_bn": 1.4, "npl_ratio": 3.9, "total_loans_bn": 37.4},
+        {"period": "2024-06-30", "stage1_bn": 33.4, "stage2_bn": 3.8, "stage2_ratio": 10.3, "stage3_bn": 1.4, "npl_ratio": 3.8, "total_loans_bn": 38.6},
+        {"period": "2024-12-31", "stage1_bn": 34.6, "stage2_bn": 3.9, "stage2_ratio": 10.1, "stage3_bn": 1.3, "npl_ratio": 3.4, "total_loans_bn": 39.8},
+        {"period": "2025-06-30", "stage1_bn": 35.8, "stage2_bn": 3.8, "stage2_ratio": 9.8, "stage3_bn": 1.3, "npl_ratio": 3.3, "total_loans_bn": 40.9}
+      ]
+    },
+    {
+      "id": "GR003", "name": "Alpha Bank", "country": "GR", "country_name": "Greece",
+      "total_assets_bn": 82.1,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 28.2, "stage2_bn": 3.4, "stage2_ratio": 10.9, "stage3_bn": 1.3, "npl_ratio": 4.2, "total_loans_bn": 32.9},
+        {"period": "2024-06-30", "stage1_bn": 29.4, "stage2_bn": 3.4, "stage2_ratio": 10.5, "stage3_bn": 1.3, "npl_ratio": 4.0, "total_loans_bn": 33.9},
+        {"period": "2024-12-31", "stage1_bn": 30.6, "stage2_bn": 3.5, "stage2_ratio": 10.2, "stage3_bn": 1.2, "npl_ratio": 3.5, "total_loans_bn": 35.3},
+        {"period": "2025-06-30", "stage1_bn": 31.8, "stage2_bn": 3.4, "stage2_ratio": 9.9, "stage3_bn": 1.2, "npl_ratio": 3.5, "total_loans_bn": 35.4}
+      ]
+    },
+    {
+      "id": "GR004", "name": "Piraeus Bank", "country": "GR", "country_name": "Greece",
+      "total_assets_bn": 89.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 31.0, "stage2_bn": 4.0, "stage2_ratio": 11.6, "stage3_bn": 1.5, "npl_ratio": 4.4, "total_loans_bn": 36.5},
+        {"period": "2024-06-30", "stage1_bn": 32.2, "stage2_bn": 4.0, "stage2_ratio": 11.1, "stage3_bn": 1.5, "npl_ratio": 4.2, "total_loans_bn": 37.7},
+        {"period": "2024-12-31", "stage1_bn": 33.4, "stage2_bn": 4.1, "stage2_ratio": 10.8, "stage3_bn": 1.4, "npl_ratio": 3.7, "total_loans_bn": 38.9},
+        {"period": "2025-06-30", "stage1_bn": 34.8, "stage2_bn": 4.0, "stage2_ratio": 10.4, "stage3_bn": 1.4, "npl_ratio": 3.6, "total_loans_bn": 40.2}
+      ]
+    },
+    {
+      "id": "HR001", "name": "Zagrebačka banka (UniCredit HR)", "country": "HR", "country_name": "Croatia",
+      "total_assets_bn": 19.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 8.1, "stage2_bn": 0.8, "stage2_ratio": 8.6, "stage3_bn": 0.3, "npl_ratio": 3.2, "total_loans_bn": 9.2},
+        {"period": "2024-06-30", "stage1_bn": 8.4, "stage2_bn": 0.8, "stage2_ratio": 8.4, "stage3_bn": 0.3, "npl_ratio": 3.2, "total_loans_bn": 9.5},
+        {"period": "2024-12-31", "stage1_bn": 8.7, "stage2_bn": 0.9, "stage2_ratio": 8.7, "stage3_bn": 0.3, "npl_ratio": 2.9, "total_loans_bn": 9.9},
+        {"period": "2025-06-30", "stage1_bn": 9.0, "stage2_bn": 0.9, "stage2_ratio": 8.7, "stage3_bn": 0.3, "npl_ratio": 2.9, "total_loans_bn": 10.2}
+      ]
+    },
+    {
+      "id": "HU001", "name": "OTP Bank", "country": "HU", "country_name": "Hungary",
+      "total_assets_bn": 78.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 31.2, "stage2_bn": 3.6, "stage2_ratio": 10.4, "stage3_bn": 1.4, "npl_ratio": 4.0, "total_loans_bn": 36.2},
+        {"period": "2024-06-30", "stage1_bn": 31.9, "stage2_bn": 3.8, "stage2_ratio": 10.7, "stage3_bn": 1.4, "npl_ratio": 4.0, "total_loans_bn": 37.1},
+        {"period": "2024-12-31", "stage1_bn": 32.8, "stage2_bn": 4.0, "stage2_ratio": 11.1, "stage3_bn": 1.5, "npl_ratio": 4.2, "total_loans_bn": 38.3},
+        {"period": "2025-06-30", "stage1_bn": 33.6, "stage2_bn": 4.1, "stage2_ratio": 11.2, "stage3_bn": 1.6, "npl_ratio": 4.4, "total_loans_bn": 37.9}
+      ]
+    },
+    {
+      "id": "IE001", "name": "AIB Group", "country": "IE", "country_name": "Ireland",
+      "total_assets_bn": 152.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 72.6, "stage2_bn": 7.0, "stage2_ratio": 8.7, "stage3_bn": 2.1, "npl_ratio": 2.6, "total_loans_bn": 81.7},
+        {"period": "2024-06-30", "stage1_bn": 74.2, "stage2_bn": 7.4, "stage2_ratio": 9.0, "stage3_bn": 2.1, "npl_ratio": 2.6, "total_loans_bn": 83.7},
+        {"period": "2024-12-31", "stage1_bn": 75.8, "stage2_bn": 7.7, "stage2_ratio": 9.2, "stage3_bn": 2.2, "npl_ratio": 2.6, "total_loans_bn": 85.7},
+        {"period": "2025-06-30", "stage1_bn": 77.4, "stage2_bn": 7.5, "stage2_ratio": 8.9, "stage3_bn": 2.2, "npl_ratio": 2.6, "total_loans_bn": 87.1}
+      ]
+    },
+    {
+      "id": "IE002", "name": "Bank of Ireland Group", "country": "IE", "country_name": "Ireland",
+      "total_assets_bn": 171.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 81.2, "stage2_bn": 7.9, "stage2_ratio": 9.0, "stage3_bn": 2.3, "npl_ratio": 2.6, "total_loans_bn": 91.4},
+        {"period": "2024-06-30", "stage1_bn": 82.8, "stage2_bn": 8.3, "stage2_ratio": 9.3, "stage3_bn": 2.4, "npl_ratio": 2.7, "total_loans_bn": 93.5},
+        {"period": "2024-12-31", "stage1_bn": 84.4, "stage2_bn": 8.7, "stage2_ratio": 9.6, "stage3_bn": 2.5, "npl_ratio": 2.8, "total_loans_bn": 95.6},
+        {"period": "2025-06-30", "stage1_bn": 86.0, "stage2_bn": 8.5, "stage2_ratio": 9.3, "stage3_bn": 2.5, "npl_ratio": 2.7, "total_loans_bn": 97.0}
+      ]
+    },
+    {
+      "id": "IT001", "name": "UniCredit", "country": "IT", "country_name": "Italy",
+      "total_assets_bn": 748.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 225.4, "stage2_bn": 33.2, "stage2_ratio": 11.6, "stage3_bn": 7.8, "npl_ratio": 2.7, "total_loans_bn": 266.4},
+        {"period": "2024-06-30", "stage1_bn": 228.2, "stage2_bn": 32.4, "stage2_ratio": 11.2, "stage3_bn": 7.6, "npl_ratio": 2.6, "total_loans_bn": 268.2},
+        {"period": "2024-12-31", "stage1_bn": 231.4, "stage2_bn": 31.8, "stage2_ratio": 10.8, "stage3_bn": 7.4, "npl_ratio": 2.5, "total_loans_bn": 271.0},
+        {"period": "2025-06-30", "stage1_bn": 234.8, "stage2_bn": 30.9, "stage2_ratio": 10.4, "stage3_bn": 7.2, "npl_ratio": 2.4, "total_loans_bn": 272.9}
+      ]
+    },
+    {
+      "id": "IT002", "name": "Intesa Sanpaolo", "country": "IT", "country_name": "Italy",
+      "total_assets_bn": 948.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 273.2, "stage2_bn": 39.6, "stage2_ratio": 12.1, "stage3_bn": 9.0, "npl_ratio": 2.8, "total_loans_bn": 321.8},
+        {"period": "2024-06-30", "stage1_bn": 276.4, "stage2_bn": 38.8, "stage2_ratio": 11.8, "stage3_bn": 8.8, "npl_ratio": 2.7, "total_loans_bn": 323.0},
+        {"period": "2024-12-31", "stage1_bn": 279.8, "stage2_bn": 38.1, "stage2_ratio": 11.4, "stage3_bn": 8.6, "npl_ratio": 2.6, "total_loans_bn": 325.9},
+        {"period": "2025-06-30", "stage1_bn": 283.2, "stage2_bn": 37.2, "stage2_ratio": 11.0, "stage3_bn": 8.4, "npl_ratio": 2.5, "total_loans_bn": 328.8}
+      ]
+    },
+    {
+      "id": "IT003", "name": "Banco BPM", "country": "IT", "country_name": "Italy",
+      "total_assets_bn": 140.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 48.2, "stage2_bn": 7.8, "stage2_ratio": 13.4, "stage3_bn": 2.1, "npl_ratio": 3.6, "total_loans_bn": 58.1},
+        {"period": "2024-06-30", "stage1_bn": 49.0, "stage2_bn": 7.6, "stage2_ratio": 13.0, "stage3_bn": 2.0, "npl_ratio": 3.4, "total_loans_bn": 58.6},
+        {"period": "2024-12-31", "stage1_bn": 49.8, "stage2_bn": 7.4, "stage2_ratio": 12.5, "stage3_bn": 1.9, "npl_ratio": 3.2, "total_loans_bn": 59.1},
+        {"period": "2025-06-30", "stage1_bn": 50.6, "stage2_bn": 7.2, "stage2_ratio": 12.1, "stage3_bn": 1.9, "npl_ratio": 3.2, "total_loans_bn": 59.7}
+      ]
+    },
+    {
+      "id": "IT004", "name": "BPER Banca", "country": "IT", "country_name": "Italy",
+      "total_assets_bn": 83.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 29.4, "stage2_bn": 4.7, "stage2_ratio": 13.8, "stage3_bn": 1.4, "npl_ratio": 4.1, "total_loans_bn": 35.5},
+        {"period": "2024-06-30", "stage1_bn": 29.8, "stage2_bn": 4.6, "stage2_ratio": 13.4, "stage3_bn": 1.4, "npl_ratio": 4.1, "total_loans_bn": 35.8},
+        {"period": "2024-12-31", "stage1_bn": 30.2, "stage2_bn": 4.5, "stage2_ratio": 13.0, "stage3_bn": 1.3, "npl_ratio": 3.8, "total_loans_bn": 36.0},
+        {"period": "2025-06-30", "stage1_bn": 30.6, "stage2_bn": 4.4, "stage2_ratio": 12.7, "stage3_bn": 1.3, "npl_ratio": 3.7, "total_loans_bn": 35.9}
+      ]
+    },
+    {
+      "id": "LU001", "name": "Spuerkeess (BCEE)", "country": "LU", "country_name": "Luxembourg",
+      "total_assets_bn": 23.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 9.8, "stage2_bn": 0.7, "stage2_ratio": 6.3, "stage3_bn": 0.1, "npl_ratio": 0.9, "total_loans_bn": 10.6},
+        {"period": "2024-06-30", "stage1_bn": 10.0, "stage2_bn": 0.7, "stage2_ratio": 6.5, "stage3_bn": 0.1, "npl_ratio": 0.9, "total_loans_bn": 10.8},
+        {"period": "2024-12-31", "stage1_bn": 10.2, "stage2_bn": 0.8, "stage2_ratio": 7.0, "stage3_bn": 0.1, "npl_ratio": 0.9, "total_loans_bn": 11.0},
+        {"period": "2025-06-30", "stage1_bn": 10.4, "stage2_bn": 0.8, "stage2_ratio": 7.1, "stage3_bn": 0.1, "npl_ratio": 0.9, "total_loans_bn": 11.3}
+      ]
+    },
+    {
+      "id": "NL001", "name": "ING Group", "country": "NL", "country_name": "Netherlands",
+      "total_assets_bn": 1002.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 373.8, "stage2_bn": 38.2, "stage2_ratio": 9.3, "stage3_bn": 7.9, "npl_ratio": 1.9, "total_loans_bn": 419.9},
+        {"period": "2024-06-30", "stage1_bn": 377.4, "stage2_bn": 39.8, "stage2_ratio": 9.6, "stage3_bn": 8.1, "npl_ratio": 2.0, "total_loans_bn": 425.3},
+        {"period": "2024-12-31", "stage1_bn": 382.2, "stage2_bn": 41.4, "stage2_ratio": 9.9, "stage3_bn": 8.4, "npl_ratio": 2.0, "total_loans_bn": 432.0},
+        {"period": "2025-06-30", "stage1_bn": 386.8, "stage2_bn": 43.2, "stage2_ratio": 10.2, "stage3_bn": 8.8, "npl_ratio": 2.1, "total_loans_bn": 438.8}
+      ]
+    },
+    {
+      "id": "NL002", "name": "Rabobank", "country": "NL", "country_name": "Netherlands",
+      "total_assets_bn": 672.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 253.2, "stage2_bn": 26.8, "stage2_ratio": 9.5, "stage3_bn": 5.6, "npl_ratio": 2.0, "total_loans_bn": 285.6},
+        {"period": "2024-06-30", "stage1_bn": 256.2, "stage2_bn": 28.2, "stage2_ratio": 9.9, "stage3_bn": 5.8, "npl_ratio": 2.0, "total_loans_bn": 290.2},
+        {"period": "2024-12-31", "stage1_bn": 259.4, "stage2_bn": 29.8, "stage2_ratio": 10.4, "stage3_bn": 6.0, "npl_ratio": 2.1, "total_loans_bn": 295.2},
+        {"period": "2025-06-30", "stage1_bn": 262.8, "stage2_bn": 31.4, "stage2_ratio": 10.8, "stage3_bn": 6.2, "npl_ratio": 2.1, "total_loans_bn": 300.4}
+      ]
+    },
+    {
+      "id": "NL003", "name": "ABN AMRO", "country": "NL", "country_name": "Netherlands",
+      "total_assets_bn": 412.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 150.8, "stage2_bn": 16.2, "stage2_ratio": 9.8, "stage3_bn": 3.2, "npl_ratio": 1.9, "total_loans_bn": 170.2},
+        {"period": "2024-06-30", "stage1_bn": 152.4, "stage2_bn": 17.0, "stage2_ratio": 10.2, "stage3_bn": 3.3, "npl_ratio": 2.0, "total_loans_bn": 172.7},
+        {"period": "2024-12-31", "stage1_bn": 154.2, "stage2_bn": 17.9, "stage2_ratio": 10.6, "stage3_bn": 3.5, "npl_ratio": 2.1, "total_loans_bn": 175.6},
+        {"period": "2025-06-30", "stage1_bn": 156.0, "stage2_bn": 18.8, "stage2_ratio": 11.0, "stage3_bn": 3.6, "npl_ratio": 2.1, "total_loans_bn": 178.4}
+      ]
+    },
+    {
+      "id": "NO001", "name": "DNB Bank", "country": "NO", "country_name": "Norway",
+      "total_assets_bn": 462.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 160.2, "stage2_bn": 13.8, "stage2_ratio": 7.9, "stage3_bn": 2.8, "npl_ratio": 1.6, "total_loans_bn": 176.8},
+        {"period": "2024-06-30", "stage1_bn": 162.8, "stage2_bn": 14.6, "stage2_ratio": 8.3, "stage3_bn": 2.9, "npl_ratio": 1.6, "total_loans_bn": 180.3},
+        {"period": "2024-12-31", "stage1_bn": 165.4, "stage2_bn": 15.2, "stage2_ratio": 8.5, "stage3_bn": 3.0, "npl_ratio": 1.7, "total_loans_bn": 183.6},
+        {"period": "2025-06-30", "stage1_bn": 168.0, "stage2_bn": 15.8, "stage2_ratio": 8.8, "stage3_bn": 3.1, "npl_ratio": 1.7, "total_loans_bn": 186.9}
+      ]
+    },
+    {
+      "id": "PL001", "name": "PKO Bank Polski", "country": "PL", "country_name": "Poland",
+      "total_assets_bn": 104.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 39.8, "stage2_bn": 6.4, "stage2_ratio": 13.3, "stage3_bn": 2.6, "npl_ratio": 5.4, "total_loans_bn": 48.8},
+        {"period": "2024-06-30", "stage1_bn": 40.6, "stage2_bn": 6.8, "stage2_ratio": 13.8, "stage3_bn": 2.7, "npl_ratio": 5.5, "total_loans_bn": 50.1},
+        {"period": "2024-12-31", "stage1_bn": 41.4, "stage2_bn": 7.1, "stage2_ratio": 14.1, "stage3_bn": 2.8, "npl_ratio": 5.6, "total_loans_bn": 51.3},
+        {"period": "2025-06-30", "stage1_bn": 42.2, "stage2_bn": 7.3, "stage2_ratio": 14.3, "stage3_bn": 2.9, "npl_ratio": 5.7, "total_loans_bn": 52.4}
+      ]
+    },
+    {
+      "id": "PL002", "name": "Bank Pekao", "country": "PL", "country_name": "Poland",
+      "total_assets_bn": 79.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 31.4, "stage2_bn": 4.6, "stage2_ratio": 13.0, "stage3_bn": 1.8, "npl_ratio": 5.1, "total_loans_bn": 37.8},
+        {"period": "2024-06-30", "stage1_bn": 32.0, "stage2_bn": 4.9, "stage2_ratio": 13.6, "stage3_bn": 1.9, "npl_ratio": 5.3, "total_loans_bn": 39.0},
+        {"period": "2024-12-31", "stage1_bn": 32.6, "stage2_bn": 5.1, "stage2_ratio": 13.9, "stage3_bn": 2.0, "npl_ratio": 5.5, "total_loans_bn": 39.7},
+        {"period": "2025-06-30", "stage1_bn": 33.2, "stage2_bn": 5.3, "stage2_ratio": 14.2, "stage3_bn": 2.1, "npl_ratio": 5.6, "total_loans_bn": 40.6}
+      ]
+    },
+    {
+      "id": "PT001", "name": "Caixa Geral de Depósitos", "country": "PT", "country_name": "Portugal",
+      "total_assets_bn": 131.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 54.6, "stage2_bn": 6.0, "stage2_ratio": 9.8, "stage3_bn": 1.9, "npl_ratio": 3.1, "total_loans_bn": 62.5},
+        {"period": "2024-06-30", "stage1_bn": 55.6, "stage2_bn": 5.9, "stage2_ratio": 9.5, "stage3_bn": 1.9, "npl_ratio": 3.1, "total_loans_bn": 63.4},
+        {"period": "2024-12-31", "stage1_bn": 56.8, "stage2_bn": 5.8, "stage2_ratio": 9.2, "stage3_bn": 1.8, "npl_ratio": 2.8, "total_loans_bn": 64.6},
+        {"period": "2025-06-30", "stage1_bn": 58.0, "stage2_bn": 5.6, "stage2_ratio": 8.8, "stage3_bn": 1.7, "npl_ratio": 2.7, "total_loans_bn": 65.3}
+      ]
+    },
+    {
+      "id": "PT002", "name": "Millennium BCP", "country": "PT", "country_name": "Portugal",
+      "total_assets_bn": 84.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 37.8, "stage2_bn": 4.4, "stage2_ratio": 10.4, "stage3_bn": 1.6, "npl_ratio": 3.8, "total_loans_bn": 43.8},
+        {"period": "2024-06-30", "stage1_bn": 38.6, "stage2_bn": 4.3, "stage2_ratio": 10.0, "stage3_bn": 1.6, "npl_ratio": 3.7, "total_loans_bn": 43.9},
+        {"period": "2024-12-31", "stage1_bn": 39.4, "stage2_bn": 4.2, "stage2_ratio": 9.6, "stage3_bn": 1.5, "npl_ratio": 3.4, "total_loans_bn": 45.1},
+        {"period": "2025-06-30", "stage1_bn": 40.2, "stage2_bn": 4.0, "stage2_ratio": 9.1, "stage3_bn": 1.4, "npl_ratio": 3.2, "total_loans_bn": 45.6}
+      ]
+    },
+    {
+      "id": "RO001", "name": "Banca Transilvania", "country": "RO", "country_name": "Romania",
+      "total_assets_bn": 31.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 12.4, "stage2_bn": 1.6, "stage2_ratio": 11.4, "stage3_bn": 0.6, "npl_ratio": 4.3, "total_loans_bn": 14.6},
+        {"period": "2024-06-30", "stage1_bn": 12.8, "stage2_bn": 1.7, "stage2_ratio": 11.8, "stage3_bn": 0.6, "npl_ratio": 4.2, "total_loans_bn": 15.1},
+        {"period": "2024-12-31", "stage1_bn": 13.2, "stage2_bn": 1.8, "stage2_ratio": 12.2, "stage3_bn": 0.7, "npl_ratio": 4.7, "total_loans_bn": 15.5},
+        {"period": "2025-06-30", "stage1_bn": 13.6, "stage2_bn": 1.9, "stage2_ratio": 12.5, "stage3_bn": 0.8, "npl_ratio": 5.3, "total_loans_bn": 15.9}
+      ]
+    },
+    {
+      "id": "SE001", "name": "Handelsbanken", "country": "SE", "country_name": "Sweden",
+      "total_assets_bn": 384.2,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 148.2, "stage2_bn": 13.8, "stage2_ratio": 8.5, "stage3_bn": 2.4, "npl_ratio": 1.5, "total_loans_bn": 164.4},
+        {"period": "2024-06-30", "stage1_bn": 150.8, "stage2_bn": 14.6, "stage2_ratio": 8.9, "stage3_bn": 2.5, "npl_ratio": 1.5, "total_loans_bn": 167.9},
+        {"period": "2024-12-31", "stage1_bn": 153.4, "stage2_bn": 15.4, "stage2_ratio": 9.3, "stage3_bn": 2.6, "npl_ratio": 1.6, "total_loans_bn": 171.4},
+        {"period": "2025-06-30", "stage1_bn": 156.0, "stage2_bn": 15.8, "stage2_ratio": 9.4, "stage3_bn": 2.7, "npl_ratio": 1.6, "total_loans_bn": 174.5}
+      ]
+    },
+    {
+      "id": "SE002", "name": "SEB", "country": "SE", "country_name": "Sweden",
+      "total_assets_bn": 401.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 158.2, "stage2_bn": 14.2, "stage2_ratio": 8.3, "stage3_bn": 2.6, "npl_ratio": 1.5, "total_loans_bn": 175.0},
+        {"period": "2024-06-30", "stage1_bn": 161.4, "stage2_bn": 15.0, "stage2_ratio": 8.7, "stage3_bn": 2.7, "npl_ratio": 1.6, "total_loans_bn": 178.1},
+        {"period": "2024-12-31", "stage1_bn": 164.8, "stage2_bn": 15.8, "stage2_ratio": 9.0, "stage3_bn": 2.8, "npl_ratio": 1.6, "total_loans_bn": 183.4},
+        {"period": "2025-06-30", "stage1_bn": 168.2, "stage2_bn": 16.4, "stage2_ratio": 9.2, "stage3_bn": 2.9, "npl_ratio": 1.6, "total_loans_bn": 187.5}
+      ]
+    },
+    {
+      "id": "SE003", "name": "Swedbank", "country": "SE", "country_name": "Sweden",
+      "total_assets_bn": 354.6,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 132.8, "stage2_bn": 12.4, "stage2_ratio": 8.6, "stage3_bn": 2.2, "npl_ratio": 1.5, "total_loans_bn": 147.4},
+        {"period": "2024-06-30", "stage1_bn": 135.2, "stage2_bn": 13.1, "stage2_ratio": 9.0, "stage3_bn": 2.3, "npl_ratio": 1.6, "total_loans_bn": 150.6},
+        {"period": "2024-12-31", "stage1_bn": 137.8, "stage2_bn": 13.8, "stage2_ratio": 9.4, "stage3_bn": 2.4, "npl_ratio": 1.6, "total_loans_bn": 154.0},
+        {"period": "2025-06-30", "stage1_bn": 140.4, "stage2_bn": 14.2, "stage2_ratio": 9.6, "stage3_bn": 2.5, "npl_ratio": 1.7, "total_loans_bn": 157.1}
+      ]
+    },
+    {
+      "id": "SE004", "name": "Nordea Bank", "country": "SE", "country_name": "Sweden",
+      "total_assets_bn": 642.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 233.4, "stage2_bn": 20.4, "stage2_ratio": 8.0, "stage3_bn": 3.6, "npl_ratio": 1.4, "total_loans_bn": 257.4},
+        {"period": "2024-06-30", "stage1_bn": 237.2, "stage2_bn": 21.4, "stage2_ratio": 8.4, "stage3_bn": 3.8, "npl_ratio": 1.5, "total_loans_bn": 262.4},
+        {"period": "2024-12-31", "stage1_bn": 241.4, "stage2_bn": 22.2, "stage2_ratio": 8.6, "stage3_bn": 3.9, "npl_ratio": 1.5, "total_loans_bn": 267.5},
+        {"period": "2025-06-30", "stage1_bn": 245.8, "stage2_bn": 22.8, "stage2_ratio": 8.7, "stage3_bn": 4.0, "npl_ratio": 1.5, "total_loans_bn": 272.6}
+      ]
+    },
+    {
+      "id": "SI001", "name": "Nova Ljubljanska Banka (NLB)", "country": "SI", "country_name": "Slovenia",
+      "total_assets_bn": 23.8,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 10.2, "stage2_bn": 1.2, "stage2_ratio": 10.3, "stage3_bn": 0.4, "npl_ratio": 3.4, "total_loans_bn": 11.8},
+        {"period": "2024-06-30", "stage1_bn": 10.5, "stage2_bn": 1.2, "stage2_ratio": 10.4, "stage3_bn": 0.4, "npl_ratio": 3.5, "total_loans_bn": 12.1},
+        {"period": "2024-12-31", "stage1_bn": 10.8, "stage2_bn": 1.3, "stage2_ratio": 10.6, "stage3_bn": 0.4, "npl_ratio": 3.3, "total_loans_bn": 12.5},
+        {"period": "2025-06-30", "stage1_bn": 11.1, "stage2_bn": 1.3, "stage2_ratio": 10.5, "stage3_bn": 0.4, "npl_ratio": 3.2, "total_loans_bn": 12.8}
+      ]
+    },
+    {
+      "id": "SK001", "name": "Slovenská sporiteľňa (Erste SK)", "country": "SK", "country_name": "Slovakia",
+      "total_assets_bn": 19.4,
+      "history": [
+        {"period": "2023-12-31", "stage1_bn": 8.2, "stage2_bn": 0.9, "stage2_ratio": 9.6, "stage3_bn": 0.3, "npl_ratio": 3.2, "total_loans_bn": 9.4},
+        {"period": "2024-06-30", "stage1_bn": 8.5, "stage2_bn": 0.9, "stage2_ratio": 9.8, "stage3_bn": 0.3, "npl_ratio": 3.3, "total_loans_bn": 9.7},
+        {"period": "2024-12-31", "stage1_bn": 8.8, "stage2_bn": 1.0, "stage2_ratio": 10.2, "stage3_bn": 0.3, "npl_ratio": 3.1, "total_loans_bn": 10.1},
+        {"period": "2025-06-30", "stage1_bn": 9.1, "stage2_bn": 1.0, "stage2_ratio": 10.1, "stage3_bn": 0.3, "npl_ratio": 3.0, "total_loans_bn": 10.3}
+      ]
+    }
+  ]
+}
