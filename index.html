@@ -973,8 +973,8 @@ function openBank(bank) {
       <tbody>${bank.history.map(h=>`<tr style="border-bottom:1px solid var(--line2)">
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${h.period}</td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px">${fbn(h.stage1_bn)}</td>
-        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?''#fbbf24'':'var(--text)'}"><strong>${fbn(h.stage2_bn)}</strong></td>
-        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?''#fbbf24'':'var(--text)'}"><strong>${f1(h.stage2_ratio)}%</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#fbbf24':'var(--text)'}"><strong>${fbn(h.stage2_bn)}</strong></td>
+        <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.stage2_ratio>=12?'#fbbf24':'var(--text)'}"><strong>${f1(h.stage2_ratio)}%</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${fbn(h.stage3_bn)}</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${h.npl_ratio>=4?'var(--s3-color)':'var(--text)'}"><strong>${f1(h.npl_ratio)}%</strong></td>
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${fbn(h.total_loans_bn)}</td>
@@ -988,7 +988,7 @@ function openBank(bank) {
     <div style="background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:12px 14px">
       <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);margin-bottom:6px;font-family:'JetBrains Mono',monospace">📡 Credit Signal</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="font-size:12px;color:var(--text3)">Stage 2: <span style="color:${s2trend==='rising'?''#fbbf24'':s2trend==='declining'?'var(--green)':'var(--text2)'}">${s2trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s2ch>0?'+':''}${f1(s2ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
+        <div style="font-size:12px;color:var(--text3)">Stage 2: <span style="color:${s2trend==='rising'?'#fbbf24':s2trend==='declining'?'var(--green)':'var(--text2)'}">${s2trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s2ch>0?'+':''}${f1(s2ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
         <div style="font-size:12px;color:var(--text3)">NPL: <span style="color:${s3trend==='rising'?'var(--s3-color)':s3trend==='declining'?'var(--green)':'var(--text2)'}">${s3trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s3ch>0?'+':''}${f1(s3ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
       </div>
     </div>`;
