@@ -761,13 +761,31 @@ function renderOverview() {
   ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
  
   // Signals
-  const rising = banks.filter(b=>ratioChange(b)>1.0);
-  const topR = [...rising].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
+  // Use 0.3pp threshold — appropriate for a 9-month observation window (Sep 2024 – Jun 2025)
+  const rising = banks.filter(b=>ratioChange(b)>0.3);
+  const falling = banks.filter(b=>ratioChange(b)<-0.3);
+  const topR = [...banks].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
   if (PAGE==='s2') {
-    document.getElementById('sig-body-s2').textContent = `Stage 2 balances have risen across ${rising.length} of ${banks.length} tracked banks since ${pl[0]}. Total Stage 2 is up €${f1(delta)}bn (+${pct}%). Largest increases: ${topR.map(b=>b.name.split(' ').slice(0,2).join(' ')+' (+'+f1(ratioChange(b))+'pp)').join(', ')}. Rising Stage 2 historically precedes NPL supply increases by 6–18 months.`;
+    const moverText = topR.map(b=>{
+      const ch = ratioChange(b);
+      const shortName = b.name.split(' ').slice(0,2).join(' ');
+      return `${shortName} (${ch>0?'+':''}${f1(ch)}pp)`;
+    }).join(', ');
+    const trendSummary = rising.length > falling.length
+      ? `Stage 2 ratios are rising at ${rising.length} of ${banks.length} tracked banks`
+      : falling.length > rising.length
+      ? `Stage 2 ratios are declining at ${falling.length} of ${banks.length} banks, with ${rising.length} still moving higher`
+      : `Stage 2 ratios are broadly stable across the ${banks.length}-bank panel`;
+    document.getElementById('sig-body-s2').textContent = `${trendSummary} since ${pl[0]}. Total Stage 2 across the panel is ${delta>=0?'up':'down'} €${f1(Math.abs(delta))}bn (${delta>=0?'+':''}${pct}%) to €${f0(totalVal)}bn. Largest movers: ${moverText}. Elevated Stage 2 historically precedes NPL supply increases by 6–18 months — monitor closely for deal flow implications.`;
   } else {
-    const fallingNPL = banks.filter(b=>ratioChange(b)<-0.2);
-    document.getElementById('sig-body-s3').textContent = `EU/EEA aggregate NPL ratio stands at 1.84% at Jun 2025 (EBA). ${fallingNPL.length} of ${banks.length} tracked banks show declining NPL ratios — Southern Europe (IT, ES, GR, PT, CY) continues clean-up. Key divergence: Germany and France reporting NPL increases; Romania +25% YoY per EBA December 2025 RAR. Total Stage 3 across panel: €${f0(totalVal)}bn.`;
+    const risingNPL = banks.filter(b=>ratioChange(b)>0.3);
+    const fallingNPL = banks.filter(b=>ratioChange(b)<-0.3);
+    const topNPL = [...banks].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
+    const nplMoverText = topNPL.map(b=>{
+      const ch = ratioChange(b);
+      return `${b.name.split(' ').slice(0,2).join(' ')} (${ch>0?'+':''}${f1(ch)}pp)`;
+    }).join(', ');
+    document.getElementById('sig-body-s3').textContent = `EU/EEA aggregate NPL ratio: 1.84% at Jun 2025 (EBA Risk Dashboard). Across this panel, ${risingNPL.length} banks show rising NPL ratios and ${fallingNPL.length} show declining ratios since ${pl[0]}. Total Stage 3 stock: €${f0(totalVal)}bn. Fastest deterioration: ${nplMoverText}. Romania and Bulgaria remain the highest-ratio markets; Italian and Greek banks continue gradual clean-up.`;
   }
  
   // Charts
