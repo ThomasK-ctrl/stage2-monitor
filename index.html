@@ -766,24 +766,29 @@ function renderOverview() {
   const falling = banks.filter(b=>ratioChange(b)<-0.3);
   const topR = [...banks].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
   if (PAGE==='s2') {
+    // Clean bank name: strip parenthetical suffixes e.g. "BCR (Erste RO)" → "BCR"
+    const cleanName = b => b.name.includes('(') ? b.name.split('(')[0].trim() : b.name.split(' ').slice(0,2).join(' ');
     const moverText = topR.map(b=>{
       const ch = ratioChange(b);
-      const shortName = b.name.split(' ').slice(0,2).join(' ');
-      return `${shortName} (${ch>0?'+':''}${f1(ch)}pp)`;
+      return `${cleanName(b)} (${ch>0?'+':''}${f1(ch)}pp)`;
     }).join(', ');
-    const trendSummary = rising.length > falling.length
-      ? `Stage 2 ratios are rising at ${rising.length} of ${banks.length} tracked banks`
-      : falling.length > rising.length
-      ? `Stage 2 ratios are declining at ${falling.length} of ${banks.length} banks, with ${rising.length} still moving higher`
-      : `Stage 2 ratios are broadly stable across the ${banks.length}-bank panel`;
-    document.getElementById('sig-body-s2').textContent = `${trendSummary} since ${pl[0]}. Total Stage 2 across the panel is ${delta>=0?'up':'down'} €${f1(Math.abs(delta))}bn (${delta>=0?'+':''}${pct}%) to €${f0(totalVal)}bn. Largest movers: ${moverText}. Elevated Stage 2 historically precedes NPL supply increases by 6–18 months — monitor closely for deal flow implications.`;
+    let trendSummary;
+    if (rising.length > falling.length) {
+      trendSummary = `Stage 2 ratios are deteriorating at ${rising.length} of ${banks.length} tracked banks`;
+    } else if (falling.length > rising.length) {
+      trendSummary = `Stage 2 ratios are improving at ${falling.length} of ${banks.length} banks, though ${rising.length} institutions show continued deterioration`;
+    } else {
+      trendSummary = `Stage 2 ratios are broadly stable across the ${banks.length}-bank panel`;
+    }
+    document.getElementById('sig-body-s2').textContent = `${trendSummary} since ${pl[0]}. Aggregate Stage 2 stock is ${delta>=0?'up':'down'} €${f1(Math.abs(delta))}bn (${delta>=0?'+':''}${pct}%) to €${f0(totalVal)}bn. Largest movers: ${moverText}. Rising Stage 2 historically precedes NPL supply increases by 6–18 months — elevated ratios signal forward deal flow for NPL investors.`;
   } else {
     const risingNPL = banks.filter(b=>ratioChange(b)>0.3);
     const fallingNPL = banks.filter(b=>ratioChange(b)<-0.3);
     const topNPL = [...banks].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
+    const cleanNPLName = b => b.name.includes('(') ? b.name.split('(')[0].trim() : b.name.split(' ').slice(0,2).join(' ');
     const nplMoverText = topNPL.map(b=>{
       const ch = ratioChange(b);
-      return `${b.name.split(' ').slice(0,2).join(' ')} (${ch>0?'+':''}${f1(ch)}pp)`;
+      return `${cleanNPLName(b)} (${ch>0?'+':''}${f1(ch)}pp)`;
     }).join(', ');
     document.getElementById('sig-body-s3').textContent = `EU/EEA aggregate NPL ratio: 1.84% at Jun 2025 (EBA Risk Dashboard). Across this panel, ${risingNPL.length} banks show rising NPL ratios and ${fallingNPL.length} show declining ratios since ${pl[0]}. Total Stage 3 stock: €${f0(totalVal)}bn. Fastest deterioration: ${nplMoverText}. Romania and Bulgaria remain the highest-ratio markets; Italian and Greek banks continue gradual clean-up.`;
   }
