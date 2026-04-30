@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EBA Credit Monitor — Stage 2 & NPL Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ── TOKENS ── */
@@ -34,12 +34,12 @@
   --active-s3:  var(--s3-color);
   --r: 8px;
 }
-
+ 
 /* ── RESET ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -48,16 +48,17 @@ body {
 }
 button { cursor:pointer; font-family:inherit; }
 a { color:inherit; text-decoration:none; }
-
+ 
 /* ── TOP BAR ── */
 .topbar {
-  height: 52px;
+  height: 48px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
   display: flex; align-items: center;
-  padding: 0 24px;
-  gap: 20px;
+  padding: 0 20px;
+  gap: 16px;
   position: sticky; top: 0; z-index: 200;
+  letter-spacing: 0.01em;
 }
 .topbar-logo {
   display: flex; align-items: center; gap: 10px;
@@ -65,47 +66,53 @@ a { color:inherit; text-decoration:none; }
 }
 .logo-gem { display: none; }
 .logo-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px; font-weight: 700; color: var(--text);
-  letter-spacing: -0.01em;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 700; color: var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .topbar-divider { width: 1px; height: 20px; background: var(--line); flex-shrink:0; }
-
+ 
 /* Page tabs in topbar */
 .page-tabs { display: flex; gap: 2px; }
 .page-tab {
-  padding: 5px 14px; border-radius: 6px;
-  font-size: 12px; font-weight: 500;
+  padding: 5px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
   border: 1px solid transparent;
   background: none; color: var(--text2);
-  transition: all 0.2s; letter-spacing: 0.02em;
+  transition: all 0.2s; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
 }
 .page-tab:hover { color: var(--text); background: var(--surface2); }
 .page-tab.active-s2 { background: var(--s2-dim); border-color: var(--s2-border); color: var(--s2-color); }
 .page-tab.active-s3 { background: var(--s3-dim); border-color: var(--s3-border); color: var(--s3-color); }
-
+ 
 .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .eba-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--text3);
+  font-size: 9px; color: var(--text3);
   background: var(--surface2);
   border: 1px solid var(--line);
-  padding: 3px 9px; border-radius: 4px;
+  padding: 3px 9px; border-radius: 3px;
   display: flex; align-items: center; gap: 6px;
+  letter-spacing: 0.05em;
 }
 .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .how-btn {
-  font-size: 11px; font-weight: 500;
+  font-size: 10px; font-weight: 600;
   background: var(--surface2); border: 1px solid var(--line);
   color: var(--text2); padding: 4px 12px;
-  border-radius: 5px; transition: all 0.2s;
+  border-radius: 3px; transition: all 0.2s;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
 }
 .how-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.12); }
-
+ 
 /* ── LAYOUT ── */
-.layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 52px); }
-
+.layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 52px); }
+ 
 /* ── SIDEBAR ── */
 .sidebar {
   background: var(--surface);
@@ -124,16 +131,17 @@ a { color:inherit; text-decoration:none; }
   border-radius: 6px;
   padding: 7px 10px;
   font-size: 12px; color: var(--text);
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   outline: none; width: calc(100% - 24px);
 }
 .sb-search::placeholder { color: var(--text3); }
 .sb-search:focus { border-color: rgba(255,255,255,0.1); }
 .sb-section-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.15em;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--text3);
-  padding: 10px 16px 5px;
+  padding: 12px 16px 5px;
+  font-weight: 600;
 }
 .sb-item {
   display: flex; align-items: center; justify-content: space-between;
@@ -142,7 +150,7 @@ a { color:inherit; text-decoration:none; }
   border: none; background: none;
   width: 100%; text-align: left;
   transition: all 0.15s; border-radius: 0;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .sb-item:hover { background: var(--surface2); color: var(--text); }
 .sb-item.active { color: var(--text); background: var(--surface3); }
@@ -154,40 +162,43 @@ a { color:inherit; text-decoration:none; }
   background: var(--surface3);
   padding: 1px 6px; border-radius: 10px;
 }
-
+ 
 /* ── MAIN ── */
-.main { padding: 28px 32px; min-height: calc(100vh - 52px); }
+.main { padding: 24px 28px; min-height: calc(100vh - 48px); }
 .page { display:none; }
 .page.active { display:block; animation: fadein 0.25s ease; }
 @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
+ 
 /* ── PAGE HEADER ── */
-.page-header { margin-bottom: 24px; }
+.page-header { margin-bottom: 24px; overflow: visible; padding-bottom: 2px; }
 .ph-top { display:flex; justify-content:space-between; align-items:flex-start; }
 .ph-badge {
   display: inline-flex; align-items:center; gap:6px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.1em;
+  font-size: 9px; letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 4px 10px; border-radius: 4px;
-  margin-bottom: 8px;
+  padding: 3px 8px; border-radius: 3px;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 .ph-badge.s2 { background: var(--s2-dim); border: 1px solid var(--s2-border); color: var(--s2-color); }
 .ph-badge.s3 { background: var(--s3-dim); border: 1px solid var(--s3-border); color: var(--s3-color); }
 .ph-title {
   font-family: 'Syne', sans-serif;
-  font-size: 26px; font-weight: 700;
-  color: var(--text); line-height: 1.35;
+  font-size: 24px; font-weight: 700;
+  color: var(--text); line-height: 1.45;
   letter-spacing: -0.02em;
-  padding-bottom: 2px;
+  overflow: visible;
+  padding-bottom: 4px;
 }
-.ph-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.ph-sub { font-size: 12.5px; color: var(--text2); margin-top: 4px; font-weight: 400; letter-spacing: 0.01em; line-height: 1.5; }
 .ph-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--text3);
-  text-align: right; line-height: 1.8;
+  font-size: 9px; color: var(--text3);
+  text-align: right; line-height: 2.0;
+  letter-spacing: 0.05em;
 }
-
+ 
 /* ── SIGNAL CARD ── */
 .signal-card {
   border-radius: var(--r);
@@ -195,39 +206,40 @@ a { color:inherit; text-decoration:none; }
   margin-bottom: 20px;
   display: flex; gap:14px; align-items:flex-start;
 }
-.signal-card.s2 { background: var(--s2-dim); border:1px solid var(--s2-border); }
-.signal-card.s3 { background: var(--s3-dim); border:1px solid var(--s3-border); }
+.signal-card.s2 { background: var(--s2-dim); border:1px solid var(--s2-border); border-left: 3px solid var(--s2-color); }
+.signal-card.s3 { background: var(--s3-dim); border:1px solid var(--s3-border); border-left: 3px solid var(--s3-color); }
 .sc-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
-.sc-title { font-size:12px; font-weight:600; margin-bottom:3px; }
+.sc-title { font-size:9px; font-weight:700; margin-bottom:4px; letter-spacing:0.14em; text-transform:uppercase; font-family:'Inter',sans-serif; }
 .sc-title.s2 { color: var(--s2-color); }
 .sc-title.s3 { color: var(--s3-color); }
-.sc-body { font-size:12.5px; color: var(--text2); line-height:1.55; }
-
+.sc-body { font-size:12px; color: var(--text2); line-height:1.65; font-family:'Inter',sans-serif; font-weight:400; }
+ 
 /* ── KPI STRIP ── */
 .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
 .kpi {
   background: var(--surface);
   border: 1px solid var(--line);
+  border-top: 2px solid var(--line);
   border-radius: var(--r);
-  padding: 16px 18px;
+  padding: 14px 16px;
 }
 .kpi-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.12em;
+  font-size: 9px; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--text3);
-  margin-bottom: 8px;
+  margin-bottom: 6px; font-weight: 500;
 }
 .kpi-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 26px; font-weight: 700; line-height:1;
-  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 24px; font-weight: 500; line-height:1;
+  color: var(--text); letter-spacing: -0.02em;
 }
-.kpi-sub { font-size:11px; color: var(--text3); margin-top:5px; font-family:'JetBrains Mono',monospace; }
-.kpi-delta { font-family:'JetBrains Mono',monospace; font-size:11px; margin-top:4px; }
+.kpi-sub { font-size:10px; color: var(--text3); margin-top:4px; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
+.kpi-delta { font-family:'JetBrains Mono',monospace; font-size:10px; margin-top:4px; letter-spacing:0.02em; }
 .up { color: var(--s3-color); }
 .dn { color: var(--green); }
 .fl { color: var(--text3); }
-
+ 
 /* ── CHART GRID ── */
 .chart-row { display:grid; gap:12px; margin-bottom:12px; }
 .chart-row.two { grid-template-columns:1fr 1fr; }
@@ -237,20 +249,21 @@ a { color:inherit; text-decoration:none; }
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r);
-  padding: 18px 20px;
+  padding: 16px 18px;
 }
 .cc-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
-.cc-title { font-size:13px; font-weight:600; color:var(--text); }
-.cc-sub { font-size:11px; color:var(--text3); margin-top:2px; }
+.cc-title { font-size:12px; font-weight:600; color:var(--text); letter-spacing:0.02em; text-transform: uppercase; font-family:'Inter',sans-serif; }
+.cc-sub { font-size:10.5px; color:var(--text3); margin-top:3px; font-family:'JetBrains Mono',monospace; letter-spacing:0.03em; }
 .cc-tag {
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px; background:var(--surface2);
+  font-family:'Inter',sans-serif;
+  font-size:8.5px; background:var(--surface2);
   border:1px solid var(--line); color:var(--text3);
-  padding:2px 7px; border-radius:3px;
-  flex-shrink:0;
+  padding:2px 7px; border-radius:2px;
+  flex-shrink:0; letter-spacing:0.08em;
+  text-transform:uppercase; font-weight:600;
 }
 canvas { max-width:100%; }
-
+ 
 /* ── TABLE CARD ── */
 .tbl-card {
   background: var(--surface);
@@ -276,9 +289,9 @@ canvas { max-width:100%; }
 table { width:100%; border-collapse:collapse; min-width:680px; }
 thead th {
   padding:9px 14px;
-  font-family:'JetBrains Mono',monospace;
+  font-family:'Inter',sans-serif;
   font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--text3); font-weight:500;
+  color:var(--text3); font-weight:600;
   border-bottom:1px solid var(--line);
   text-align:left; white-space:nowrap;
   cursor:pointer; user-select:none;
@@ -288,30 +301,30 @@ tbody tr { border-bottom:1px solid var(--line2); transition:background 0.1s; cur
 tbody tr:hover { background:var(--surface2); }
 tbody tr:last-child { border-bottom:none; }
 tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
-.td-bank { font-weight:500; color:var(--text); font-size:13px; }
+.td-bank { font-weight:500; color:var(--text); font-size:12.5px; font-family:'Inter',sans-serif; }
 .td-country { font-size:11px; color:var(--text3); margin-top:1px; }
-.mono { font-family:'JetBrains Mono',monospace; }
-
+.mono { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:-0.01em; }
+ 
 /* ── SPARKLINE ── */
 .spark { display:inline-flex; align-items:flex-end; gap:2px; height:24px; vertical-align:middle; }
 .spark-b { width:7px; border-radius:2px 2px 0 0; background:var(--surface3); min-height:2px; }
 .spark-b.last { background: var(--s2-color); }
 .spark-b.s3last { background: var(--s3-color); }
-
+ 
 /* ── BADGES ── */
 .badge {
   display:inline-flex; align-items:center; gap:3px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px; font-weight:600;
-  padding:2px 7px; border-radius:3px;
-  letter-spacing:0.05em; text-transform:uppercase;
+  font-family:'Inter',sans-serif;
+  font-size:8.5px; font-weight:700;
+  padding:2px 7px; border-radius:2px;
+  letter-spacing:0.10em; text-transform:uppercase;
   white-space:nowrap;
 }
 .b-ok    { background:rgba(74,222,128,0.12); color:var(--green); border:1px solid rgba(74,222,128,0.25); }
 .b-watch { background:rgba(251,191,36,0.12); color:#fbbf24; border:1px solid rgba(251,191,36,0.28); }
 .b-high  { background:rgba(251,146,60,0.12); color:#fb923c; border:1px solid rgba(251,146,60,0.28); }
 .b-crit  { background:rgba(248,113,113,0.12); color:var(--s3-color); border:1px solid rgba(248,113,113,0.28); }
-
+ 
 /* ── COUNTRY VIEW ── */
 .country-header {
   display:flex; align-items:center; gap:12px;
@@ -320,7 +333,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .ch-flag { font-size:32px; }
 .ch-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; }
 .ch-meta { font-size:12px; color:var(--text3); }
-
+ 
 /* ── MODAL ── */
 .overlay {
   display:none; position:fixed; inset:0;
@@ -338,7 +351,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
   padding:28px;
 }
 .modal-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
-.modal-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:700; }
+.modal-title { font-family:'Inter',sans-serif; font-size:16px; font-weight:700; letter-spacing:-0.01em; }
 .modal-sub { font-size:12px; color:var(--text3); margin-top:4px; }
 .close-btn {
   background:none; border:none; color:var(--text3);
@@ -346,7 +359,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 }
 .close-btn:hover { color:var(--text); }
 .modal-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
-
+ 
 /* ── HOW TO UPDATE MODAL ── */
 .update-modal { max-width: 560px; }
 .code-block {
@@ -366,16 +379,16 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 }
 .step-body { font-size:13px; color:var(--text2); line-height:1.6; }
 .step-body strong { color:var(--text); }
-
+ 
 /* ── DEFINITION ── */
 .def-box {
   background:var(--surface2); border:1px solid var(--line);
   border-left:2px solid var(--blue);
   border-radius:var(--r); padding:14px 16px; margin-bottom:12px;
 }
-.def-title { font-size:11px; font-weight:600; color:var(--blue); margin-bottom:5px; font-family:'JetBrains Mono',monospace; letter-spacing:0.06em; }
-.def-body { font-size:12.5px; color:var(--text2); line-height:1.65; }
-
+.def-title { font-size:9px; font-weight:600; color:var(--blue); margin-bottom:6px; font-family:'Inter',sans-serif; letter-spacing:0.14em; text-transform:uppercase; }
+.def-body { font-size:12px; color:var(--text2); line-height:1.75; font-family:'Inter',sans-serif; font-weight:400; }
+ 
 /* ── WATCHLIST ── */
 .wl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
 .wl-card {
@@ -387,25 +400,26 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .wl-card.s2-alert { border-left-color: var(--s2-color); }
 .wl-card.s3-alert { border-left-color: var(--s3-color); }
 .wl-card.both-alert { border-left-color: var(--s3-color); background: rgba(248,113,113,0.05); }
-.wl-bank { font-size:13px; font-weight:600; color:var(--text); }
+.wl-bank { font-size:12.5px; font-weight:600; color:var(--text); font-family:'Inter',sans-serif; letter-spacing:0.01em; }
 .wl-country { font-size:11px; color:var(--text3); margin-bottom:8px; }
 .wl-ratios { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
 .wl-ratio { }
 .wl-r-label { font-size:9px; font-family:'JetBrains Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; color:var(--text3); }
-.wl-r-val { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; line-height:1; }
-
+.wl-r-val { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:500; line-height:1; letter-spacing:-0.02em; }
+ 
 /* ── SCATTER HINT ── */
 .scatter-hint { font-size:11px; color:var(--text3); text-align:center; margin-top:8px; font-family:'JetBrains Mono',monospace; }
-
+ 
 /* ── FOOTER ── */
 .footer-bar {
-  padding:14px 32px;
+  padding:12px 32px;
   border-top:1px solid var(--line);
   display:flex; justify-content:space-between;
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; color:var(--text3);
+  font-size:9px; color:var(--text3);
+  letter-spacing:0.06em;
 }
-
+ 
 @media(max-width:1024px) {
   .layout { grid-template-columns:1fr; }
   .sidebar { display:none; }
@@ -416,7 +430,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 </style>
 </head>
 <body>
-
+ 
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-logo">
@@ -433,9 +447,9 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
     <button class="how-btn" onclick="openUpdateModal()">⟳ Update Data</button>
   </div>
 </header>
-
+ 
 <div class="layout">
-
+ 
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <input class="sb-search" type="text" placeholder="Search…" oninput="filterSidebar(this.value)" id="sb-input">
@@ -446,56 +460,56 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
   <div class="sb-section-label">Countries</div>
   <div id="country-nav"></div>
 </aside>
-
+ 
 <!-- MAIN CONTENT -->
 <main class="main">
-
+ 
   <!-- ── OVERVIEW ── -->
   <div class="page active" id="p-overview">
-
+ 
     <!-- S2 page header -->
     <div class="page-header" id="hdr-s2">
       <div class="ph-top">
         <div>
           <div class="ph-badge s2">⚠ Stage 2 — IFRS 9 Credit Deterioration Monitor</div>
-          <div class="ph-title">Stage 2 Loan Balance Tracker</div>
+          <div class="ph-title">Stage 2 — Credit Deterioration</div>
           <div class="ph-sub">Loans with significant credit risk increase since origination — the leading NPL indicator</div>
         </div>
         <div class="ph-meta" id="ph-meta-s2"></div>
       </div>
     </div>
-
+ 
     <!-- S3 page header -->
     <div class="page-header" id="hdr-s3" style="display:none">
       <div class="ph-top">
         <div>
           <div class="ph-badge s3">✕ Stage 3 — Non-Performing Loans (NPL)</div>
-          <div class="ph-title">NPL Tracker — Stage 3 Exposures</div>
+          <div class="ph-title">Stage 3 — Non-Performing Loans</div>
           <div class="ph-sub">Loans in default or with objective evidence of impairment — current and historical NPL stock</div>
         </div>
         <div class="ph-meta" id="ph-meta-s3"></div>
       </div>
     </div>
-
+ 
     <!-- Signal -->
     <div class="signal-card s2" id="signal-s2"><div class="sc-icon">📡</div><div><div class="sc-title s2">NPL Forward Supply Signal</div><div class="sc-body" id="sig-body-s2">Loading…</div></div></div>
     <div class="signal-card s3" id="signal-s3" style="display:none"><div class="sc-icon">📊</div><div><div class="sc-title s3">Current NPL Landscape</div><div class="sc-body" id="sig-body-s3">Loading…</div></div></div>
-
+ 
     <!-- KPIs -->
     <div class="kpi-strip" id="kpis"></div>
-
+ 
     <!-- Charts row 1 -->
     <div class="chart-row two" id="chart-r1">
       <div class="chart-card"><div class="cc-header"><div><div class="cc-title" id="cr1-title">Aggregate Trend</div><div class="cc-sub" id="cr1-sub">Total balance across all tracked banks (€bn)</div></div><span class="cc-tag">4 periods</span></div><canvas id="c-agg" height="175"></canvas></div>
       <div class="chart-card"><div class="cc-header"><div><div class="cc-title">By Country — Latest Period</div><div class="cc-sub" id="cr2-sub">Total balance per country (€bn)</div></div><span class="cc-tag" id="cr2-tag">Jun 2025</span></div><canvas id="c-country" height="175"></canvas></div>
     </div>
-
+ 
     <!-- Charts row 2 -->
     <div class="chart-row two">
       <div class="chart-card"><div class="cc-header"><div><div class="cc-title" id="top15-title">Top 15 Banks by Ratio</div><div class="cc-sub" id="top15-sub">Latest period — ranked</div></div><span class="cc-tag">Ranked</span></div><canvas id="c-top15" height="200"></canvas></div>
       <div class="chart-card"><div class="cc-header"><div><div class="cc-title">Ratio Distribution</div><div class="cc-sub">Banks per bucket — latest period</div></div><span class="cc-tag">Histogram</span></div><canvas id="c-dist" height="200"></canvas></div>
     </div>
-
+ 
     <!-- S2 vs S3 scatter — only shown on S2 page -->
     <div class="chart-row one" id="scatter-row">
       <div class="chart-card">
@@ -504,7 +518,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
         <div class="scatter-hint">Hover over dots for bank details · Bubble size = total assets</div>
       </div>
     </div>
-
+ 
     <!-- Definition -->
     <div class="def-box" id="def-s2">
       <div class="def-title">What is a Stage 2 Loan?</div>
@@ -514,9 +528,9 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
       <div class="def-title" style="color:var(--s3-color)">What is a Stage 3 Loan (NPL)?</div>
       <div class="def-body">A <strong style="color:var(--text)">Stage 3</strong> loan is credit-impaired — the borrower is more than 90 days past due or the bank has objective evidence of impairment. This is the regulatory definition of a <strong style="color:var(--text)">Non-Performing Loan (NPL)</strong> under IFRS 9 and EBA guidelines. Banks provision for lifetime ECL and full provisioning is required under the ECB's <strong style="color:var(--text)">prudential backstop</strong> within 7–9 years (secured) or 3 years (unsecured). NPL ratio = Stage 3 / Total Gross Loans. EU/EEA aggregate: <strong style="color:var(--s3-color)">1.84%</strong> at Jun 2025.</div>
     </div>
-
+ 
   </div>
-
+ 
   <!-- ── TABLE ── -->
   <div class="page" id="p-table">
     <div class="ph-top" style="margin-bottom:20px">
@@ -538,14 +552,14 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
       <div class="tbl-wrap"><table><thead id="tbl-head"><tr></tr></thead><tbody id="tbl-body"></tbody></table></div>
     </div>
   </div>
-
+ 
   <!-- ── WATCHLIST ── -->
   <div class="page" id="p-watchlist">
     <div class="ph-title" style="margin-bottom:6px" id="wl-title">Watchlist</div>
     <div class="ph-sub" style="margin-bottom:20px" id="wl-sub">Banks flagged for elevated ratios or significant upward trend</div>
     <div id="wl-content"></div>
   </div>
-
+ 
   <!-- ── COUNTRY ── -->
   <div class="page" id="p-country">
     <div class="country-header">
@@ -558,10 +572,10 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
       <div class="tbl-wrap"><table><thead id="c-tbl-head"><tr></tr></thead><tbody id="c-tbl-body"></tbody></table></div>
     </div>
   </div>
-
+ 
 </main>
 </div>
-
+ 
 <!-- BANK DETAIL MODAL -->
 <div class="overlay" id="bank-overlay" onclick="closeBank(event)">
   <div class="modal">
@@ -575,7 +589,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
     <div id="m-signal" style="margin-top:14px"></div>
   </div>
 </div>
-
+ 
 <!-- HOW TO UPDATE MODAL -->
 <div class="overlay" id="update-overlay" onclick="closeUpdate(event)">
   <div class="modal update-modal">
@@ -591,12 +605,12 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
     <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.18);border-radius:6px;padding:11px 14px;font-size:12px;color:rgba(34,197,94,0.8);font-family:'JetBrains Mono',monospace;">✓ EBA publishes new Transparency Exercise data every November. Run update_data.py after each publication.</div>
   </div>
 </div>
-
+ 
 <footer class="footer-bar">
   <span>Source: EBA EU-Wide Transparency Exercise 2025 · 119 banks · 25 countries</span>
   <span>Informational only. Not investment advice.</span>
 </footer>
-
+ 
 <script>
 // ═══════════════════════════════════════════════
 //  GLOBALS
@@ -608,7 +622,7 @@ let COUNTRY = null;
 let SORT = 'ratio'; let SORT_ASC = false;
 let charts = {};
 let modalChart = null;
-
+ 
 const CDEFAULTS = {
   plugins: {
     legend: { display:false },
@@ -619,7 +633,7 @@ const CDEFAULTS = {
     y: { grid:{ color:'rgba(255,255,255,0.07)' }, ticks:{ color:'#6b7590', font:{ family:'JetBrains Mono',size:9 } } }
   }
 };
-
+ 
 // ═══════════════════════════════════════════════
 //  HELPERS
 // ═══════════════════════════════════════════════
@@ -629,13 +643,13 @@ const f1 = n => n.toFixed(1);
 const f0 = n => n.toFixed(0);
 const fbn = n => '€'+f1(n)+'bn';
 const flag = cc => ({AT:'🇦🇹',BE:'🇧🇪',BG:'🇧🇬',CY:'🇨🇾',CZ:'🇨🇿',DE:'🇩🇪',DK:'🇩🇰',EE:'🇪🇪',ES:'🇪🇸',FI:'🇫🇮',FR:'🇫🇷',GR:'🇬🇷',HR:'🇭🇷',HU:'🇭🇺',IE:'🇮🇪',IS:'🇮🇸',IT:'🇮🇹',LI:'🇱🇮',LT:'🇱🇹',LU:'🇱🇺',LV:'🇱🇻',MT:'🇲🇹',NL:'🇳🇱',NO:'🇳🇴',PL:'🇵🇱',PT:'🇵🇹',RO:'🇷🇴',SE:'🇸🇪',SI:'🇸🇮',SK:'🇸🇰'}[cc]||'🏳');
-
+ 
 function ratio(b) { return PAGE==='s2' ? lat(b).stage2_ratio : lat(b).npl_ratio; }
 function absval(b) { return PAGE==='s2' ? lat(b).stage2_bn : lat(b).stage3_bn; }
 function ratioChange(b) { return PAGE==='s2' ? lat(b).stage2_ratio - fst(b).stage2_ratio : lat(b).npl_ratio - fst(b).npl_ratio; }
 function color() { return PAGE==='s2' ? '#fbbf24' : '#f87171'; }
 function colorDim() { return PAGE==='s2' ? 'rgba(251,191,36,0.16)' : 'rgba(248,113,113,0.13)'; }
-
+ 
 function riskBadge(r) {
   if (PAGE==='s2') {
     if (r>=15) return '<span class="badge b-crit">Critical</span>';
@@ -649,11 +663,11 @@ function riskBadge(r) {
     return '<span class="badge b-ok">Normal</span>';
   }
 }
-
+ 
 function destroyChart(id) {
   if (charts[id]) { charts[id].destroy(); delete charts[id]; }
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  LOAD
 // ═══════════════════════════════════════════════
@@ -667,13 +681,13 @@ async function loadData() {
   }
   init();
 }
-
+ 
 function init() {
   const banks = DATA.banks;
   const countries = [...new Set(banks.map(b=>b.country))].sort();
   document.getElementById('topbar-date').textContent = `EBA ${DATA.meta.exercise_year} · ${DATA.meta.last_updated}`;
   document.getElementById('cnt-all').textContent = banks.length;
-
+ 
   // Country nav
   const nav = document.getElementById('country-nav');
   nav.innerHTML = '';
@@ -685,10 +699,10 @@ function init() {
     btn.onclick=()=>showCountry(cc,btn);
     nav.appendChild(btn);
   });
-
+ 
   renderOverview();
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  PAGE SWITCH
 // ═══════════════════════════════════════════════
@@ -696,7 +710,7 @@ function switchPage(p) {
   PAGE = p;
   document.getElementById('tab-s2').className = p==='s2' ? 'page-tab active-s2' : 'page-tab';
   document.getElementById('tab-s3').className = p==='s3' ? 'page-tab active-s3' : 'page-tab';
-
+ 
   // Show/hide page-specific elements
   document.getElementById('hdr-s2').style.display = p==='s2' ? '' : 'none';
   document.getElementById('hdr-s3').style.display = p==='s3' ? '' : 'none';
@@ -705,18 +719,18 @@ function switchPage(p) {
   document.getElementById('def-s2').style.display = p==='s2' ? '' : 'none';
   document.getElementById('def-s3').style.display = p==='s3' ? '' : 'none';
   document.getElementById('scatter-row').style.display = p==='s2' ? '' : 'none';
-
+ 
   // Update watchlist count
   const wl = DATA.banks.filter(b => p==='s2' ? lat(b).stage2_ratio>=10 : lat(b).npl_ratio>=3);
   document.getElementById('cnt-watch').textContent = wl.length;
-
+ 
   // Re-render current view
   if (VIEW==='overview') renderOverview();
   else if (VIEW==='table') buildTable(COUNTRY ? DATA.banks.filter(b=>b.country===COUNTRY) : DATA.banks);
   else if (VIEW==='watchlist') buildWatchlist();
   else if (VIEW==='country' && COUNTRY) showCountry(COUNTRY, document.getElementById('nav-c-'+COUNTRY));
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  OVERVIEW
 // ═══════════════════════════════════════════════
@@ -724,7 +738,7 @@ function renderOverview() {
   const banks = DATA.banks;
   const p = DATA.meta.periods;
   const pl = DATA.meta.period_labels;
-
+ 
   // KPIs
   const totalVal  = banks.reduce((s,b)=>s+absval(b),0);
   const prevVal   = banks.reduce((s,b)=>s+(PAGE==='s2'?fst(b).stage2_bn:fst(b).stage3_bn),0);
@@ -734,10 +748,10 @@ function renderOverview() {
   const delta     = totalVal-prevVal;
   const pct       = ((delta/prevVal)*100).toFixed(1);
   const rDelta    = avgRatio-prevRatio;
-
+ 
   document.getElementById('ph-meta-s2').innerHTML = `${banks.length} banks · ${[...new Set(banks.map(b=>b.country))].length} countries<br>Latest: ${DATA.meta.last_updated}<br><span style="color:var(--s2-color)">EU/EEA Stage 2 avg: 9.1% (Q4 2025 RDB)</span>`;
   document.getElementById('ph-meta-s3').innerHTML = `${banks.length} banks · ${[...new Set(banks.map(b=>b.country))].length} countries<br>Latest: ${DATA.meta.last_updated}<br><span style="color:var(--s3-color)">EU/EEA NPL ratio: 1.84% at Jun 2025</span>`;
-
+ 
   const kpis = document.getElementById('kpis');
   kpis.innerHTML = [
     { label:'Banks Tracked', val:banks.length, sub:`${[...new Set(banks.map(b=>b.country))].length} countries`, delta:'' },
@@ -745,7 +759,7 @@ function renderOverview() {
     { label: PAGE==='s2'?'Avg Stage 2 Ratio':'Avg NPL Ratio', val:f1(avgRatio)+'%', sub:'Weighted across panel', delta:`<span class="${rDelta>0?'up':'dn'}">${rDelta>0?'+':''}${f1(rDelta)}pp vs ${pl[0]}</span>` },
     { label: PAGE==='s2'?'Banks ≥ 12%':'Banks NPL ≥ 4%', val:highRisk, sub:`${((highRisk/banks.length)*100).toFixed(0)}% of panel`, delta:'' }
   ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
-
+ 
   // Signals
   const rising = banks.filter(b=>ratioChange(b)>1.0);
   const topR = [...rising].sort((a,b)=>ratioChange(b)-ratioChange(a)).slice(0,3);
@@ -755,38 +769,38 @@ function renderOverview() {
     const fallingNPL = banks.filter(b=>ratioChange(b)<-0.2);
     document.getElementById('sig-body-s3').textContent = `EU/EEA aggregate NPL ratio stands at 1.84% at Jun 2025 (EBA). ${fallingNPL.length} of ${banks.length} tracked banks show declining NPL ratios — Southern Europe (IT, ES, GR, PT, CY) continues clean-up. Key divergence: Germany and France reporting NPL increases; Romania +25% YoY per EBA December 2025 RAR. Total Stage 3 across panel: €${f0(totalVal)}bn.`;
   }
-
+ 
   // Charts
   buildOverviewCharts(banks, p, pl);
 }
-
+ 
 function buildOverviewCharts(banks, p, pl) {
   // Aggregate trend
   destroyChart('agg'); destroyChart('country'); destroyChart('top15'); destroyChart('dist'); destroyChart('scatter');
-
+ 
   const aggData = p.map((_,pi)=>banks.reduce((s,b)=>s+(PAGE==='s2'?b.history[pi].stage2_bn:b.history[pi].stage3_bn),0));
   charts['agg'] = new Chart(document.getElementById('c-agg'),{type:'line',data:{labels:pl,datasets:[{data:aggData,borderColor:color(),backgroundColor:colorDim(),fill:true,tension:0.35,pointBackgroundColor:color(),pointRadius:4,pointHoverRadius:6}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(0)+'bn'}}}}});
   document.getElementById('cr1-title').textContent = PAGE==='s2'?'Aggregate Stage 2 Trend':'Aggregate Stage 3 (NPL) Trend';
-
+ 
   // Country bar
   const countries=[...new Set(banks.map(b=>b.country))].sort();
   const cTotals=countries.map(cc=>banks.filter(b=>b.country===cc).reduce((s,b)=>s+absval(b),0));
   const cSorted=[...countries.map((cc,i)=>({cc,v:cTotals[i]}))].sort((a,b)=>b.v-a.v);
   charts['country']=new Chart(document.getElementById('c-country'),{type:'bar',data:{labels:cSorted.map(x=>x.cc),datasets:[{data:cSorted.map(x=>x.v),backgroundColor:color()+'99',borderColor:color(),borderWidth:1,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(0)+'bn'}}}}});
-
+ 
   // Top 15
   const top15=[...banks].sort((a,b)=>ratio(b)-ratio(a)).slice(0,15);
   const t15cols=top15.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(248,113,113,0.78)';if(r>=(PAGE==='s2'?12:4))return'rgba(251,146,60,0.74)';if(r>=(PAGE==='s2'?10:2))return'rgba(251,191,36,0.72)';return'rgba(96,165,250,0.68)';});
   charts['top15']=new Chart(document.getElementById('c-top15'),{type:'bar',data:{labels:top15.map(b=>b.name.length>18?b.name.slice(0,16)+'…':b.name),datasets:[{data:top15.map(b=>ratio(b)),backgroundColor:t15cols,borderRadius:3}]},options:{...CDEFAULTS,indexAxis:'y',scales:{x:{...CDEFAULTS.scales.x,ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:CDEFAULTS.scales.y}}});
   document.getElementById('top15-title').textContent = PAGE==='s2'?'Top 15 Banks by Stage 2 Ratio':'Top 15 Banks by NPL Ratio';
-
+ 
   // Distribution
   const bins = PAGE==='s2' ? [['<7%',0,7],['7–9%',7,9],['9–11%',9,11],['11–13%',11,13],['13–15%',13,15],['>15%',15,999]] : [['<1%',0,1],['1–2%',1,2],['2–3%',2,3],['3–4%',3,4],['4–6%',4,6],['>6%',6,999]];
   const bc=[0,0,0,0,0,0];
   banks.forEach(b=>{const r=ratio(b);bins.forEach((bin,i)=>{if(r>=bin[1]&&r<bin[2])bc[i]++;});});
   const distCols=['rgba(74,222,128,0.65)','rgba(74,222,128,0.45)','rgba(251,191,36,0.60)','rgba(251,146,60,0.65)','rgba(248,113,113,0.58)','rgba(248,113,113,0.82)'];
   charts['dist']=new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:bins.map(b=>b[0]),datasets:[{data:bc,backgroundColor:distCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+' banks'}}}}});
-
+ 
   // Scatter (S2 only)
   if (PAGE==='s2') {
     const scData = banks.map(b=>({x:lat(b).stage2_ratio,y:lat(b).npl_ratio,r:Math.max(4,Math.min(18,b.total_assets_bn/80)),label:b.name,cc:b.country}));
@@ -794,7 +808,7 @@ function buildOverviewCharts(banks, p, pl) {
     charts['scatter']=new Chart(document.getElementById('c-scatter'),{type:'bubble',data:{datasets:[{data:scData,backgroundColor:scColors,borderColor:'transparent'}]},options:{...CDEFAULTS,plugins:{...CDEFAULTS.plugins,tooltip:{...CDEFAULTS.plugins.tooltip,callbacks:{label:ctx=>`${ctx.raw.label} (${flag(ctx.raw.cc)})  S2: ${f1(ctx.raw.x)}%  NPL: ${f1(ctx.raw.y)}%`}}},scales:{x:{...CDEFAULTS.scales.x,title:{display:true,text:'Stage 2 Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:{...CDEFAULTS.scales.y,title:{display:true,text:'NPL Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
   }
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  TABLE
 // ═══════════════════════════════════════════════
@@ -804,14 +818,14 @@ function buildTable(banks) {
   else if (SORT==='absval') sorted.sort((a,b)=>SORT_ASC?absval(a)-absval(b):absval(b)-absval(a));
   else if (SORT==='change') sorted.sort((a,b)=>SORT_ASC?ratioChange(a)-ratioChange(b):ratioChange(b)-ratioChange(a));
   else if (SORT==='name') sorted.sort((a,b)=>SORT_ASC?b.name.localeCompare(a.name):a.name.localeCompare(b.name));
-
+ 
   const col = PAGE==='s2' ? 'Stage 2' : 'Stage 3 (NPL)';
   const rc  = PAGE==='s2' ? 'S2 Ratio' : 'NPL Ratio';
-
+ 
   document.getElementById('tbl-head').innerHTML = `<tr>${['Bank','Country','Total Assets',col+' (€bn)',rc,'Change vs '+DATA.meta.period_labels[0],'Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
   document.getElementById('tbl-count-title').textContent = `${sorted.length} institutions`;
   document.getElementById('tbl-title').textContent = PAGE==='s2' ? 'All Banks — Stage 2 View' : 'All Banks — NPL View';
-
+ 
   const tbody = document.getElementById('tbl-body');
   tbody.innerHTML='';
   sorted.forEach(bank=>{
@@ -835,7 +849,7 @@ function buildTable(banks) {
     tbody.appendChild(tr);
   });
 }
-
+ 
 function sortBy(field, btn) {
   if (SORT===field) SORT_ASC=!SORT_ASC; else {SORT=field;SORT_ASC=false;}
   document.querySelectorAll('.tbl-btn').forEach(b=>b.classList.remove('act'));
@@ -843,7 +857,7 @@ function sortBy(field, btn) {
   const banks = COUNTRY ? DATA.banks.filter(b=>b.country===COUNTRY) : DATA.banks;
   buildTable(banks);
 }
-
+ 
 function buildSpark(bank) {
   const vals = bank.history.map(h=>PAGE==='s2'?h.stage2_bn:h.stage3_bn);
   const min=Math.min(...vals), max=Math.max(...vals);
@@ -854,7 +868,7 @@ function buildSpark(bank) {
   }).join('');
   return `<div class="spark">${bars}</div>`;
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  WATCHLIST
 // ═══════════════════════════════════════════════
@@ -862,16 +876,16 @@ function buildWatchlist() {
   const threshold = PAGE==='s2' ? 10 : 3;
   const watches = DATA.banks.filter(b=>ratio(b)>=threshold||Math.abs(ratioChange(b))>1.5);
   watches.sort((a,b)=>ratio(b)-ratio(a));
-
+ 
   document.getElementById('wl-title').textContent = PAGE==='s2' ? 'Watchlist — Elevated Stage 2' : 'Watchlist — Elevated NPL';
   document.getElementById('wl-sub').textContent = PAGE==='s2'
     ? `${watches.length} banks with Stage 2 ratio ≥ 10% or significant increase — elevated NPL supply risk`
     : `${watches.length} banks with NPL ratio ≥ 3% or notable change — key NPL investment universe`;
-
+ 
   const container=document.getElementById('wl-content');
   container.innerHTML='';
   if (!watches.length) { container.innerHTML='<div style="padding:60px;text-align:center;color:var(--text3)">No banks on watchlist.</div>'; return; }
-
+ 
   const grid=document.createElement('div'); grid.className='wl-grid';
   watches.forEach(bank=>{
     const l=lat(bank); const ch=ratioChange(bank);
@@ -896,7 +910,7 @@ function buildWatchlist() {
   });
   container.appendChild(grid);
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  COUNTRY VIEW
 // ═══════════════════════════════════════════════
@@ -906,28 +920,28 @@ function showCountry(cc, btn) {
   VIEW='country';
   ['overview','table','watchlist'].forEach(v=>document.getElementById('p-'+v).classList.remove('active'));
   document.getElementById('p-country').classList.add('active');
-
+ 
   const banks=DATA.banks.filter(b=>b.country===cc);
   const cName=banks[0].country_name;
   document.getElementById('c-flag').textContent=flag(cc);
   document.getElementById('c-name').textContent=cName;
   document.getElementById('c-meta').textContent=`${banks.length} bank${banks.length!==1?'s':''} tracked · Latest: ${DATA.meta.last_updated} · Source: EBA ${DATA.meta.exercise_year}`;
   document.getElementById('c-tbl-title').textContent=`Banks in ${cName}`;
-
+ 
   const pl=DATA.meta.period_labels;
   const col=PAGE==='s2'?'stage2_bn':'stage3_bn';
   const aggD=DATA.meta.periods.map((_,pi)=>banks.reduce((s,b)=>s+b.history[pi][col],0));
-
+ 
   ['c-trend','c-bars'].forEach(id=>destroyChart(id));
   document.getElementById('c-charts').innerHTML=`
     <div class="chart-card"><div class="cc-header"><div><div class="cc-title">${PAGE==='s2'?'Stage 2':'Stage 3 NPL'} Trend — ${cName}</div><div class="cc-sub">Combined balance (€bn)</div></div></div><canvas id="c-trend" height="155"></canvas></div>
     <div class="chart-card"><div class="cc-header"><div><div class="cc-title">Ratio by Bank — ${cName}</div><div class="cc-sub">Latest period</div></div></div><canvas id="c-bars" height="155"></canvas></div>`;
-
+ 
   charts['c-trend']=new Chart(document.getElementById('c-trend'),{type:'line',data:{labels:pl,datasets:[{data:aggD,borderColor:color(),backgroundColor:colorDim(),fill:true,tension:0.35,pointBackgroundColor:color(),pointRadius:4}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>'€'+v.toFixed(1)+'bn'}}}}});
-
+ 
   const bCols=banks.map(b=>{const r=ratio(b);if(r>=(PAGE==='s2'?15:6))return'rgba(248,113,113,0.78)';if(r>=(PAGE==='s2'?12:4))return'rgba(251,146,60,0.74)';if(r>=(PAGE==='s2'?10:2))return'rgba(251,191,36,0.70)';return'rgba(96,165,250,0.65)';});
   charts['c-bars']=new Chart(document.getElementById('c-bars'),{type:'bar',data:{labels:banks.map(b=>b.name.length>16?b.name.slice(0,14)+'…':b.name),datasets:[{data:banks.map(b=>ratio(b)),backgroundColor:bCols,borderRadius:3}]},options:{...CDEFAULTS,scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
-
+ 
   // Table
   const rCol=PAGE==='s2'?'Stage 2 Ratio':'NPL Ratio';
   const vCol=PAGE==='s2'?'Stage 2 (€bn)':'Stage 3 (€bn)';
@@ -940,7 +954,7 @@ function showCountry(cc, btn) {
     tbody.appendChild(tr);
   });
 }
-
+ 
 // ═══════════════════════════════════════════════
 //  BANK MODAL
 // ═══════════════════════════════════════════════
@@ -949,24 +963,24 @@ function openBank(bank) {
   const s2ch=l.stage2_ratio-f.stage2_ratio;
   const s3ch=l.npl_ratio-f.npl_ratio;
   const pl=DATA.meta.period_labels;
-
+ 
   document.getElementById('m-name').textContent=bank.name;
   document.getElementById('m-sub').textContent=`${flag(bank.country)} ${bank.country_name}  ·  Total Assets: €${f0(bank.total_assets_bn)}bn  ·  EBA ID: ${bank.id}`;
-
+ 
   // KPIs — always show both S2 and S3
   document.getElementById('m-kpis').innerHTML=[
     {label:'Stage 2 (latest)',val:f1(l.stage2_ratio)+'%',sub:fbn(l.stage2_bn),color:l.stage2_ratio>=12?'var(--s2-color)':'var(--text)'},
     {label:'Stage 3 NPL (latest)',val:f1(l.npl_ratio)+'%',sub:fbn(l.stage3_bn),color:l.npl_ratio>=4?'var(--s3-color)':'var(--text)'},
     {label:'Total Loans',val:fbn(l.total_loans_bn),sub:'Latest period',color:'var(--text)'}
   ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val" style="font-size:22px;color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
-
+ 
   // Dual-line chart — both Stage 2 and Stage 3 ratios
   if (modalChart) { modalChart.destroy(); modalChart=null; }
   modalChart=new Chart(document.getElementById('m-chart'),{type:'line',data:{labels:pl,datasets:[
     {label:'Stage 2 Ratio (%)',data:bank.history.map(h=>h.stage2_ratio),borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.08)',fill:true,tension:0.35,yAxisID:'y'},
     {label:'NPL Ratio (%)',data:bank.history.map(h=>h.npl_ratio),borderColor:'#f87171',tension:0.35,yAxisID:'y2'}
   ]},options:{plugins:{legend:{display:true,labels:{color:'#adb5cc',font:{family:'JetBrains Mono',size:9},boxWidth:12}},tooltip:{backgroundColor:'#1c2130',borderColor:'rgba(255,255,255,0.14)',borderWidth:1,titleColor:'#f0f2f8',bodyColor:'#adb5cc'}},scales:{x:CDEFAULTS.scales.x,y:{...CDEFAULTS.scales.y,ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}},y2:{position:'right',grid:{display:false},ticks:{color:'#6b7590',font:{family:'JetBrains Mono',size:9},callback:v=>v+'%'}}}}});
-
+ 
   // History table — both columns
   document.getElementById('m-history').innerHTML=`
     <table style="width:100%;border-collapse:collapse">
@@ -981,7 +995,7 @@ function openBank(bank) {
         <td style="padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${fbn(h.total_loans_bn)}</td>
       </tr>`).join('')}</tbody>
     </table>`;
-
+ 
   // Signal
   const s2trend=s2ch>1.5?'rising':s2ch<-1.5?'declining':'stable';
   const s3trend=s3ch>0.5?'rising':s3ch<-0.5?'declining':'stable';
@@ -993,11 +1007,11 @@ function openBank(bank) {
         <div style="font-size:12px;color:var(--text3)">NPL: <span style="color:${s3trend==='rising'?'var(--s3-color)':s3trend==='declining'?'var(--green)':'var(--text2)'}">${s3trend.toUpperCase()}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px">${s3ch>0?'+':''}${f1(s3ch)}pp since ${DATA.meta.period_labels[0]}</span></div>
       </div>
     </div>`;
-
+ 
   document.getElementById('bank-overlay').classList.add('open');
 }
 function closeBank(e) { if(e.target.id==='bank-overlay') document.getElementById('bank-overlay').classList.remove('open'); }
-
+ 
 // ═══════════════════════════════════════════════
 //  NAVIGATION
 // ═══════════════════════════════════════════════
@@ -1016,12 +1030,12 @@ function navTo(view, btn) {
 }
 function filterSidebar(q) {
   const query = q.toLowerCase().trim();
-
+ 
   // Always show/hide country nav items
   document.querySelectorAll('#country-nav .sb-item').forEach(b=>{
     b.style.display = !query || b.textContent.toLowerCase().includes(query) ? '' : 'none';
   });
-
+ 
   // If query looks like a bank search, switch to table view and filter
   if (!DATA) return;
   if (query.length >= 2) {
@@ -1046,7 +1060,7 @@ function filterSidebar(q) {
 }
 function openUpdateModal() { document.getElementById('update-overlay').classList.add('open'); }
 function closeUpdate(e) { if(e.target.id==='update-overlay') document.getElementById('update-overlay').classList.remove('open'); }
-
+ 
 loadData();
 </script>
 </body>
