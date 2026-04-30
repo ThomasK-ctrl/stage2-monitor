@@ -590,6 +590,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
     <div class="modal-kpis" id="m-kpis"></div>
     <div style="margin-bottom:16px"><canvas id="m-chart" height="150"></canvas></div>
     <div id="m-history"></div>
+ 
     <div id="m-signal" style="margin-top:14px"></div>
   </div>
 </div>
@@ -611,7 +612,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 </div>
  
 <footer class="footer-bar">
-  <span>Source: EBA EU-Wide Transparency Exercise 2025 · 119 banks · 25 countries</span>
+  <span>Source: EBA EU-Wide Transparency Exercise 2025 · 85 banks · 25 countries</span>
   <span>Informational only. Not investment advice.</span>
 </footer>
  
@@ -839,7 +840,7 @@ function buildOverviewCharts(banks, p, pl) {
  
   // Scatter (S2 only)
   if (PAGE==='s2') {
-    const scData = banks.map(b=>({x:lat(b).stage2_ratio,y:lat(b).npl_ratio,r:Math.max(4,Math.min(18,b.total_assets_bn/80)),label:b.name,cc:b.country}));
+    const scData = banks.map(b=>({x:lat(b).stage2_ratio,y:lat(b).npl_ratio,r:Math.max(4,Math.min(18,lat(b).total_loans_bn/80)),label:b.name,cc:b.country}));
     const scColors = scData.map(d=>{const sum=d.x+d.y*2;if(sum>18)return'rgba(248,113,113,0.78)';if(sum>13)return'rgba(251,146,60,0.70)';if(sum>9)return'rgba(251,191,36,0.65)';return'rgba(96,165,250,0.60)';});
     charts['scatter']=new Chart(document.getElementById('c-scatter'),{type:'bubble',data:{datasets:[{data:scData,backgroundColor:scColors,borderColor:'transparent'}]},options:{...CDEFAULTS,plugins:{...CDEFAULTS.plugins,tooltip:{...CDEFAULTS.plugins.tooltip,callbacks:{label:ctx=>`${ctx.raw.label} (${flag(ctx.raw.cc)})  S2: ${f1(ctx.raw.x)}%  NPL: ${f1(ctx.raw.y)}%`}}},scales:{x:{...CDEFAULTS.scales.x,title:{display:true,text:'Stage 2 Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.x.ticks,callback:v=>v+'%'}},y:{...CDEFAULTS.scales.y,title:{display:true,text:'NPL Ratio (%)',color:'#6b7590',font:{family:'JetBrains Mono',size:9}},ticks:{...CDEFAULTS.scales.y.ticks,callback:v=>v+'%'}}}}});
   }
@@ -858,7 +859,7 @@ function buildTable(banks) {
   const col = PAGE==='s2' ? 'Stage 2' : 'Stage 3 (NPL)';
   const rc  = PAGE==='s2' ? 'S2 Ratio' : 'NPL Ratio';
  
-  document.getElementById('tbl-head').innerHTML = `<tr>${['Bank','Country','Total Assets',col+' (€bn)',rc,'Change vs '+DATA.meta.period_labels[0],'Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
+  document.getElementById('tbl-head').innerHTML = `<tr>${['Bank','Country','Est. Assets*',col+' (€bn)',rc,'Change vs '+DATA.meta.period_labels[0],'Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
   document.getElementById('tbl-count-title').textContent = `${sorted.length} institutions`;
   document.getElementById('tbl-title').textContent = PAGE==='s2' ? 'All Banks — Stage 2 View' : 'All Banks — NPL View';
  
@@ -876,7 +877,7 @@ function buildTable(banks) {
     tr.innerHTML=`
       <td><div class="td-bank">${bank.name}</div></td>
       <td><div style="font-size:12px">${flag(bank.country)} ${bank.country_name}</div></td>
-      <td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td>
+ 
       <td class="mono"><strong>${fbn(v)}</strong></td>
       <td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td>
       <td class="mono ${chClass}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td>
@@ -981,12 +982,12 @@ function showCountry(cc, btn) {
   // Table
   const rCol=PAGE==='s2'?'Stage 2 Ratio':'NPL Ratio';
   const vCol=PAGE==='s2'?'Stage 2 (€bn)':'Stage 3 (€bn)';
-  document.getElementById('c-tbl-head').innerHTML=`<tr>${['Bank','Total Assets',vCol,rCol,'Change','Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
+  document.getElementById('c-tbl-head').innerHTML=`<tr>${['Bank','Est. Assets*',vCol,rCol,'Change','Trend','Signal'].map(h=>`<th>${h}</th>`).join('')}</tr>`;
   const tbody=document.getElementById('c-tbl-body'); tbody.innerHTML='';
   banks.forEach(bank=>{
     const l=lat(bank); const r=ratio(bank); const v=absval(bank); const ch=ratioChange(bank);
     const tr=document.createElement('tr'); tr.onclick=()=>openBank(bank);
-    tr.innerHTML=`<td><div class="td-bank">${bank.name}</div></td><td class="mono" style="color:var(--text3)">€${f0(bank.total_assets_bn)}bn</td><td class="mono"><strong>${fbn(v)}</strong></td><td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td><td class="mono ${ch>0.3?'up':ch<-0.3?'dn':'fl'}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td><td>${buildSpark(bank)}</td><td>${riskBadge(r)}</td>`;
+    tr.innerHTML=`<td><div class="td-bank">${bank.name}</div></td><td class="mono" style="color:var(--text3)" title="Estimated <td class="mono"><strong>${fbn(v)}</strong></td><td class="mono"><strong style="color:${r>=(PAGE==='s2'?12:4)?'var(--s3-color)':r>=(PAGE==='s2'?10:2)?'#f97316':'var(--text)'}">${f1(r)}%</strong></td><td class="mono ${ch>0.3?'up':ch<-0.3?'dn':'fl'}">${ch>0?'+':''}${f1(ch)}pp ${ch>0.3?'↑':ch<-0.3?'↓':'→'}</td><td>${buildSpark(bank)}</td><td>${riskBadge(r)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -1001,13 +1002,13 @@ function openBank(bank) {
   const pl=DATA.meta.period_labels;
  
   document.getElementById('m-name').textContent=bank.name;
-  document.getElementById('m-sub').textContent=`${flag(bank.country)} ${bank.country_name}  ·  Total Assets: €${f0(bank.total_assets_bn)}bn  ·  EBA ID: ${bank.id}`;
+  document.getElementById('m-sub').textContent=`${flag(bank.country)} ${bank.country_name}  ·  EBA ID: ${bank.id}`;
  
   // KPIs — always show both S2 and S3
   document.getElementById('m-kpis').innerHTML=[
     {label:'Stage 2 (latest)',val:f1(l.stage2_ratio)+'%',sub:fbn(l.stage2_bn),color:l.stage2_ratio>=12?'var(--s2-color)':'var(--text)'},
     {label:'Stage 3 NPL (latest)',val:f1(l.npl_ratio)+'%',sub:fbn(l.stage3_bn),color:l.npl_ratio>=4?'var(--s3-color)':'var(--text)'},
-    {label:'Total Loans',val:fbn(l.total_loans_bn),sub:'Latest period',color:'var(--text)'}
+    {label:'Total Loans',val:fbn(l.total_loans_bn),sub:'FINREP gross carrying amount',color:'var(--text)'}
   ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-val" style="font-size:22px;color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
  
   // Dual-line chart — both Stage 2 and Stage 3 ratios
