@@ -1554,6 +1554,15 @@
       "total_assets_bn": 587.0,
       "history": [
         {
+          "period": "2024-09-30",
+          "stage1_bn": 413.3,
+          "stage2_bn": 69.62,
+          "stage2_ratio": 14.13,
+          "stage3_bn": 9.88,
+          "npl_ratio": 2.0,
+          "total_loans_bn": 492.79
+        },
+        {
           "period": "2024-12-31",
           "stage1_bn": 413.3,
           "stage2_bn": 69.62,
@@ -1561,6 +1570,15 @@
           "stage3_bn": 9.88,
           "npl_ratio": 2.0,
           "total_loans_bn": 492.79
+        },
+        {
+          "period": "2025-03-31",
+          "stage1_bn": 424.51,
+          "stage2_bn": 65.77,
+          "stage2_ratio": 13.18,
+          "stage3_bn": 9.53,
+          "npl_ratio": 1.91,
+          "total_loans_bn": 499.8
         },
         {
           "period": "2025-06-30",
@@ -1628,6 +1646,15 @@
       "total_assets_bn": 41.0,
       "history": [
         {
+          "period": "2024-09-30",
+          "stage1_bn": 97.88,
+          "stage2_bn": 0.6,
+          "stage2_ratio": 0.61,
+          "stage3_bn": 0.46,
+          "npl_ratio": 0.46,
+          "total_loans_bn": 98.94
+        },
+        {
           "period": "2024-12-31",
           "stage1_bn": 97.88,
           "stage2_bn": 0.6,
@@ -1635,6 +1662,15 @@
           "stage3_bn": 0.46,
           "npl_ratio": 0.46,
           "total_loans_bn": 98.94
+        },
+        {
+          "period": "2025-03-31",
+          "stage1_bn": 99.37,
+          "stage2_bn": 0.59,
+          "stage2_ratio": 0.59,
+          "stage3_bn": 0.39,
+          "npl_ratio": 0.38,
+          "total_loans_bn": 100.34
         },
         {
           "period": "2025-06-30",
