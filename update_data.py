@@ -4,23 +4,23 @@ update_data.py — EBA Credit Monitor Data Updater
 =================================================
 Fetches Stage 2 AND Stage 3 (NPL) data from the EBA EU-Wide Transparency
 Exercise and updates data/stage2.json for the dashboard.
-
+ 
 Usage:
     python update_data.py                  # Auto-download latest EBA data
     python update_data.py --force          # Re-download even if already current
     python update_data.py --file FILE.csv  # Use a manually downloaded EBA CSV
-
+ 
 Requirements:
     pip install requests pandas
-
+ 
 When to run:
     EBA publishes the Transparency Exercise once per year (November/December).
     Run this script after each publication.
-
+ 
 Latest exercise: 2025 TE — published December 2025
 Covers: Sep 2024, Dec 2024, Mar 2025, Jun 2025
 """
-
+ 
 import json
 import os
 import sys
@@ -29,7 +29,7 @@ import zipfile
 import re
 from pathlib import Path
 from datetime import datetime
-
+ 
 # ── Dependency check ──────────────────────────────────────────────────────────
 try:
     import requests
@@ -41,9 +41,9 @@ try:
 except ImportError:
     print("❌  Missing: pandas\n   Run: pip install requests pandas")
     sys.exit(1)
-
+ 
 # ── Config ────────────────────────────────────────────────────────────────────
-
+ 
 # EBA Transparency Exercise CSV download URLs
 # The AQU template contains asset quality data (Stage 1 / 2 / 3)
 EBA_URLS = {
@@ -57,22 +57,22 @@ EBA_URLS = {
         "https://www.eba.europa.eu/assets/TE2024/Full_database/TE2024_full_database.zip",
     ],
 }
-
+ 
 DATA_FILE = Path(__file__).parent / "data" / "stage2.json"
 DATA_FILE.parent.mkdir(exist_ok=True)
-
+ 
 # EBA field label keywords for identification
 STAGE1_KEYS  = ["stage 1", "performing", "no significant increase"]
 STAGE2_KEYS  = ["stage 2", "significant increase in credit risk"]
 STAGE3_KEYS  = ["stage 3", "non-performing", "credit-impaired", "npl"]
 LOANS_KEYS   = ["loans and advances", "loans & advances"]
 TOTAL_KEYS   = ["total", "gross carrying amount - total"]
-
+ 
 # ── Logging ───────────────────────────────────────────────────────────────────
 def log(msg, c=""):
     cs = {"g":"\033[92m","y":"\033[93m","r":"\033[91m","b":"\033[94m","":""};
     print(f"{cs.get(c,'')}{msg}\033[0m")
-
+ 
 # ── HTTP download ─────────────────────────────────────────────────────────────
 def download(url, year):
     log(f"  ↓  {year}: {url[:72]}…", "b")
@@ -81,7 +81,7 @@ def download(url, year):
         r.raise_for_status()
         ct = r.headers.get("Content-Type","")
         content = r.content
-
+ 
         # Handle ZIP
         if "zip" in ct or url.endswith(".zip"):
             with zipfile.ZipFile(io.BytesIO(content)) as zf:
@@ -95,20 +95,20 @@ def download(url, year):
                 with zf.open(candidates[0]) as f:
                     log(f"     Extracted: {candidates[0]}", "b")
                     return pd.read_csv(f, encoding="utf-8-sig", sep=None, engine="python", low_memory=False)
-
+ 
         # Handle raw CSV
         text = content.decode("utf-8-sig", errors="replace")
         # Detect separator
         sep = ";" if text.count(";") > text.count(",") else ","
         return pd.read_csv(io.StringIO(text), sep=sep, low_memory=False)
-
+ 
     except requests.HTTPError as e:
         log(f"  ✗  HTTP {e.response.status_code}", "y")
     except Exception as e:
         log(f"  ✗  {e}", "y")
     return None
-
-
+ 
+ 
 # ── Column detection ──────────────────────────────────────────────────────────
 def find_col(cols, keywords, require_all=False):
     cols_lower = [c.lower() for c in cols]
@@ -117,16 +117,16 @@ def find_col(cols, keywords, require_all=False):
         if require_all and hits == len(keywords): return cols[i]
         if not require_all and hits >= 1: return cols[i]
     return None
-
+ 
 def contains_any(text, keywords):
     t = text.lower()
     return any(k in t for k in keywords)
-
+ 
 def contains_all(text, *keyword_lists):
     t = text.lower()
     return all(any(k in t for k in kl) for kl in keyword_lists)
-
-
+ 
+ 
 # ── Parse EBA long-format CSV ─────────────────────────────────────────────────
 def parse_long_format(df):
     """
@@ -135,20 +135,20 @@ def parse_long_format(df):
     Each row = one metric for one bank at one period.
     """
     df.columns = [c.strip() for c in df.columns]
-
+ 
     id_col      = find_col(df.columns, ["lei", "bank_id", "bankid"]) or df.columns[0]
     name_col    = find_col(df.columns, ["bank_name", "bankname", "name", "institution"])
     country_col = find_col(df.columns, ["country_code", "country", "cntry"])
     period_col  = find_col(df.columns, ["period", "reference_date", "ref_date", "date"])
     label_col   = find_col(df.columns, ["label", "item", "indicator", "variable"])
     amount_col  = find_col(df.columns, ["amount", "value", "figure", "data"])
-
+ 
     if not all([id_col, period_col, label_col, amount_col]):
         log("  ℹ  Columns not identified for long-format; trying wide-format…", "b")
         return parse_wide_format(df)
-
+ 
     result = {}
-
+ 
     for _, row in df.iterrows():
         bid     = str(row.get(id_col, "")).strip()
         period  = str(row.get(period_col, "")).strip()
@@ -157,15 +157,15 @@ def parse_long_format(df):
             amount = float(str(row.get(amount_col, 0)).replace(",", "").replace(" ", "") or 0)
         except (ValueError, TypeError):
             amount = 0.0
-
+ 
         if not bid or not period or not label:
             continue
-
+ 
         # Normalise period to YYYY-MM-DD
         period = normalise_period(period)
         if not period:
             continue
-
+ 
         if bid not in result:
             result[bid] = {
                 "name":    str(row.get(name_col, bid)).strip() if name_col else bid,
@@ -174,14 +174,14 @@ def parse_long_format(df):
             }
         if period not in result[bid]["periods"]:
             result[bid]["periods"][period] = {"s1": 0.0, "s2": 0.0, "s3": 0.0, "total": 0.0}
-
+ 
         pd_data = result[bid]["periods"][period]
         lbl = label.lower()
-
+ 
         # Classify: must mention loans AND stage
         if not contains_any(lbl, LOANS_KEYS):
             continue
-
+ 
         if contains_any(lbl, STAGE3_KEYS) and not "coverage" in lbl:
             pd_data["s3"] += amount / 1_000   # EUR thousands → billions
         elif contains_any(lbl, STAGE2_KEYS):
@@ -190,10 +190,10 @@ def parse_long_format(df):
             pd_data["s1"] += amount / 1_000
         elif contains_any(lbl, TOTAL_KEYS):
             pd_data["total"] += amount / 1_000
-
+ 
     return result
-
-
+ 
+ 
 def parse_wide_format(df):
     """
     Wide-format: each row = one bank/period, columns = metrics.
@@ -203,19 +203,19 @@ def parse_wide_format(df):
     name_col = find_col(df.columns, ["name", "bank"])
     period_col = find_col(df.columns, ["period", "date"])
     country_col = find_col(df.columns, ["country"])
-
+ 
     s1_cols = [c for c in df.columns if contains_any(c, STAGE1_KEYS) and contains_any(c, LOANS_KEYS)]
     s2_cols = [c for c in df.columns if contains_any(c, STAGE2_KEYS) and contains_any(c, LOANS_KEYS)]
     s3_cols = [c for c in df.columns if contains_any(c, STAGE3_KEYS) and contains_any(c, LOANS_KEYS) and "coverage" not in c.lower()]
     tot_cols= [c for c in df.columns if contains_any(c, TOTAL_KEYS) and contains_any(c, LOANS_KEYS)]
-
+ 
     def safe_sum(cols, row):
         s = 0.0
         for c in cols:
             try: s += float(str(row.get(c,0)).replace(",","") or 0)
             except: pass
         return s / 1_000
-
+ 
     for _, row in df.iterrows():
         bid = str(row.get(id_col, "")).strip()
         period = normalise_period(str(row.get(period_col, "")).strip()) if period_col else "latest"
@@ -231,8 +231,8 @@ def parse_wide_format(df):
             "total": safe_sum(tot_cols, row),
         }
     return result
-
-
+ 
+ 
 def normalise_period(s):
     """Convert various date formats to YYYY-MM-DD."""
     s = s.strip().replace("/", "-").replace(".", "-")
@@ -255,19 +255,19 @@ def normalise_period(s):
                 "07":"31","08":"31","09":"30","10":"31","11":"30","12":"31"}
         return f"{y}-{mo}-{days.get(mo,'30')}"
     return None
-
-
+ 
+ 
 # ── Build output JSON ─────────────────────────────────────────────────────────
 def build_json(raw_data, year):
     existing = load_existing()
     existing_map = {b["id"]: b for b in existing.get("banks", [])}
     banks_out = []
-
+ 
     for bid, data in raw_data.items():
         periods_sorted = sorted(data["periods"].keys())
         if not periods_sorted:
             continue
-
+ 
         history = []
         for period in periods_sorted:
             pd = data["periods"][period]
@@ -284,10 +284,10 @@ def build_json(raw_data, year):
                 "npl_ratio":    round(s3/total*100, 2),
                 "total_loans_bn": round(total, 2),
             })
-
+ 
         if not history:
             continue
-
+ 
         ex = existing_map.get(bid)
         banks_out.append({
             "id":             bid,
@@ -297,7 +297,7 @@ def build_json(raw_data, year):
             "total_assets_bn": ex.get("total_assets_bn", 0) if ex else 0,
             "history":        history,
         })
-
+ 
     periods   = sorted({h["period"] for b in banks_out for h in b["history"]})
     pl_months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
     period_labels = []
@@ -307,9 +307,9 @@ def build_json(raw_data, year):
             period_labels.append(f"{pl_months[d.month-1]} {d.year}")
         except:
             period_labels.append(p)
-
+ 
     latest_period = max(periods) if periods else ""
-
+ 
     return {
         "meta": {
             "source":        f"EBA EU-Wide Transparency Exercise {year}",
@@ -331,26 +331,26 @@ def build_json(raw_data, year):
         },
         "banks": banks_out,
     }
-
-
+ 
+ 
 def load_existing():
     if DATA_FILE.exists():
-        with open(DATA_FILE, "r") as f:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return {"banks": []}
-
-
+ 
+ 
 def save(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-
-
+ 
+ 
 # ── Summary ───────────────────────────────────────────────────────────────────
 def print_summary(data):
     banks = data["banks"]
     if not banks:
         log("⚠  No bank data — file not updated.", "y"); return
-
+ 
     latest = data["meta"]["last_updated"]
     total_s2 = sum(b["history"][-1]["stage2_bn"] for b in banks)
     total_s3 = sum(b["history"][-1]["stage3_bn"] for b in banks)
@@ -359,7 +359,7 @@ def print_summary(data):
     hi_s2    = [b for b in banks if b["history"][-1]["stage2_ratio"] >= 12]
     hi_npl   = [b for b in banks if b["history"][-1]["npl_ratio"] >= 4]
     rising   = [b for b in banks if b["history"][-1]["stage2_ratio"] > b["history"][0]["stage2_ratio"] + 1.0]
-
+ 
     print()
     log("═"*60, "g")
     log("  EBA CREDIT MONITOR — DATA UPDATE SUMMARY", "g")
@@ -372,7 +372,7 @@ def print_summary(data):
     print(f"  High NPL    (≥ 4%):   {len(hi_npl)} banks")
     print(f"  Rising Stage 2:       {rising and len(rising) or 0} banks (>1pp increase)")
     print()
-
+ 
     if hi_s2:
         log("  TOP STAGE 2 BANKS:", "y")
         for b in sorted(hi_s2, key=lambda x: -x["history"][-1]["stage2_ratio"])[:5]:
@@ -389,39 +389,39 @@ def print_summary(data):
     log("  ✓  Reload the dashboard in your browser.", "g")
     log("═"*60, "g")
     print()
-
-
+ 
+ 
 MANUAL_GUIDE = """
 ══════════════════════════════════════════════════════════════
   MANUAL UPDATE — if automatic download fails
 ══════════════════════════════════════════════════════════════
-
+ 
   1. Go to:
      https://www.eba.europa.eu/eu-wide-transparency-exercise-0
-
+ 
   2. Click the latest Transparency Exercise (e.g. 2025 TE)
-
+ 
   3. Download the full CSV database (ZIP, ~15MB)
-
+ 
   4. Unzip it — find the file:  TE20XX_AQU.csv
      (AQU = Asset Quality template = Stage 1/2/3 data)
-
+ 
   5. Place it in the same folder as this script
-
+ 
   6. Run:
      python update_data.py --file TE20XX_AQU.csv
-
+ 
 ══════════════════════════════════════════════════════════════
 """
-
-
+ 
+ 
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     print()
     log("EBA Credit Monitor — Data Updater v2", "b")
     log("Stage 2 & Stage 3 (NPL) · EBA Transparency Exercise", "b")
     print()
-
+ 
     # --file mode
     if "--file" in sys.argv:
         idx = sys.argv.index("--file")
@@ -448,13 +448,13 @@ def main():
         else:
             log("❌  --file requires a path", "r"); sys.exit(1)
         return
-
+ 
     # Auto-download mode
     existing = load_existing()
     existing_year = existing.get("meta", {}).get("exercise_year", "")
     if existing_year:
         log(f"  Current data: EBA {existing_year} exercise", "b")
-
+ 
     success = False
     for year in sorted(EBA_URLS.keys(), reverse=True):
         if year == existing_year and "--force" not in sys.argv:
@@ -474,7 +474,7 @@ def main():
                         log(f"  ✗  Parsed but no bank records found for {year}", "y")
             if success: break
         if success: break
-
+ 
     if not success:
         log("⚠  Automatic download did not find new data.", "y")
         print()
@@ -482,7 +482,7 @@ def main():
             log(f"  Your current data ({existing_year}) is intact.", "b")
             print_summary(existing)
         print(MANUAL_GUIDE)
-
-
+ 
+ 
 if __name__ == "__main__":
     main()
