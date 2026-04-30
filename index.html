@@ -217,9 +217,15 @@ a { color:inherit; text-decoration:none; }
   margin-bottom: 8px;
 }
 .kpi-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 26px; font-weight: 700; line-height:1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+
   color: var(--text);
+
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 .kpi-sub { font-size:11px; color: var(--text3); margin-top:5px; font-family:'JetBrains Mono',monospace; }
 .kpi-delta { font-family:'JetBrains Mono',monospace; font-size:11px; margin-top:4px; }
@@ -291,11 +297,11 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .td-country { font-size:11px; color:var(--text3); margin-top:1px; }
 .mono { font-family:'JetBrains Mono',monospace; }
 
-/* ── NUMERIC RENDERING FIX ── */
 .num {
   font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.02em;
 }
   
 /* ── SPARKLINE ── */
@@ -385,9 +391,18 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 /* ── WATCHLIST ── */
 .wl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
 .wl-card {
-  background:var(--surface); border:1px solid var(--line);
-  border-radius:var(--r); padding:14px 16px;
-  border-left:3px solid transparent; transition:all 0.2s;
+  background:linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005)), var(--surface);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:16px 18px;
+  border-left:3px solid transparent;
+  transition:all 0.2s;
+}
+
+.wl-card:hover {
+  background: var(--surface2);
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-1px);
 }
 .wl-card:hover { background:var(--surface2); }
 .wl-card.s2-alert { border-left-color: var(--s2-color); }
@@ -398,7 +413,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 .wl-ratios { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
 .wl-ratio { }
 .wl-r-label { font-size:9px; font-family:'JetBrains Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; color:var(--text3); }
-.wl-r-val { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; line-height:1; }
+.wl-r-val {   font-family:'JetBrains Mono',monospace;   font-size:24px;   font-weight:600;   line-height:1;   font-variant-numeric: tabular-nums;   letter-spacing:-0.04em; }
 
 /* ── SCATTER HINT ── */
 .scatter-hint { font-size:11px; color:var(--text3); text-align:center; margin-top:8px; font-family:'JetBrains Mono',monospace; }
@@ -464,7 +479,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
       <div class="ph-top">
         <div>
           <div class="ph-badge s2">⚠ Stage 2 — IFRS 9 Credit Deterioration Monitor</div>
-          <div class="ph-title">Stage 2 Loan Balance Tracker</div>
+          <div class="ph-title">Stage 2 Credit Deterioration Monitor</div>
           <div class="ph-sub">Loans with significant credit risk increase since origination — the leading NPL indicator</div>
         </div>
         <div class="ph-meta" id="ph-meta-s2"></div>
@@ -476,7 +491,7 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
       <div class="ph-top">
         <div>
           <div class="ph-badge s3">✕ Stage 3 — Non-Performing Loans (NPL)</div>
-          <div class="ph-title">NPL Tracker — Stage 3 Exposures</div>
+          <div class="ph-title">Stage 3 / NPL Exposure Monitor</div>
           <div class="ph-sub">Loans in default or with objective evidence of impairment — current and historical NPL stock</div>
         </div>
         <div class="ph-meta" id="ph-meta-s3"></div>
@@ -599,8 +614,8 @@ tbody td { padding:10px 14px; font-size:13px; vertical-align:middle; }
 </div>
 
 <footer class="footer-bar">
-  <span>Source: EBA EU-Wide Transparency Exercise 2025 · 119 banks · 25 countries</span>
-  <span>Informational only. Not investment advice.</span>
+  <span>Source: EBA EU-Wide Transparency Exercise 2025 · IFRS 9 Stage 2 / Stage 3 exposures · 119 banks · 25 countries</span>
+  <span>For analytical use only</span>
 </footer>
 
 <script>
