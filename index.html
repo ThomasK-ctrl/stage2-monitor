@@ -768,7 +768,7 @@ function renderOverview() {
   const kpis = document.getElementById('kpis');
   kpis.innerHTML = [
     { label:'Banks in Panel', val:banks.length, sub:`${[...new Set(banks.map(b=>b.country))].length} countries`, delta:'' },
-    { label: PAGE==='s2'?'Panel Stage 2':'Panel Stage 3 (NPL)', val:'€'+f0(totalVal)+'bn', sub:'121-bank panel total', delta:`<span class="${delta>0?'up':'dn'}">${delta>0?'+':''}${f1(delta)}bn (${delta>0?'+':''}${pct}%) vs ${pl[0]}</span>` },
+    { label: PAGE==='s2'?'Panel Stage 2':'Panel Stage 3 (NPL)', val:'€'+f0(totalVal)+'bn', sub:`${banks.length}-bank panel total`, delta:`<span class="${delta>0?'up':'dn'}">${delta>0?'+':''}${f1(delta)}bn (${delta>0?'+':''}${pct}%) vs ${pl[0]}</span>` },
     { label: PAGE==='s2'?'Avg Stage 2 Ratio':'Avg NPL Ratio', val:f1(avgRatio)+'%', sub:'Panel weighted average', delta:`<span class="${rDelta>0?'up':'dn'}">${rDelta>0?'+':''}${f1(rDelta)}pp vs ${pl[0]}</span>` },
     { label: PAGE==='s2'?'EBA Market Stage 2 Ratio':'EBA Market NPL Stock', val: PAGE==='s2'?EBA_AGG.s2_ratio+'%':'€'+EBA_AGG.npl_bn+'bn', sub: PAGE==='s2'?`EU/EEA aggregate · ${EBA_AGG.source}`:`${EBA_AGG.npl_ratio}% NPL ratio · ${EBA_AGG.source}`, delta:'' }
   ].map((k,i)=>`<div class="kpi${i===3?' benchmark':''}"><div class="kpi-label">${k.label}</div><div class="kpi-val" style="${i===3?'color:var(--blue)':''}">${k.val}</div>${k.delta?`<div class="kpi-delta">${k.delta}</div>`:`<div class="kpi-sub">${k.sub}</div>`}</div>`).join('');
@@ -793,7 +793,7 @@ function renderOverview() {
     } else {
       trendSummary = `Stage 2 ratios are broadly stable across the ${banks.length}-bank panel`;
     }
-    document.getElementById('sig-body-s2').textContent = `${trendSummary} since ${pl[0]}. Panel Stage 2 stock is ${delta>=0?'up':'down'} €${f1(Math.abs(delta))}bn (${delta>=0?'+':''}${pct}%) to €${f0(totalVal)}bn across 121 banks. For context, EBA reports EU/EEA aggregate Stage 2 at 9.4% of total loans (Q2 2025 Risk Dashboard). Largest panel movers: ${moverText}. Elevated Stage 2 historically precedes NPL supply increases by 6–18 months — key forward indicator for deal flow.`;
+    document.getElementById('sig-body-s2').textContent = `${trendSummary} since ${pl[0]}. Panel Stage 2 stock is ${delta>=0?'up':'down'} €${f1(Math.abs(delta))}bn (${delta>=0?'+':''}${pct}%) to €${f0(totalVal)}bn across ${banks.length} banks. For context, EBA reports EU/EEA aggregate Stage 2 at 9.4% of total loans (Q2 2025 Risk Dashboard). Largest panel movers: ${moverText}. Elevated Stage 2 historically precedes NPL supply increases by 6–18 months — key forward indicator for deal flow.`;
   } else {
     const risingNPL = banks.filter(b=>ratioChange(b)>0.3);
     const fallingNPL = banks.filter(b=>ratioChange(b)<-0.3);
@@ -803,7 +803,7 @@ function renderOverview() {
       const ch = ratioChange(b);
       return `${cleanNPLName(b)} (${ch>0?'+':''}${f1(ch)}pp)`;
     }).join(', ');
-    document.getElementById('sig-body-s3').textContent = `EBA reports EU/EEA aggregate NPLs at €372.6bn (1.84% NPL ratio) at Jun 2025 — source: EBA Q2 2025 Risk Dashboard. This 121-bank panel accounts for €${f0(totalVal)}bn, covering ~${Math.round(totalVal/372.6*100)}% of the EBA-reported market total. Across the panel, ${risingNPL.length} banks show rising NPL ratios and ${fallingNPL.length} declining since ${pl[0]}. Fastest deterioration: ${nplMoverText}. Romania and Bulgaria remain highest-ratio; Italy (-7%), Greece (-11%), Portugal (-16%), Cyprus (-21%) show continued clean-up per EBA RAR Dec 2025.`;
+    document.getElementById('sig-body-s3').textContent = `EBA reports EU/EEA aggregate NPLs at €372.6bn (1.84% NPL ratio) at Jun 2025 — source: EBA Q2 2025 Risk Dashboard. This ${banks.length}-bank panel accounts for €${f0(totalVal)}bn, covering ~${Math.round(totalVal/372.6*100)}% of the EBA-reported market total. Across the panel, ${risingNPL.length} banks show rising NPL ratios and ${fallingNPL.length} declining since ${pl[0]}. Fastest deterioration: ${nplMoverText}. Romania and Bulgaria remain highest-ratio; Italy (-7%), Greece (-11%), Portugal (-16%), Cyprus (-21%) show continued clean-up per EBA RAR Dec 2025.`;
   }
  
   // Charts
