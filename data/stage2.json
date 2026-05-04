@@ -17,7 +17,7 @@
     ],
     "last_updated": "2025-06-30",
     "data_source": "FINREP F18 Asset Quality template — amortised cost + FVOCI loans and advances — directly from EBA CSV",
-    "notes": "Values in EUR billions converted from EUR millions. Stage 2 ratio = Stage 2 / Total Loans. NPL ratio = Stage 3 / Total Loans. Total assets estimated from leverage exposure (×0.87 adjustment).",
+    "notes": "Values in EUR billions converted from EUR millions. Stage 2 ratio = Stage 2 / Total Loans. NPL ratio = Stage 3 / Total Loans. Total assets estimated from leverage exposure (×0.87 adjustment). NOTE: Spuerkeess (BCEE, LEI R7CQUF1DQM73HUTV1078) does not appear in the EBA 2025 Transparency Exercise CSV. The Luxembourg entry (LEI 9CZ7TVMR36CYD5TZBS50) has been correctly identified as BIL (Banque Internationale à Luxembourg). LEI verified against GLEIF registry and Spuerkeess official legal notices (spuerkeess.lu).",
     "eba_url": "https://www.eba.europa.eu/eu-wide-transparency-exercise-0",
     "latest_eba_aggregate": {
       "npl_ratio_pct": 1.84,
@@ -3432,12 +3432,12 @@
       ]
     },
     {
-      "id": "LU001",
+      "id": "LU_BIL",
       "lei": "9CZ7TVMR36CYD5TZBS50",
-      "name": "Spuerkeess (BCEE)",
+      "name": "BIL (Banque Internationale à Luxembourg)",
       "country": "LU",
       "country_name": "Luxembourg",
-      "total_assets_bn": 28.0,
+      "total_assets_bn": 30.7,
       "history": [
         {
           "period": "2024-09-30",
